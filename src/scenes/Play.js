@@ -3,13 +3,8 @@ class Play extends Phaser.Scene {
         super('playScene');
     }
 
+
     create() {
-        keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        keyJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        keySlowmo = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-        keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-        keyMute = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
 
         let playConfig = {
             fontFamily: 'Courier',
@@ -24,20 +19,23 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 0
         }
+        this.cameras.main.setBackgroundColor('#D3D3D3');
 
         // Create player
-        player = this.physics.add.sprite(centerX, centerY, 'player').setOrigin(0.5, 0.5);
-        player.setCollideWorldBounds(true);
+        // Player(scene, pSpawnX, pSpawnY, state, health)
+        this.player = new Player(this, centerX, centerY);
         
         // HUD boxes ---------------------------------------------------------------------------------
-        this.add.rectangle(centerX, centerY, gameWidth, centerY, 0x808080).setOrigin(0.5,0.5);
+        // this.add.rectangle(centerX, centerY, gameWidth, centerY, 0x808080).setOrigin(0.5,0.5);
         // this.add.rectangle(centerX, playHUDY, gameWidth - 20, playHUDHeight - 20, 0xC0C0C0).setOrigin(0.5,0.5);
         
     }
 
     update() {
+        this.player.update();
+
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
-            this.sound.play('buttonsound');
+            // this.sound.play('buttonsound');
             this.scene.run('playScene');
         }
     }

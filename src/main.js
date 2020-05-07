@@ -12,7 +12,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            // debug: true,
+            debug: true,
         }
     },
     scene: [ Load, Menu, Play, GameOver ]
@@ -41,11 +41,11 @@ var textSpacer = 80;
 var isGameOver = false;
 var resetAudio = true;
 
-// Game objects
-var background;
-var player = null;
-var pointer;
+// Player movement settings
+var playerRunAccel = 30;
+var playerStopDrag = 600;
+var maxMoveVelocity = 300;
 
 
 // Game controls
-var keyLeft, keyRight, keyJump, keySlowmo, keyStart, keyMute, keyVolumeUp, keyVolumeDown;
+var keyLeft, keyRight, keyUp, keyDown, keyStart;

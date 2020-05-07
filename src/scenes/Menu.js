@@ -4,12 +4,7 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
-        keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        keyJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        keySlowmo = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-        keyMute = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
 
         let menuConfig = {
             fontFamily: 'Courier',
@@ -30,7 +25,7 @@ class Menu extends Phaser.Scene {
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
-            this.sound.play('buttonsound');
+            // this.sound.play('buttonsound');
             this.scene.run('playScene');
         }
     }
