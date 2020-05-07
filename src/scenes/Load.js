@@ -12,6 +12,8 @@ class Load extends Phaser.Scene {
         }).setOrigin(0.5, 0.5);
         // Load image assets
         this.load.image('player', './assets/chara1.png');
+        this.load.image('redObstacle', './assets/RedObstacle.png');
+        this.load.image('blueObstacle', './assets/BlueObstacle.png');
         // Load audio assets
         this.load.audio('buttonsound', './assets/buttonsound.mp3');
         

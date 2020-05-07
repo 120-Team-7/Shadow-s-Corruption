@@ -23,10 +23,13 @@ class Play extends Phaser.Scene {
 
         // Create player
         // Player(scene, pSpawnX, pSpawnY, state, health)
-        this.player = new Player(this, centerX, centerY);
-
-        this.box1 = new Obstacle(this, centerX + 200, centerY, 0);
+        this.player = new Player(this, centerX - 100, centerY);
         
+        this.redGroup = new ColorGroup(this, 0);
+        this.redGroup.addObstacle(centerX + 100, centerY);
+
+        this.blueGroup = new ColorGroup(this, 1);
+        this.blueGroup.addObstacle(centerX - 200, centerY + 200);
         // HUD boxes ---------------------------------------------------------------------------------
         // this.add.rectangle(centerX, centerY, gameWidth, centerY, 0x808080).setOrigin(0.5,0.5);
         // this.add.rectangle(centerX, playHUDY, gameWidth - 20, playHUDHeight - 20, 0xC0C0C0).setOrigin(0.5,0.5);
@@ -35,8 +38,6 @@ class Play extends Phaser.Scene {
 
     update() {
         this.player.update();
-        this.box1.update();
-
         
 
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {

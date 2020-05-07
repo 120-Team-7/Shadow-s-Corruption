@@ -11,6 +11,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
 
+        scene.input.on('pointerdown', function(pointer) {
+            if(!isGameOver){
+
+                // Bullet(scene, oSpawnX, oSpawnY, targetX, targetY, state) {
+                this.bullet = new Bullet (scene, this.x, this.y, pointer.x, pointer.y, 0);
+            }
+        }, this);
+
         keyLeft = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyRight = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyUp = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -47,7 +55,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
 
             if(Phaser.Input.Keyboard.JustDown(keySwitch)){
-                console.log(collider);
                 if(playerState == 0){
                     playerState = 1;
                 } else {
