@@ -15,18 +15,11 @@ let config = {
             debug: true,
         }
     },
-    scene: [ Load, Menu, Play, GameOver ]
+    scene: [ Load, Menu, Play, HUD, GameOver ]
 }
 
 // Define game
 let game = new Phaser.Game(config);
-
-// Audio Settings
-var globalVolume = 1;
-var normalSoundRate = 1;
-var volumeChange = 0.1;
-
-// Audio
 
 // Game measurements & text placement
 var gameWidth = game.config.width;
@@ -40,12 +33,29 @@ var textSpacer = 80;
 // Game globals
 var isGameOver = false;
 var resetAudio = true;
+var collider
+
+// Obstacle settings
+var obstacleDrag = 300;
+
+// Player state settings
+var playerState = 0; // 0 = red, 1 = blue
 
 // Player movement settings
 var playerRunAccel = 30;
 var playerStopDrag = 600;
 var maxMoveVelocity = 300;
 
-
 // Game controls
-var keyLeft, keyRight, keyUp, keyDown, keyStart;
+// Player
+var keyLeft, keyRight, keyUp, keyDown, keySwitch;
+
+// Menu
+var keyStart;
+
+// Audio Settings
+var globalVolume = 1;
+var normalSoundRate = 1;
+var volumeChange = 0.1;
+
+// Audio

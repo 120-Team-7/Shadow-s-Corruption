@@ -2,9 +2,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, pSpawnX, pSpawnY) {
         super(scene, pSpawnX, pSpawnY, 'player').setOrigin(0.5, 0.5);
 
-        // this.scene = scene;
-        // this.state = state;
-        // this.health = health;
+        playerState = 0;
+        this.health = 5;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -12,11 +11,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
 
-
         keyLeft = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyRight = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyUp = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyDown = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        keySwitch = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
     }
 
 
@@ -45,6 +44,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
             } else {
                 this.body.setDrag(playerStopDrag);
+            }
+
+            if(Phaser.Input.Keyboard.JustDown(keySwitch)){
+                console.log(collider);
+                if(playerState == 0){
+                    playerState = 1;
+                } else {
+                    playerState = 0;
+                }
             }
         }
     }
