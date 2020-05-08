@@ -39,6 +39,7 @@ var pointer;
 var obstacleDrag = 300;
 
 // Player ----------------------------------------------------------------------------------------------------
+var player;
 // Player state settings
 var playerState = 0; // 0 = red, 1 = blue
 

@@ -1,5 +1,5 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, pSpawnX, pSpawnY) {
+    constructor(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup) {
         super(scene, pSpawnX, pSpawnY, 'player').setOrigin(0.5, 0.5);
 
         playerState = 0;
@@ -10,14 +10,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setCollideWorldBounds(true);
 
         this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
-
-        scene.input.on('pointerdown', function(pointer) {
-            if(!isGameOver){
-
-                // Bullet(scene, oSpawnX, oSpawnY, targetX, targetY, state) {
-                this.bullet = new Bullet (scene, this.x, this.y, pointer.x, pointer.y, 0);
-            }
-        }, this);
 
         keyLeft = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyRight = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);

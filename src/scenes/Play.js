@@ -21,15 +21,29 @@ class Play extends Phaser.Scene {
         }
         this.cameras.main.setBackgroundColor('#696969');
 
-        // Create player
-        // Player(scene, pSpawnX, pSpawnY, state, health)
-        this.player = new Player(this, centerX - 100, centerY);
-        
-        this.redGroup = new ColorGroup(this, 0);
-        this.redGroup.addObstacle(centerX + 100, centerY);
+        // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup)
+        player = new Player(this, centerX - 100, centerY);
 
+        // ColorGroup(scene, state)
+        this.redGroup = new ColorGroup(this, 0);
         this.blueGroup = new ColorGroup(this, 1);
+
+        // BulletGroup(scene, redObjGroup, state)
+        this.bulletGroup = new BulletGroup(this, this.redGroup, 0);
+        this.input.on('pointerdown', function(pointer) {
+            if(!isGameOver){
+                // addBullet(spawnX, spawnY, pointerX, pointerY)
+                this.bulletGroup.addBullet(player.x, player.y, pointer.x, pointer.y);
+            }
+        }, this);
+
+        this.redGroup.addObstacle(centerX + 100, centerY);
         this.blueGroup.addObstacle(centerX - 200, centerY + 200);
+
+        // Create player
+        // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup) {
+        // this.player = new Player(this, centerX - 100, centerY, this.redGroup, this.blueGroup);
+
         // HUD boxes ---------------------------------------------------------------------------------
         // this.add.rectangle(centerX, centerY, gameWidth, centerY, 0x808080).setOrigin(0.5,0.5);
         // this.add.rectangle(centerX, playHUDY, gameWidth - 20, playHUDHeight - 20, 0xC0C0C0).setOrigin(0.5,0.5);
@@ -37,8 +51,9 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        this.player.update();
-        
+        player.update();
+        this.bulletGroup.update();
+
 
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
             // this.sound.play('buttonsound');
