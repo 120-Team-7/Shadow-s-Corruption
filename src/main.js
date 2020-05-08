@@ -37,6 +37,7 @@ var pointer;
 
 // Obstacle settings
 var obstacleDrag = 300;
+var obsHealth = 3;
 
 // Player ----------------------------------------------------------------------------------------------------
 var player;

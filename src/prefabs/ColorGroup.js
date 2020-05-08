@@ -31,6 +31,7 @@ class ColorGroup extends Phaser.Physics.Arcade.Group {
     }
 
     addObstacle(spawnX, spawnY){
-        this.add(new Obstacle(this.scene, spawnX, spawnY, this.state))
+        // Obstacle(scene, oSpawnX, oSpawnY, state, health)
+        this.add(new Obstacle(this.scene, spawnX, spawnY, this.state, obsHealth))
     }
 }

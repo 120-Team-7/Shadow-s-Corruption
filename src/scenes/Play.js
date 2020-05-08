@@ -28,19 +28,13 @@ class Play extends Phaser.Scene {
         this.redGroup = new ColorGroup(this, 0);
         this.blueGroup = new ColorGroup(this, 1);
 
-        // BulletGroup(scene, redObjGroup, state)
-        this.bulletGroup = new BulletGroup(this, this.redGroup, 0);
-        this.input.on('pointerdown', function(pointer) {
-            if(!isGameOver){
-                // addBullet(spawnX, spawnY, pointerX, pointerY)
-                this.bulletGroup.addBullet(player.x, player.y, pointer.x, pointer.y);
-            }
-        }, this);
-
         this.redGroup.addObstacle(centerX + 100, centerY);
         this.blueGroup.addObstacle(centerX - 200, centerY + 200);
 
-        // Create player
+        // BulletGroup(scene, redObjGroup, state)
+        this.bulletGroup = new BulletGroup(this, this.redGroup, 0);
+
+        // Create players
         // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup) {
         // this.player = new Player(this, centerX - 100, centerY, this.redGroup, this.blueGroup);
 
@@ -53,7 +47,6 @@ class Play extends Phaser.Scene {
     update() {
         player.update();
         this.bulletGroup.update();
-
 
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
             // this.sound.play('buttonsound');

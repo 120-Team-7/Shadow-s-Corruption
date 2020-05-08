@@ -11,10 +11,12 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        this.body.velocity.x = 100;
         scene.physics.moveTo(this, targetX, targetY, bulletSpeed);
-        console.log(this);
-        console.log(this + " " + targetX + " " + targetY + " " + bulletSpeed);
+    }
 
+    update(){
+        if(this.x < 0 || this.x > screenWidth || this.y < 0 || this.y > screenHeight) {
+            this.group.remove(this, true, true);
+        }
     }
 }
