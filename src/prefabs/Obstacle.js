@@ -6,7 +6,6 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite {
             super(scene, oSpawnX, oSpawnY, 'blueObstacle').setOrigin(0.5, 0.5);
         }
 
-
         this.scene = scene;
         this.group = group;
         this.state = state;

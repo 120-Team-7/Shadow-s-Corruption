@@ -25,8 +25,8 @@ class Play extends Phaser.Scene {
         player = new Player(this, centerX - 100, centerY);
 
         // ColorGroup(scene, state)
-        this.redGroup = new ColorGroup(this, 0);
-        this.blueGroup = new ColorGroup(this, 1);
+        this.redGroup = new ObsColorGroup(this, 0);
+        this.blueGroup = new ObsColorGroup(this, 1);
 
         this.redGroup.addObstacle(centerX + 100, centerY);
         this.blueGroup.addObstacle(centerX - 200, centerY + 200);
@@ -35,6 +35,12 @@ class Play extends Phaser.Scene {
         this.bulletGroup = new BulletGroup(this, this.redGroup, 0);
 
         this.waveGroup = new WaveGroup(this, this.blueGroup, 1);
+
+        this.redChaserGroup = new EnemyColorGroup(this, 1);
+        this.blueChaserGroup = new EnemyColorGroup(this, 0);
+
+        this.redChaserGroup.addEnemy(0, 0, 'chaser');
+        this.blueChaserGroup.addEnemy(centerX, 0, 'chaser');
 
 
         // Create players

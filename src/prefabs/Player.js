@@ -1,6 +1,6 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, pSpawnX, pSpawnY) {
-        super(scene, pSpawnX, pSpawnY, 'redPlayer').setOrigin(0.5, 0.5);
+        super(scene, pSpawnX, pSpawnY, 'redPlayer').setOrigin(0.5, 0.5).setScale(0.5);
 
         playerState = 0;
         this.health = 5;
@@ -8,6 +8,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.setCollideWorldBounds(true);
+        this.setDepth(999);
 
         this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
 
@@ -46,6 +47,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.body.setDrag(playerStopDrag);
             }
 
+            // Player color switch
             if(Phaser.Input.Keyboard.JustDown(keySwitch)){
                 if(playerState == 0){
                     playerState = 1;

@@ -1,4 +1,4 @@
-class ColorGroup extends Phaser.Physics.Arcade.Group {
+class ObsColorGroup extends Phaser.Physics.Arcade.Group {
     constructor(scene, state) {
         // https://photonstorm.github.io/phaser3-docs/Phaser.Types.Physics.Arcade.html#.PhysicsGroupConfig__anchor
         let groupConfig = {

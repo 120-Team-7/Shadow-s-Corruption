@@ -18,10 +18,8 @@ class BulletGroup extends Phaser.GameObjects.Group {
             obj2.takeDamage();
         }, function() {
             if(group.state == redObjGroup.state){
-                console.log("hit");
                 return true;
             } else {
-                console.log("miss");
                 return false;
             }
         }, scene)

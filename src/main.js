@@ -3,7 +3,7 @@ var gravityY = 600;
 // define and configure main Phaser game object
 let config = {
     parent: 'myGame',
-    type: Phaser.AUTO,
+    type: Phaser.WEBGL,
     width: 1024,
     height: 576,
     scale: {
@@ -53,6 +53,10 @@ var maxMoveVelocity = 300;
 var bulletSpeed = 1000;
 var waveSpeed = 400;
 // var bulletMaxVel = 500;
+
+// Enemies ----------------------------------------------------------------------------------------------------
+// Chaser settings
+var chaserSpeed = 150;
 
 // Game controls ----------------------------------------------------------------------------------------------------
 // Player
