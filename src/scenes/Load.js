@@ -11,9 +11,12 @@ class Load extends Phaser.Scene {
             align: 'center',
         }).setOrigin(0.5, 0.5);
         // Load image assets
-        this.load.image('player', './assets/chara1.png');
+        this.load.image('redPlayer', './assets/redPlayer.png');
+        this.load.image('bluePlayer', './assets/bluePlayer.png');
         this.load.image('redObstacle', './assets/RedObstacle.png');
         this.load.image('blueObstacle', './assets/BlueObstacle.png');
+        this.load.image('bullet', './assets/Bullet.png');
+        this.load.image('wave', './assets/Wave.png');
         // Load audio assets
         this.load.audio('buttonsound', './assets/buttonsound.mp3');
         

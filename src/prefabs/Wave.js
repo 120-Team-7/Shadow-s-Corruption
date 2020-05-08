@@ -1,6 +1,6 @@
-class Bullet extends Phaser.Physics.Arcade.Sprite {
+class Wave extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, group, oSpawnX, oSpawnY, targetX, targetY, state) {
-        super(scene, oSpawnX, oSpawnY, 'bullet').setOrigin(0.5, 0.5);
+        super(scene, oSpawnX, oSpawnY, 'wave').setOrigin(0.5, 0.5);
         
         let bullet = this;
         this.group = group;
@@ -11,10 +11,12 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        this.body.setCircle(10);
+        this.body.setCircle(50);
 
-        scene.physics.moveTo(this, targetX, targetY, bulletSpeed);
+        scene.physics.moveTo(this, targetX, targetY, waveSpeed);
         this.setRotation(Phaser.Math.Angle.Between(oSpawnX, oSpawnY, targetX, targetY));
+        this.body.rotation = Phaser.Math.Angle.Between(oSpawnX, oSpawnY, targetX, targetY);
+
     }
 
     update(){

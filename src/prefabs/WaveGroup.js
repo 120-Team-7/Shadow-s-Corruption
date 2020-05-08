@@ -1,5 +1,5 @@
-class BulletGroup extends Phaser.GameObjects.Group {
-    constructor(scene, redObjGroup, state) {
+class WaveGroup extends Phaser.GameObjects.Group {
+    constructor(scene, blueObjGroup, state) {
         // https://photonstorm.github.io/phaser3-docs/Phaser.Types.Physics.Arcade.html#.PhysicsGroupConfig__anchor
         let groupConfig = {
             runChildUpdate: true,
@@ -13,11 +13,11 @@ class BulletGroup extends Phaser.GameObjects.Group {
         this.state = state;
 
         // https://phaser.discourse.group/t/remove-child-from-group-in-collider/4289
-        this.collider = scene.physics.add.collider(group, redObjGroup, function(obj1, obj2) {
+        this.collider = scene.physics.add.collider(group, blueObjGroup, function(obj1, obj2) {
             obj1.destroy();
             obj2.takeDamage();
         }, function() {
-            if(group.state == redObjGroup.state){
+            if(group.state == blueObjGroup.state){
                 console.log("hit");
                 return true;
             } else {
@@ -27,9 +27,9 @@ class BulletGroup extends Phaser.GameObjects.Group {
         }, scene)
 
         scene.input.on('pointerdown', function(pointer) {
-            if(!isGameOver && playerState == 0){
-                // Bullet(scene, group, oSpawnX, oSpawnY, targetX, targetY, state) {
-                this.add(new Bullet(this.scene, this, player.x, player.y, pointer.x, pointer.y, 0));
+            if(!isGameOver && playerState == 1){
+                // Wave(scene, group, oSpawnX, oSpawnY, targetX, targetY, state) {
+                this.add(new Wave(this.scene, this, player.x, player.y, pointer.x, pointer.y, 0));
                 // new Bullet(this.scene, this, player.x, player.y, pointer.x, pointer.y, 0)
             }
         }, this);

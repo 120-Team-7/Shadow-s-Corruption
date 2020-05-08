@@ -1,6 +1,6 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup) {
-        super(scene, pSpawnX, pSpawnY, 'player').setOrigin(0.5, 0.5);
+    constructor(scene, pSpawnX, pSpawnY) {
+        super(scene, pSpawnX, pSpawnY, 'redPlayer').setOrigin(0.5, 0.5);
 
         playerState = 0;
         this.health = 5;
@@ -49,7 +49,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(Phaser.Input.Keyboard.JustDown(keySwitch)){
                 if(playerState == 0){
                     playerState = 1;
+                    this.setTexture('bluePlayer');
                 } else {
+                    this.setTexture('redPlayer');
                     playerState = 0;
                 }
             }

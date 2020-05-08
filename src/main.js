@@ -51,6 +51,7 @@ var maxMoveVelocity = 300;
 
 // Player attack settings
 var bulletSpeed = 1000;
+var waveSpeed = 400;
 // var bulletMaxVel = 500;
 
 // Game controls ----------------------------------------------------------------------------------------------------

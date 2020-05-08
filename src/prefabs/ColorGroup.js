@@ -4,8 +4,7 @@ class ColorGroup extends Phaser.Physics.Arcade.Group {
         let groupConfig = {
             runChildUpdate: true,
             collideWorldBounds: true,
-            dragX: obstacleDrag,
-            dragY: obstacleDrag,
+            immovable: true,
         }
         // Phaser.Physics.Arcade.Group(world, scene [, children] [, config])
         super(Phaser.Physics.Arcade.World, scene, groupConfig);
@@ -31,7 +30,7 @@ class ColorGroup extends Phaser.Physics.Arcade.Group {
     }
 
     addObstacle(spawnX, spawnY){
-        // Obstacle(scene, oSpawnX, oSpawnY, state, health)
-        this.add(new Obstacle(this.scene, spawnX, spawnY, this.state, obsHealth))
+        // Obstacle(scene, group, oSpawnX, oSpawnY, state, health)
+        this.add(new Obstacle(this.scene, this, spawnX, spawnY, this.state, obsHealth))
     }
 }

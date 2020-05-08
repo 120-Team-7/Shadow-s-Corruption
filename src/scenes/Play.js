@@ -34,6 +34,9 @@ class Play extends Phaser.Scene {
         // BulletGroup(scene, redObjGroup, state)
         this.bulletGroup = new BulletGroup(this, this.redGroup, 0);
 
+        this.waveGroup = new WaveGroup(this, this.blueGroup, 1);
+
+
         // Create players
         // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup) {
         // this.player = new Player(this, centerX - 100, centerY, this.redGroup, this.blueGroup);
