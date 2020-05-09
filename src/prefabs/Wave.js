@@ -7,6 +7,8 @@ class Wave extends Phaser.Physics.Arcade.Sprite {
         this.scene = scene;
         this.state = state;
         this.active = true;
+
+        this.damage = waveDamage;
             
         scene.add.existing(this);
         scene.physics.add.existing(this);

@@ -8,7 +8,7 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
         this.state = state;
         this.active = true;
 
-        this.damage = pBulletDamage;
+        this.damage = bulletDamage;
             
         scene.add.existing(this);
         scene.physics.add.existing(this);

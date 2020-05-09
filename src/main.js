@@ -55,11 +55,16 @@ var playerStopDrag = 600;
 var maxMoveVelocity = 300;
 
 // Player attack settings
+
+// Bullet
 var bulletSpeed = 600;
-var pBulletDamage = 1;
-var waveSpeed = 400;
-var pWaveDamage = 1;
-// var bulletMaxVel = 500;
+var bulletDamage = 1;
+var bulletROF = 500;
+
+// Wave
+var waveSpeed = 300;
+var waveDamage = 2;
+var waveROF = 1000;
 
 // Enemies ----------------------------------------------------------------------------------------------------
 // Chaser settings
@@ -68,10 +73,10 @@ var chaserMaxVel = 400;
 var chaserMoveDelay = 100;
 var chaserSlowdownDelay = 1000;
 var turnAroundMult = 1;
-var predictMult = 1;
+var predictMult = 1.5;
 var predictMinDist = 200;
 var chaserBounce = 0.1;
-var chaserHealth = 5;
+var chaserHealth = 3;
 
 
 // Game controls ----------------------------------------------------------------------------------------------------

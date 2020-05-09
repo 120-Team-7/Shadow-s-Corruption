@@ -8,9 +8,10 @@ class BulletGroup extends Phaser.GameObjects.Group {
         super(scene, null, groupConfig);
 
         let group = this;
-        // let redGroup = redObjGroup;
         this.scene = scene;
         this.state = state;
+
+        this.isOnCooldown = false;
 
         // https://phaser.discourse.group/t/remove-child-from-group-in-collider/4289
         // Bullet x Obstacle collider
@@ -39,9 +40,14 @@ class BulletGroup extends Phaser.GameObjects.Group {
 
         scene.input.on('pointerdown', function(pointer) {
             if(!isGameOver && playerState == 0){
-                // Bullet(scene, group, oSpawnX, oSpawnY, targetX, targetY, state) {
-                this.add(new Bullet(this.scene, this, player.x, player.y, pointer.x, pointer.y, 0));
-                // new Bullet(this.scene, this, player.x, player.y, pointer.x, pointer.y, 0)
+                if(!this.isOnCooldown){
+                    this.isOnCooldown = true;
+                    // Bullet(scene, group, oSpawnX, oSpawnY, targetX, targetY, state)
+                    this.add(new Bullet(this.scene, this, player.x, player.y, pointer.x, pointer.y, 0));
+                    this.scene.time.delayedCall(bulletROF, function () {
+                        group.isOnCooldown = false;
+                    }, null, this.scene);
+                }
             }
         }, this);
 
