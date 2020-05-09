@@ -4,6 +4,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         playerState = 0;
 
+        let player = this;
         this.scene = scene;
 
         scene.add.existing(this);
@@ -77,8 +78,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 
             } else {
                 // Set invuln timer
+                this.setAlpha(0.5);
                 this.invulnTimer = this.scene.time.delayedCall(invulnTime, function () {
                     isInvuln = false;
+                    player.setAlpha(1);
                 }, null, this.scene);
             }
         }

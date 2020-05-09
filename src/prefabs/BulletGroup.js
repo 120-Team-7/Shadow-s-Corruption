@@ -29,7 +29,7 @@ class BulletGroup extends Phaser.GameObjects.Group {
         // Bullet x Enemy collider
         this.bxecollider = scene.physics.add.collider(group, redEnemyGroup, function(bullet, enemy) {
             bullet.destroy();
-            enemy.takeDamage(bullet.damage);
+            enemy.takeDamage(enemy, bullet.damage);
         }, function() {
             if(group.state == redEnemyGroup.state){
                 return true;

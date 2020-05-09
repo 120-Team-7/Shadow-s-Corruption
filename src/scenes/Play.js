@@ -55,11 +55,11 @@ class Play extends Phaser.Scene {
         // this.redChaserGroup.addEnemy(50, 50, 'chaser');
         // this.blueChaserGroup.addEnemy(centerX + 50, 50, 'chaser');
 
-        this.spawnEnemyPair();
+        this.spawnEnemies();
         this.infiniteEnemySpawner = this.time.addEvent({
-            delay: 8000,
+            delay: 6000,
             callback: () => {
-                this.spawnEnemyPair();
+                this.spawnEnemies();
             },
             callbackContext: this,
             loop: true,
@@ -71,33 +71,44 @@ class Play extends Phaser.Scene {
         player.update();
         this.bulletGroup.update();
 
-        if (Phaser.Input.Keyboard.JustDown(keyStart)) {
-            console.log("return");
-            // this.sound.play('buttonsound');
-            this.scene.stop("hudScene");
-            this.scene.run('menuScene');
-        }
+        // if (Phaser.Input.Keyboard.JustDown(keyStart)) {
+        //     console.log("return");
+        //     // this.sound.play('buttonsound');
+        //     this.scene.stop("hudScene");
+        //     this.scene.run('menuScene');
+        // }
     }
 
-    spawnEnemyPair(){
+    spawnEnemies(){
+        let screenBuffer = 20;
         console.log("spawning");
         let randNum1 = Math.random();
         let randNum2 = Math.random();
         let randNum3 = Math.random();
-        if(randNum2 < 0.5) {
-            this.rSpawnX = screenWidth - 50;
-            this.bSpawnX = 50;
-        } else {
-            this.rSpawnX = 50;
-            this.bSpawnX = screenWidth - 50;
-        }
-
+        let randNum4 = Math.random();
         if(randNum3 < 0.5) {
-            this.rSpawnY = screenHeight - 50;
-            this.bSpawnY = 50;
+            this.rSpawnX = screenWidth - screenBuffer;
+            this.bSpawnX = screenBuffer;
         } else {
-            this.rSpawnY = 50;
-            this.bSpawnY = screenHeight - 50;
+            this.rSpawnX = screenBuffer;
+            this.bSpawnX = screenWidth - screenBuffer;
+        }
+        if(randNum4 < 0.5) {
+            this.rSpawnY = screenHeight - screenBuffer;
+            this.bSpawnY = screenBuffer;
+        } else {
+            this.rSpawnY = screenBuffer;
+            this.bSpawnY = screenHeight - screenBuffer;
+        }
+        if(randNum1 < 0.5){
+            this.randSpawnX = screenWidth - screenBuffer;
+        } else {
+            this.randSpawnX = screenBuffer;
+        }
+        if(randNum2 < 0.5){
+            this.redChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser');
+        } else {
+            this.blueChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser');
         }
         this.redChaserGroup.addEnemy(this.rSpawnX, this.rSpawnY, 'chaser');
         this.blueChaserGroup.addEnemy(this.bSpawnX, this.bSpawnY, 'chaser');

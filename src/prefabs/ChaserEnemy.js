@@ -5,6 +5,7 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         } else {
             super(scene, oSpawnX, oSpawnY, 'blueObstacle').setOrigin(0.5, 0.5).setScale(0.25);
         }
+
         let enemy = this;
         this.group = group;
         this.scene = scene;
@@ -93,12 +94,18 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
 
     }
 
-    takeDamage(damage){
+    takeDamage(enemy, damage){
         this.health -= damage;
-        if(this.health <= 0){
+        if(this.health > 0){
+            this.setAlpha(0.5)
+            this.damagedTimer = this.scene.time.delayedCall(500, function () {
+                enemy.setAlpha(1);
+            }, null, this.scene);
+        } else {
             // this.group.remove(this, true, true);
             this.body.destroy();
             this.setAlpha(0);
+            this.damagedTimer.remove();
         }
     }
 }

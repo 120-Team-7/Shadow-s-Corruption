@@ -59,12 +59,12 @@ var maxMoveVelocity = 300;
 // Bullet
 var bulletSpeed = 600;
 var bulletDamage = 1;
-var bulletROF = 500;
+var bulletROF = 200;
 
 // Wave
 var waveSpeed = 300;
 var waveDamage = 2;
-var waveROF = 1000;
+var waveROF = 500;
 
 // Enemies ----------------------------------------------------------------------------------------------------
 // Chaser settings

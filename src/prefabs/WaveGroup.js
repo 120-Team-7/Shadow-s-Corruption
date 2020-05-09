@@ -28,7 +28,7 @@ class WaveGroup extends Phaser.GameObjects.Group {
         // Wave x Enemy collider
         this.wxecollider = scene.physics.add.collider(group, blueEnemyGroup, function(wave, enemy) {
             wave.destroy();
-            enemy.takeDamage(wave.damage);
+            enemy.takeDamage(enemy, wave.damage);
         }, function() {
             if(group.state == blueEnemyGroup.state){
                 return true;
