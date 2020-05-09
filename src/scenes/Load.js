@@ -36,9 +36,9 @@ class Load extends Phaser.Scene {
     }
     update() {
         // Go to menu scene
-        // if (Phaser.Input.Keyboard.JustDown(keyStart)) {
+        if (Phaser.Input.Keyboard.JustDown(keyStart)) {
             // this.sound.play('buttonsound');
             this.scene.start('menuScene');
-        // }
+        }
     }
 }

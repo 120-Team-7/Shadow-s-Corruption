@@ -1,5 +1,5 @@
 class BulletGroup extends Phaser.GameObjects.Group {
-    constructor(scene, redObjGroup, state) {
+    constructor(scene, state, redObjGroup, redEnemyGroup) {
         // https://photonstorm.github.io/phaser3-docs/Phaser.Types.Physics.Arcade.html#.PhysicsGroupConfig__anchor
         let groupConfig = {
             runChildUpdate: true,
@@ -13,11 +13,24 @@ class BulletGroup extends Phaser.GameObjects.Group {
         this.state = state;
 
         // https://phaser.discourse.group/t/remove-child-from-group-in-collider/4289
-        this.collider = scene.physics.add.collider(group, redObjGroup, function(obj1, obj2) {
-            obj1.destroy();
-            obj2.takeDamage();
+        // Bullet x Obstacle collider
+        this.bxoCollider = scene.physics.add.collider(group, redObjGroup, function(bullet, obstacle) {
+            bullet.destroy();
+            obstacle.takeDamage(bullet.damage);
         }, function() {
             if(group.state == redObjGroup.state){
+                return true;
+            } else {
+                return false;
+            }
+        }, scene)
+
+        // Bullet x Enemy collider
+        this.bxecollider = scene.physics.add.collider(group, redEnemyGroup, function(bullet, enemy) {
+            bullet.destroy();
+            enemy.takeDamage(bullet.damage);
+        }, function() {
+            if(group.state == redEnemyGroup.state){
                 return true;
             } else {
                 return false;

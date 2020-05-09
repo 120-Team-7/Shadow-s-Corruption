@@ -3,7 +3,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         super(scene, pSpawnX, pSpawnY, 'redPlayer').setOrigin(0.5, 0.5).setScale(0.5);
 
         playerState = 0;
-        this.health = 5;
+
+        this.scene = scene;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -56,6 +57,29 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.setTexture('redPlayer');
                     playerState = 0;
                 }
+            }
+        }
+    }
+
+    playerHit(damage) {
+        if(!isInvuln){
+            isInvuln = true;
+            pCurrHealth -= damage;
+            // Player dead
+            if(pCurrHealth <= 0){
+                isGameOver = true;
+                this.setImmovable(true);
+                this.setAlpha(0);
+                // this.gameOverTimer = this.scene.time.delayedCall(1000, function () {
+                //     this.scene.start('gameOverScene');
+                // }, this, this.scene);
+                
+                
+            } else {
+                // Set invuln timer
+                this.invulnTimer = this.scene.time.delayedCall(invulnTime, function () {
+                    isInvuln = false;
+                }, this, this.scene);
             }
         }
     }

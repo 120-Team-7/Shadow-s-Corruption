@@ -9,7 +9,7 @@ class Menu extends Phaser.Scene {
         let menuConfig = {
             fontFamily: 'Courier',
             fontSize: '100px',
-            color: '#FF00FF',
+            color: '#FFFFFF',
             align: 'center',
             padding: {
                 top: 10,
@@ -20,6 +20,8 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
         // add menu screen text
+
+        this.add.text(centerX, centerY, 'Switch', menuConfig).setOrigin(0.5);
 
     }
 

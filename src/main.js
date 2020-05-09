@@ -41,8 +41,13 @@ var obsHealth = 3;
 
 // Player ----------------------------------------------------------------------------------------------------
 var player;
-// Player state settings
+// Player statistics
 var playerState = 0; // 0 = red, 1 = blue
+var isInvuln = false; // invulnerability state after taking damage
+var invulnTime = 1000;
+var pMaxHealth = 5;
+var pCurrHealth = pMaxHealth;
+
 
 // Player movement settings
 var playerRunAccel = 30;
@@ -50,13 +55,24 @@ var playerStopDrag = 600;
 var maxMoveVelocity = 300;
 
 // Player attack settings
-var bulletSpeed = 1000;
+var bulletSpeed = 600;
+var pBulletDamage = 1;
 var waveSpeed = 400;
+var pWaveDamage = 1;
 // var bulletMaxVel = 500;
 
 // Enemies ----------------------------------------------------------------------------------------------------
 // Chaser settings
-var chaserSpeed = 150;
+var chaserAccel = 1000;
+var chaserMaxVel = 400;
+var chaserMoveDelay = 100;
+var chaserSlowdownDelay = 1000;
+var turnAroundMult = 1;
+var predictMult = 1;
+var predictMinDist = 200;
+var chaserBounce = 0.1;
+var chaserHealth = 5;
+
 
 // Game controls ----------------------------------------------------------------------------------------------------
 // Player

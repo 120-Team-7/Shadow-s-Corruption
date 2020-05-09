@@ -6,6 +6,8 @@ class Play extends Phaser.Scene {
 
     create() {
 
+        keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+
         let playConfig = {
             fontFamily: 'Courier',
             fontSize: '40px',
@@ -21,6 +23,8 @@ class Play extends Phaser.Scene {
         }
         this.cameras.main.setBackgroundColor('#696969');
 
+        // Initialize play objects ----------------------------------------------------------------------------------------------------
+        
         // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup)
         player = new Player(this, centerX - 100, centerY);
 
@@ -28,29 +32,24 @@ class Play extends Phaser.Scene {
         this.redGroup = new ObsColorGroup(this, 0);
         this.blueGroup = new ObsColorGroup(this, 1);
 
-        this.redGroup.addObstacle(centerX + 100, centerY);
-        this.blueGroup.addObstacle(centerX - 200, centerY + 200);
+        this.redChaserGroup = new EnemyColorGroup(this, 0);
+        this.blueChaserGroup = new EnemyColorGroup(this, 1);
 
-        // BulletGroup(scene, redObjGroup, state)
-        this.bulletGroup = new BulletGroup(this, this.redGroup, 0);
+        // BulletGroup(scene, state, redObjGroup, redEnemyGroup)
+        this.bulletGroup = new BulletGroup(this, 0, this.redGroup, this.redChaserGroup);
 
         this.waveGroup = new WaveGroup(this, this.blueGroup, 1);
 
-        this.redChaserGroup = new EnemyColorGroup(this, 1);
-        this.blueChaserGroup = new EnemyColorGroup(this, 0);
-
-        this.redChaserGroup.addEnemy(0, 0, 'chaser');
-        this.blueChaserGroup.addEnemy(centerX, 0, 'chaser');
-
-
-        // Create players
-        // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup) {
-        // this.player = new Player(this, centerX - 100, centerY, this.redGroup, this.blueGroup);
-
-        // HUD boxes ---------------------------------------------------------------------------------
-        // this.add.rectangle(centerX, centerY, gameWidth, centerY, 0x808080).setOrigin(0.5,0.5);
-        // this.add.rectangle(centerX, playHUDY, gameWidth - 20, playHUDHeight - 20, 0xC0C0C0).setOrigin(0.5,0.5);
+        // Add play objects ----------------------------------------------------------------------------------------------------
         
+        // Add obstacles
+        this.redGroup.addObstacle(centerX + 100, centerY);
+        this.blueGroup.addObstacle(centerX - 200, centerY + 200);
+
+        // Add enemies
+        this.redChaserGroup.addEnemy(50, 50, 'chaser');
+        // this.blueChaserGroup.addEnemy(centerX + 50, 50, 'chaser');
+
     }
 
     update() {
@@ -58,8 +57,10 @@ class Play extends Phaser.Scene {
         this.bulletGroup.update();
 
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
+            console.log("return");
             // this.sound.play('buttonsound');
-            this.scene.run('playScene');
+            this.scene.stop("hudScene");
+            this.scene.run('menuScene');
         }
     }
 }

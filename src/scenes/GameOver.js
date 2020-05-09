@@ -5,6 +5,9 @@ class GameOver extends Phaser.Scene {
 
     create() {
 
+        keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+
+
         let gameOverConfig = {
             fontFamily: 'Courier',
             fontSize: '40px',
@@ -22,22 +25,14 @@ class GameOver extends Phaser.Scene {
         }
 
         // Add text
-        // this.add.text(centerX, centerY - textSpacer, 'You ran ' + currTime + ' meters of the Psychic Trials!', gameOverConfig).setOrigin(0.5);
-        // this.add.text(centerX, centerY, 'Press enter to return to menu', gameOverConfig).setOrigin(0.5);
-        // gameOverConfig.color = '#FF00FF';
-        // if(currTime > highScore){
-        //     highScore = currTime;
-        //     this.add.text(centerX, centerY + textSpacer, 'NEW HIGH SCORE: ' + highScore, gameOverConfig).setOrigin(0.5);
-        // } else {
-        //     this.add.text(centerX, centerY + textSpacer, 'High score: ' + highScore, gameOverConfig).setOrigin(0.5);
-        // }
+        this.add.text(centerX, centerY, 'You died!', gameOverConfig).setOrigin(0.5);
 
     }
 
     update() {
         // Input to return to menu
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
-            this.sound.play('buttonsound');
+            // this.sound.play('buttonsound');
             this.scene.start('menuScene');
         }
     }
