@@ -4,7 +4,7 @@ class BulletGroup extends Phaser.GameObjects.Group {
         let groupConfig = {
             runChildUpdate: true,
         }
-        // Phaser.Physics.Arcade.Group(world, scene [, children] [, config])
+        // Group(scene [, children] [, config])
         super(scene, null, groupConfig);
 
         let group = this;
@@ -15,7 +15,7 @@ class BulletGroup extends Phaser.GameObjects.Group {
 
         // https://phaser.discourse.group/t/remove-child-from-group-in-collider/4289
         // Bullet x Obstacle collider
-        this.bxoCollider = scene.physics.add.collider(group, redObjGroup, function(bullet, obstacle) {
+        this.bxoCollider = scene.physics.add.overlap(group, redObjGroup, function(bullet, obstacle) {
             bullet.destroy();
             obstacle.takeDamage(bullet.damage);
         }, function() {
@@ -27,7 +27,7 @@ class BulletGroup extends Phaser.GameObjects.Group {
         }, scene)
 
         // Bullet x Enemy collider
-        this.bxecollider = scene.physics.add.collider(group, redEnemyGroup, function(bullet, enemy) {
+        this.bxeCollider = scene.physics.add.collider(group, redEnemyGroup, function(bullet, enemy) {
             bullet.destroy();
             enemy.takeDamage(enemy, bullet.damage);
         }, function() {

@@ -11,6 +11,8 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite {
         this.group = group;
         this.state = state;
         this.health = health;
+
+        this.exists = true;
             
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -18,10 +20,10 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite {
 
     takeDamage(damage){
         this.health -= damage;
-        if(this.health <= 0){
-            // this.group.remove(this, true, true);
-            this.body.destroy();
-            this.setAlpha(0);
+        if(this.health <= 0 && this.exists){
+            this.exists = false;
+            // remove(child [, removeFromScene] [, destroyChild])
+            this.group.remove(this, false, false);
         }
     }
 }

@@ -30,7 +30,9 @@ class Menu extends Phaser.Scene {
             // this.sound.play('buttonsound');
             this.scene.run('playScene');
             this.scene.run('hudScene');
-
+            isGameOver = false;
+            pCurrHealth = pMaxHealth;
+            isInvuln = false;
         }
     }
 }

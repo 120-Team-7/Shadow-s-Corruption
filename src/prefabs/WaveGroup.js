@@ -4,7 +4,7 @@ class WaveGroup extends Phaser.GameObjects.Group {
         let groupConfig = {
             runChildUpdate: true,
         }
-        // Phaser.Physics.Arcade.Group(world, scene [, children] [, config])
+        // Group(scene [, children] [, config])
         super(scene, null, groupConfig);
 
         let group = this;
@@ -26,7 +26,7 @@ class WaveGroup extends Phaser.GameObjects.Group {
         }, scene)
 
         // Wave x Enemy collider
-        this.wxecollider = scene.physics.add.collider(group, blueEnemyGroup, function(wave, enemy) {
+        this.wxecollider = scene.physics.add.overlap(group, blueEnemyGroup, function(wave, enemy) {
             wave.destroy();
             enemy.takeDamage(enemy, wave.damage);
         }, function() {
@@ -49,8 +49,6 @@ class WaveGroup extends Phaser.GameObjects.Group {
                 }
             }
         }, this);
-
-        
     }
 
     update() {

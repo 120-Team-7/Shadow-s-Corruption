@@ -4,8 +4,8 @@ var gravityY = 600;
 let config = {
     parent: 'myGame',
     type: Phaser.WEBGL,
-    width: 1024,
-    height: 576,
+    width: 1000,
+    height: 600,
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
@@ -67,6 +67,9 @@ var waveDamage = 2;
 var waveROF = 500;
 
 // Enemies ----------------------------------------------------------------------------------------------------
+var timedSwitchDelay = 5000;
+var infiniteSpawnerDelay = 6000;
+
 // Chaser settings
 var chaserAccel = 1000;
 var chaserMaxVel = 400;

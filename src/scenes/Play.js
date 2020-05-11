@@ -26,7 +26,7 @@ class Play extends Phaser.Scene {
         // Initialize play objects ----------------------------------------------------------------------------------------------------
         
         // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup)
-        player = new Player(this, centerX - 100, centerY);
+        player = new Player(this, centerX, centerY);
 
         // ColorGroup(scene, state)
         this.redGroup = new ObsColorGroup(this, 0);
@@ -52,12 +52,10 @@ class Play extends Phaser.Scene {
 
 
         // Add enemies
-        // this.redChaserGroup.addEnemy(50, 50, 'chaser');
-        // this.blueChaserGroup.addEnemy(centerX + 50, 50, 'chaser');
 
         this.spawnEnemies();
         this.infiniteEnemySpawner = this.time.addEvent({
-            delay: 6000,
+            delay: infiniteSpawnerDelay,
             callback: () => {
                 this.spawnEnemies();
             },
@@ -70,6 +68,7 @@ class Play extends Phaser.Scene {
     update() {
         player.update();
         this.bulletGroup.update();
+        this.waveGroup.update();
 
         // if (Phaser.Input.Keyboard.JustDown(keyStart)) {
         //     console.log("return");
@@ -106,11 +105,12 @@ class Play extends Phaser.Scene {
             this.randSpawnX = screenBuffer;
         }
         if(randNum2 < 0.5){
-            this.redChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser');
+            // EnemyColorGroup.addEnemy(spawnX, spawnY, type, changeCondition, redGroup, blueGroup)
+            this.redChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
         } else {
-            this.blueChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser');
+            this.blueChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
         }
-        this.redChaserGroup.addEnemy(this.rSpawnX, this.rSpawnY, 'chaser');
-        this.blueChaserGroup.addEnemy(this.bSpawnX, this.bSpawnY, 'chaser');
+        this.redChaserGroup.addEnemy(this.rSpawnX, this.rSpawnY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
+        this.blueChaserGroup.addEnemy(this.bSpawnX, this.bSpawnY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
     }
 }

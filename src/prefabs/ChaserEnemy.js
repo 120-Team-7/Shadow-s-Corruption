@@ -1,5 +1,5 @@
 class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, group, oSpawnX, oSpawnY, state, health) {
+    constructor(scene, oSpawnX, oSpawnY, state, changeCondition, redGroup, blueGroup) {
         if(state == 0){
             super(scene, oSpawnX, oSpawnY, 'redObstacle').setOrigin(0.5, 0.5).setScale(0.25);
         } else {
@@ -7,11 +7,13 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         }
 
         let enemy = this;
-        this.group = group;
         this.scene = scene;
         this.state = state;
+        this.changeCondition = changeCondition;
+        this.redGroup = redGroup;
+        this.blueGroup = blueGroup;
 
-        this.health = health;
+        this.health = chaserHealth;
         this.damage = 1;
 
         scene.add.existing(this);
@@ -19,6 +21,11 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         this.body.setCollideWorldBounds(true);
         this.body.setBounce(chaserBounce, chaserBounce);
         this.body.setMaxVelocity(chaserMaxVel, chaserMaxVel);
+        this.body.setImmovable(true);
+
+        if(changeCondition == 'timed') {
+            this.timedSwitch();
+        }
 
         // this.slowDown = scene.tweens.add({
         //     paused: true,
@@ -32,6 +39,8 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         //     },
         // });
 
+
+        // Chaser movement
         this.moveTimer = scene.time.addEvent({
             delay: chaserMoveDelay, 
             callback: () => {
@@ -90,22 +99,55 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         });
     }
 
-    update(){
+    update() {
 
     }
 
     takeDamage(enemy, damage){
         this.health -= damage;
+        // If alive show got hit
         if(this.health > 0){
             this.setAlpha(0.5)
             this.damagedTimer = this.scene.time.delayedCall(500, function () {
                 enemy.setAlpha(1);
             }, null, this.scene);
+        // If dead show got hit, stop everything, destroy, show death
         } else {
-            // this.group.remove(this, true, true);
-            this.body.destroy();
-            this.setAlpha(0);
+            this.moveTimer.remove();
             this.damagedTimer.remove();
+            if(this.changeCondition == 'timed') {
+                this.timedSwitch.destroy();
+            }
+            if(this.state == 0){
+                this.redGroup.remove(this, true, true);
+            } else {
+                this.blueGroup.remove(this, true, true);
+            }
+            // this.body.destroy();
+            this.setAlpha(0);
         }
+    }
+
+    timedSwitch(){
+        this.timedSwitch = this.scene.time.addEvent({
+            delay: timedSwitchDelay, 
+            callback: () => {
+                // If was red, change to blue
+                if(this.state == 0){
+                    this.redGroup.remove(this);
+                    this.blueGroup.add(this);
+                    this.state = 1;
+                    this.setTexture('blueObstacle');
+                // If was blue, change to red
+                } else {
+                    this.blueGroup.remove(this);
+                    this.redGroup.add(this);
+                    this.state = 0;
+                    this.setTexture('redObstacle');
+                }
+            }, 
+            callbackContext: this.scene,
+            loop: true,
+        });
     }
 }

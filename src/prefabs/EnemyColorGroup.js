@@ -25,10 +25,10 @@ class EnemyColorGroup extends Phaser.GameObjects.Group {
         // this.preUpdate();
     }
 
-    addEnemy(spawnX, spawnY, type){
-        // ChaserEnemy(scene, group, oSpawnX, oSpawnY, state, health)
+    addEnemy(spawnX, spawnY, type, changeCondition, redGroup, blueGroup){
+        // ChaserEnemy(scene, oSpawnX, oSpawnY, state, changeCondition, redGroup, blueGroup)
         if(type == 'chaser'){
-            this.add(new ChaserEnemy(this.scene, this, spawnX, spawnY, this.state, chaserHealth))
+            this.add(new ChaserEnemy(this.scene, spawnX, spawnY, this.state, changeCondition, redGroup, blueGroup))
         }
     }
 }

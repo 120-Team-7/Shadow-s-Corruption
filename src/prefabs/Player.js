@@ -74,8 +74,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 // this.gameOverTimer = this.scene.time.delayedCall(1000, function () {
                 //     this.scene.start('gameOverScene');
                 // }, this, this.scene);
-                
-                
+
             } else {
                 // Set invuln timer
                 this.setAlpha(0.5);
