@@ -68,16 +68,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             pCurrHealth -= damage;
             // Player dead
             if(pCurrHealth <= 0){
+                // Camera effects
+                this.scene.cameras.main.flash(1000);
+                this.scene.cameras.main.shake(1000, 0.01);
                 isGameOver = true;
                 this.setImmovable(true);
-                this.setAlpha(0);
-                // this.gameOverTimer = this.scene.time.delayedCall(1000, function () {
-                //     this.scene.start('gameOverScene');
-                // }, this, this.scene);
+                this.setAlpha(0.5);
+                this.gameOverTimer = this.scene.time.delayedCall(pDeathDelay, function () {
+                    this.scene.stop('playScene');
+                    this.scene.stop('hudScene');
+                    this.scene.start('gameOverScene');
+                }, this, this.scene);
 
             } else {
                 // Set invuln timer
                 this.setAlpha(0.5);
+                // Camera effects
+                this.scene.cameras.main.flash(200);
                 this.invulnTimer = this.scene.time.delayedCall(invulnTime, function () {
                     isInvuln = false;
                     player.setAlpha(1);

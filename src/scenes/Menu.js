@@ -21,13 +21,16 @@ class Menu extends Phaser.Scene {
         }
         // add menu screen text
 
-        this.add.text(centerX, centerY, 'Switch', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY, 'Switch', menuConfig).setOrigin(0.5, 0.5);
+        menuConfig.fontSize = '40px';
+        this.add.text(centerX, centerY + textSpacer, 'Press ENTER to start', menuConfig).setOrigin(0.5, 0.5);
 
     }
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
             // this.sound.play('buttonsound');
+            this.scene.stop('menuScene');
             this.scene.run('playScene');
             this.scene.run('hudScene');
             isGameOver = false;

@@ -25,7 +25,8 @@ class GameOver extends Phaser.Scene {
         }
 
         // Add text
-        this.add.text(centerX, centerY, 'You died!', gameOverConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY, 'You died!', gameOverConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, centerY + textSpacer, 'Press ENTER to return to menu', gameOverConfig).setOrigin(0.5, 0.5);
 
     }
 

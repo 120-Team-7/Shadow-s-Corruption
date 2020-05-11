@@ -26,7 +26,7 @@ var screenWidth = game.config.width;
 var screenHeight = game.config.height;
 var centerX = game.config.width/2;
 var centerY = game.config.height/2;
-var textSpacer = 80;
+var textSpacer = 100;
 
 // Text settings
 
@@ -45,8 +45,9 @@ var player;
 var playerState = 0; // 0 = red, 1 = blue
 var isInvuln = false; // invulnerability state after taking damage
 var invulnTime = 1000;
-var pMaxHealth = 5;
+var pMaxHealth = 2;
 var pCurrHealth = pMaxHealth;
+var pDeathDelay = 3000;
 
 
 // Player movement settings
@@ -69,7 +70,7 @@ var waveROF = 500;
 // Enemies ----------------------------------------------------------------------------------------------------
 var timedSwitchDelay = 5000;
 var infiniteSpawnerDelay = 6000;
-var enemySwitchPause = 2000;
+var enemySwitchPause = 1000;
 
 // Chaser settings
 var chaserSpawnPause = 1000;

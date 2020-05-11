@@ -130,8 +130,8 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
             } else {
                 this.blueGroup.remove(this, true, true);
             }
-            // this.body.destroy();
-            this.setAlpha(0);
+            // Sometimes not destroyed from removes? Redundancy makes sure
+            this.destroy();
         }
     }
 
@@ -139,6 +139,7 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         this.timedSwitch = this.scene.time.addEvent({
             delay: timedSwitchDelay, 
             callback: () => {
+                // Stop enemy->enemy collisions
                 this.switching = true;
                 // If was red, change to blue
                 if(this.state == 0){
@@ -150,8 +151,8 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
                         if(this.health > 0){
                             this.redGroup.remove(this); 
                             this.enemy.moveTimer.paused = false
+                            this.state = 1;
                             this.blueGroup.add(this);
-                            this.state = 0;
                             this.setTexture('blueObstacle');
                             this.timedSwitch.paused = false;
                             this.switching = false;
@@ -167,8 +168,8 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
                         if(this.health > 0){
                             this.blueGroup.remove(this); 
                             this.enemy.moveTimer.paused = false
-                            this.redGroup.add(this);
                             this.state = 0;
+                            this.redGroup.add(this);
                             this.setTexture('redObstacle');
                             this.timedSwitch.paused = false;
                             this.switching = false;
