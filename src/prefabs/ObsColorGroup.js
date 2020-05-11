@@ -7,7 +7,7 @@ class ObsColorGroup extends Phaser.Physics.Arcade.Group {
             immovable: true,
         }
         // Phaser.Physics.Arcade.Group(world, scene [, children] [, config])
-        super(Phaser.Physics.Arcade.World, scene, groupConfig);
+        super(scene.physics.world, scene, groupConfig);
 
         let group = this;
         this.scene = scene;

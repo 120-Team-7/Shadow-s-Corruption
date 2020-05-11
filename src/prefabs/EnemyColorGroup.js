@@ -1,15 +1,16 @@
-class EnemyColorGroup extends Phaser.GameObjects.Group {
+class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
     constructor(scene, state) {
         let groupConfig = {
             runChildUpdate: true,
+            collideWorldBounds: true,
         }
-        super(scene, null, groupConfig);
+        super(scene.physics.world, scene, groupConfig);
 
         let group = this;
         this.scene = scene;
         this.state = state;
 
-        this.collider = scene.physics.add.collider(group, player, function(enemy, player) {
+        this.playerCollider = scene.physics.add.collider(group, player, function(player, enemy) {
             player.playerHit(enemy.damage);
         }, function() {
             if(group.state == playerState){
@@ -18,6 +19,14 @@ class EnemyColorGroup extends Phaser.GameObjects.Group {
                 return false;
             }
         }, scene)
+
+        this.selfCollider = scene.physics.add.collider(this, this, null, function(enemy) {
+            if(enemy.switching = false){
+                return true
+            } else {
+                return false;
+            }
+        });
     }
 
     update() {

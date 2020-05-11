@@ -34,6 +34,7 @@ class Play extends Phaser.Scene {
 
         this.redChaserGroup = new EnemyColorGroup(this, 0);
         this.blueChaserGroup = new EnemyColorGroup(this, 1);
+        this.collideChaserGroups = this.physics.add.collider(this.redChaserGroup, this.blueChaserGroup);
 
         // BulletGroup(scene, state, redObjGroup, redEnemyGroup)
         this.bulletGroup = new BulletGroup(this, 0, this.redGroup, this.redChaserGroup);
@@ -69,6 +70,8 @@ class Play extends Phaser.Scene {
         player.update();
         this.bulletGroup.update();
         this.waveGroup.update();
+        this.redChaserGroup.update();
+        this.blueChaserGroup.update();
 
         // if (Phaser.Input.Keyboard.JustDown(keyStart)) {
         //     console.log("return");
@@ -80,7 +83,6 @@ class Play extends Phaser.Scene {
 
     spawnEnemies(){
         let screenBuffer = 20;
-        console.log("spawning");
         let randNum1 = Math.random();
         let randNum2 = Math.random();
         let randNum3 = Math.random();

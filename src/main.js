@@ -69,8 +69,10 @@ var waveROF = 500;
 // Enemies ----------------------------------------------------------------------------------------------------
 var timedSwitchDelay = 5000;
 var infiniteSpawnerDelay = 6000;
+var enemySwitchPause = 2000;
 
 // Chaser settings
+var chaserSpawnPause = 1000;
 var chaserAccel = 1000;
 var chaserMaxVel = 400;
 var chaserMoveDelay = 100;
