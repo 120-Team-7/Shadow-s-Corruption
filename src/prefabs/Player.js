@@ -1,6 +1,6 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, pSpawnX, pSpawnY) {
-        super(scene, pSpawnX, pSpawnY, 'redPlayer').setOrigin(0.5, 0.5).setScale(0.5);
+        super(scene, pSpawnX, pSpawnY, 'redPlayer').setOrigin(0.5, 0.5);
 
         playerState = 0;
 
