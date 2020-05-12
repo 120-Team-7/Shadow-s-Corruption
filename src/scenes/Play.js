@@ -63,7 +63,6 @@ class Play extends Phaser.Scene {
             callbackContext: this,
             loop: true,
         });
-
     }
 
     update() {
@@ -73,12 +72,11 @@ class Play extends Phaser.Scene {
         this.redChaserGroup.update();
         this.blueChaserGroup.update();
 
-        // if (Phaser.Input.Keyboard.JustDown(keyStart)) {
-        //     console.log("return");
-        //     // this.sound.play('buttonsound');
-        //     this.scene.stop("hudScene");
-        //     this.scene.run('menuScene');
-        // }
+        if (Phaser.Input.Keyboard.JustDown(keyStart)) {
+            this.scene.stop('playScene');
+            this.scene.stop('hudScene');
+            this.scene.start('menuScene');
+        }
     }
 
     spawnEnemies(){

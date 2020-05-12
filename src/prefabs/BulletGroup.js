@@ -27,7 +27,7 @@ class BulletGroup extends Phaser.GameObjects.Group {
         }, scene)
 
         // Bullet x Enemy collider
-        this.bxeCollider = scene.physics.add.collider(group, redEnemyGroup, function(bullet, enemy) {
+        this.bxeCollider = scene.physics.add.overlap(group, redEnemyGroup, function(bullet, enemy) {
             bullet.destroy();
             enemy.takeDamage(enemy, bullet.damage);
         }, function() {
@@ -43,7 +43,7 @@ class BulletGroup extends Phaser.GameObjects.Group {
                 if(!this.isOnCooldown){
                     this.isOnCooldown = true;
                     // Bullet(scene, group, oSpawnX, oSpawnY, targetX, targetY, state)
-                    this.add(new Bullet(this.scene, this, player.x, player.y, pointer.x, pointer.y, 0));
+                    this.add(new Bullet(this.scene, this, player.floatingWeapon.x, player.floatingWeapon.y, pointer.x, pointer.y, 0));
                     this.scene.time.delayedCall(bulletROF, function () {
                         group.isOnCooldown = false;
                     }, null, this.scene);

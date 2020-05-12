@@ -19,6 +19,38 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         keyUp = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyDown = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keySwitch = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+
+        
+        this.targetDistance = 50;
+        this.floatingWeapon = scene.add.sprite(centerX, centerY, 'redObstacle').setScale(0.1, 0.1);
+        scene.input.on('pointermove', function(pointer) {
+            if(!isGameOver){
+                this.xDist = pointer.x - player.x;
+                this.yDist = pointer.y - player.y;
+
+                // console.log(this.x + " " + pointer.y);
+
+                
+                let shotAngle =  Phaser.Math.RadToDeg(Phaser.Math.Angle.Between(player.x, player.y, pointer.x, pointer.y));
+
+                // Converts the xDist, yDist components into xSpeed, ySpeed components in order to achieve rocketSpeed (diagonal speed) on combining components
+                // Uses Pythagorean theorum to solve for scaleFactor given a, b, and c where c is rocketSpeed and a, b are xDist, yDist
+                this.scaleFactor = Math.sqrt(Math.pow(Math.abs(this.xDist), 2) + Math.pow(Math.abs(this.yDist), 2)) / player.targetDistance;
+
+                // Changes speed components to proper magnitudes (the rocketSpeed)
+                this.targetX = this.xDist / this.scaleFactor;       
+                this.targetY = this.yDist / this.scaleFactor;
+                
+                // console.log(this.targetX + " " + this.targetY);
+
+                // Change rocket angle to face where it is fired
+                player.floatingWeapon.setAngle(shotAngle);
+                player.floatingWeapon.x = player.x + this.targetX;
+                player.floatingWeapon.y = player.y + this.targetY;
+                // console.log(player.floatingWeapon.x + " " + player.floatingWeapon.y);
+                // console.log(this.targetX + " " + this.targetY);
+            }
+        }, scene);
     }
 
 
@@ -54,9 +86,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 if(playerState == 0){
                     playerState = 1;
                     this.setTexture('bluePlayer');
+                    this.floatingWeapon.setTexture('blueObstacle');
                 } else {
-                    this.setTexture('redPlayer');
                     playerState = 0;
+                    this.setTexture('redPlayer');
+                    this.floatingWeapon.setTexture('redObstacle');
                 }
             }
         }

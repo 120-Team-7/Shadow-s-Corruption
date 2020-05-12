@@ -20,13 +20,7 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
             }
         }, scene)
 
-        this.selfCollider = scene.physics.add.collider(this, this, null, function(enemy) {
-            if(enemy.switching = false){
-                return true
-            } else {
-                return false;
-            }
-        });
+        this.selfCollider = scene.physics.add.collider(this, this);
     }
 
     update() {

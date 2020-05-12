@@ -23,7 +23,6 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         this.body.setCollideWorldBounds(true);
         this.body.setBounce(chaserBounce, chaserBounce);
         this.body.setMaxVelocity(chaserMaxVel, chaserMaxVel);
-        this.body.setImmovable(true);
 
         if(changeCondition == 'timed') {
             this.timedSwitch();
@@ -140,39 +139,32 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
             delay: timedSwitchDelay, 
             callback: () => {
                 // Stop enemy->enemy collisions
-                this.switching = true;
+                // this.switching = true;
+                this.body.setImmovable(true);
                 // If was red, change to blue
                 if(this.state == 0){
-                    // Pause a movement before switching
+                    // Pause movement before switching
                     this.body.stop();
                     this.moveTimer.paused = true;
                     this.timedSwitch.paused = true;
                     this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
                         if(this.health > 0){
-                            this.redGroup.remove(this); 
-                            this.enemy.moveTimer.paused = false
-                            this.state = 1;
-                            this.blueGroup.add(this);
-                            this.setTexture('blueObstacle');
+                            // eSwitchColor(originalGroup, newGroup)
+                            this.eSwitchColor(this.redGroup, this.blueGroup);
                             this.timedSwitch.paused = false;
-                            this.switching = false;
                         }
                     }, this.enemy, this.scene);
                 // If was blue, change to red
                 } else {
-                    // Pause a movement before switching
+                    // Pause movement before switching
                     this.body.stop();
                     this.moveTimer.paused = true;
                     this.timedSwitch.paused = true;
                     this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
                         if(this.health > 0){
-                            this.blueGroup.remove(this); 
-                            this.enemy.moveTimer.paused = false
-                            this.state = 0;
-                            this.redGroup.add(this);
-                            this.setTexture('redObstacle');
+                            // eSwitchColor(originalGroup, newGroup)
+                            this.eSwitchColor(this.blueGroup, this.redGroup);
                             this.timedSwitch.paused = false;
-                            this.switching = false;
                         }
                     }, this.enemy, this.scene);
                 }
@@ -180,5 +172,25 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
             callbackContext: this.scene,
             loop: true,
         });
+    }
+
+    // Switch enemy color & everything else related
+    eSwitchColor(originalGroup, newGroup) {
+        let originalState = this.state;
+        originalGroup.remove(this); 
+        this.moveTimer.paused = false
+        this.body.setImmovable(false);
+        if(originalState == 0){
+            this.state = 1;
+        } else {
+            this.state = 0;
+        }
+        newGroup.add(this);
+        if(this.state == 0){
+            this.setTexture('redObstacle');
+        } else {
+            this.setTexture('blueObstacle');
+        }
+        
     }
 }

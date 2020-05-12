@@ -45,7 +45,7 @@ var player;
 var playerState = 0; // 0 = red, 1 = blue
 var isInvuln = false; // invulnerability state after taking damage
 var invulnTime = 1000;
-var pMaxHealth = 2;
+var pMaxHealth = 5;
 var pCurrHealth = pMaxHealth;
 var pDeathDelay = 3000;
 
