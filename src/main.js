@@ -4,8 +4,8 @@ var gravityY = 600;
 let config = {
     parent: 'myGame',
     type: Phaser.WEBGL,
-    width: 1000,
-    height: 600,
+    width: 1024,
+    height: 576,
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
@@ -41,6 +41,9 @@ var obsHealth = 3;
 
 // Player ----------------------------------------------------------------------------------------------------
 var player;
+// Pointer
+var pointer;
+var idleWeaponDistance = 70;
 // Player statistics
 var playerState = 0; // 0 = red, 1 = blue
 var isInvuln = false; // invulnerability state after taking damage
@@ -57,15 +60,17 @@ var maxMoveVelocity = 300;
 
 // Player attack settings
 
-// Bullet
-var bulletSpeed = 600;
-var bulletDamage = 1;
-var bulletROF = 200;
+// Knife
+var knifeSpeed = 600;
+var knifeDamage = 1;
+var knifeROF = 200;
+var knifeSecondDamage = 2;
+var knifeSecondRadius = 2;
 
-// Wave
-var waveSpeed = 300;
-var waveDamage = 2;
-var waveROF = 500;
+// Orb
+var orbSpeed = 300;
+var orbDamage = 2;
+var orbROF = 500;
 
 // Enemies ----------------------------------------------------------------------------------------------------
 var timedSwitchDelay = 5000;

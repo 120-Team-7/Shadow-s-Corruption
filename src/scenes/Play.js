@@ -36,10 +36,10 @@ class Play extends Phaser.Scene {
         this.blueChaserGroup = new EnemyColorGroup(this, 1);
         this.collideChaserGroups = this.physics.add.collider(this.redChaserGroup, this.blueChaserGroup);
 
-        // BulletGroup(scene, state, redObjGroup, redEnemyGroup)
-        this.bulletGroup = new BulletGroup(this, 0, this.redGroup, this.redChaserGroup);
-        // WaveGroup(scene, state, blueObjGroup, blueEnemyGroup)
-        this.waveGroup = new WaveGroup(this, 1, this.blueGroup, this.blueChaserGroup);
+        // KnifeGroup(scene, state, redEnemyGroup)
+        this.knifeGroup = new KnifeGroup(this, 0, this.redChaserGroup);
+        // OrbGroup(scene, state, blueEnemyGroup)
+        this.orbGroup = new OrbGroup(this, 1, this.blueChaserGroup);
 
         // Add play objects ----------------------------------------------------------------------------------------------------
         
@@ -66,9 +66,10 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        pointer = this.input.activePointer;
         player.update();
-        this.bulletGroup.update();
-        this.waveGroup.update();
+        this.knifeGroup.update();
+        this.orbGroup.update();
         this.redChaserGroup.update();
         this.blueChaserGroup.update();
 

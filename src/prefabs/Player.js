@@ -12,6 +12,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setCollideWorldBounds(true);
         this.setDepth(999);
 
+        this.body.setSize(30, 50);
+        // this.body.setOffset(-10, 0);
         this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
 
         keyLeft = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -19,38 +21,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         keyUp = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyDown = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keySwitch = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-
         
-        this.targetDistance = 50;
-        this.floatingWeapon = scene.add.sprite(centerX, centerY, 'redObstacle').setScale(0.1, 0.1);
-        scene.input.on('pointermove', function(pointer) {
-            if(!isGameOver){
-                this.xDist = pointer.x - player.x;
-                this.yDist = pointer.y - player.y;
-
-                // console.log(this.x + " " + pointer.y);
-
-                
-                let shotAngle =  Phaser.Math.RadToDeg(Phaser.Math.Angle.Between(player.x, player.y, pointer.x, pointer.y));
-
-                // Converts the xDist, yDist components into xSpeed, ySpeed components in order to achieve rocketSpeed (diagonal speed) on combining components
-                // Uses Pythagorean theorum to solve for scaleFactor given a, b, and c where c is rocketSpeed and a, b are xDist, yDist
-                this.scaleFactor = Math.sqrt(Math.pow(Math.abs(this.xDist), 2) + Math.pow(Math.abs(this.yDist), 2)) / player.targetDistance;
-
-                // Changes speed components to proper magnitudes (the rocketSpeed)
-                this.targetX = this.xDist / this.scaleFactor;       
-                this.targetY = this.yDist / this.scaleFactor;
-                
-                // console.log(this.targetX + " " + this.targetY);
-
-                // Change rocket angle to face where it is fired
-                player.floatingWeapon.setAngle(shotAngle);
-                player.floatingWeapon.x = player.x + this.targetX;
-                player.floatingWeapon.y = player.y + this.targetY;
-                // console.log(player.floatingWeapon.x + " " + player.floatingWeapon.y);
-                // console.log(this.targetX + " " + this.targetY);
-            }
-        }, scene);
+        this.idleWeapon = scene.add.sprite(centerX, centerY, 'redObstacle').setScale(0.1, 0.1);
     }
 
 
@@ -86,12 +58,37 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 if(playerState == 0){
                     playerState = 1;
                     this.setTexture('bluePlayer');
-                    this.floatingWeapon.setTexture('blueObstacle');
+                    this.idleWeapon.setTexture('blueObstacle');
                 } else {
                     playerState = 0;
                     this.setTexture('redPlayer');
-                    this.floatingWeapon.setTexture('redObstacle');
+                    this.idleWeapon.setTexture('redObstacle');
                 }
+            }
+
+            // Player idle weapon update position
+            this.xDist = pointer.x - player.x;
+            this.yDist = pointer.y - player.y;
+            
+            this.weaponAngle =  Phaser.Math.RadToDeg(Phaser.Math.Angle.Between(player.x, player.y, pointer.x, pointer.y));
+
+            // Converts the xDist, yDist components into target components in order to position at idleWeaponDistance on combining components
+            // Uses Pythagorean theorum to solve for scaleFactor given a, b, and c where c is idleWeaponDistance and a, b are xDist, yDist
+            this.scaleFactor = Math.sqrt(Math.pow(Math.abs(this.xDist), 2) + Math.pow(Math.abs(this.yDist), 2)) / idleWeaponDistance;
+
+            // Changes components to proper magnitudes
+            this.targetX = this.xDist / this.scaleFactor;       
+            this.targetY = this.yDist / this.scaleFactor;
+
+            player.idleWeapon.setAngle(this.weaponAngle);
+            player.idleWeapon.x = player.x + this.targetX;
+            player.idleWeapon.y = player.y + this.targetY;
+
+            // Player flip
+            if(pointer.x < player.x){
+                this.setFlipX(true);
+            } else {
+                this.setFlipX(false);
             }
         }
     }
