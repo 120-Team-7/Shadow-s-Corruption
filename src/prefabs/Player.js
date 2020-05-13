@@ -13,7 +13,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setDepth(999);
 
         this.body.setSize(30, 50);
-        // this.body.setOffset(-10, 0);
         this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
 
         keyLeft = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -22,7 +21,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         keyDown = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keySwitch = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         
-        this.idleWeapon = scene.add.sprite(centerX, centerY, 'redObstacle').setScale(0.1, 0.1);
+        // this.idleWeapon = scene.add.sprite(centerX, centerY, 'redObstacle').setScale(0.1, 0.1);
+        this.idleWeapon;
+        idleWeaponExists = false;
     }
 
 
@@ -66,7 +67,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
             }
 
-            // Player idle weapon update position
+            // Calculate idleWeapon position & angle
             this.xDist = pointer.x - player.x;
             this.yDist = pointer.y - player.y;
             
@@ -80,11 +81,26 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.targetX = this.xDist / this.scaleFactor;       
             this.targetY = this.yDist / this.scaleFactor;
 
-            player.idleWeapon.setAngle(this.weaponAngle);
-            player.idleWeapon.x = player.x + this.targetX;
-            player.idleWeapon.y = player.y + this.targetY;
+            idleWeaponX = player.x + this.targetX;
+            idleWeaponY = player.y + this.targetY;
+            // idleWeaponBodyOffset = idleWeaponX 
 
-            // Player flip
+            if(idleWeaponExists){
+                // Player idle weapon update position & angle
+                player.idleWeapon.setAngle(this.weaponAngle);
+                player.idleWeapon.setPosition(idleWeaponX, idleWeaponY);
+                // if(player.idleWeapon.x < player.x){
+                //     player.idleWeapon.body.setOffset(player.idleWeapon.width/2 - 15, player.idleWeapon.height/2 - 5);
+                // }
+                // if(player.idleWeapon.x > player.x){
+                //     player.idleWeapon.body.setOffset(player.idleWeapon.width/2 + 10, player.idleWeapon.height/2 - 5);
+                // }
+                // player.idleWeapon.body.setOffset(player.idleWeapon.width/2, player.idleWeapon.height/2);
+
+                
+            }
+
+            // Player flip sprite when mouse on left/right of player character
             if(pointer.x < player.x){
                 this.setFlipX(true);
             } else {

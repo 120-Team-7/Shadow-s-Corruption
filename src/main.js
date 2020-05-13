@@ -44,6 +44,8 @@ var player;
 // Pointer
 var pointer;
 var idleWeaponDistance = 70;
+var idleWeaponX;
+var idleWeaponY;
 // Player statistics
 var playerState = 0; // 0 = red, 1 = blue
 var isInvuln = false; // invulnerability state after taking damage
@@ -51,6 +53,7 @@ var invulnTime = 1000;
 var pMaxHealth = 5;
 var pCurrHealth = pMaxHealth;
 var pDeathDelay = 3000;
+var idleWeaponExists = true;
 
 
 // Player movement settings
@@ -59,11 +62,12 @@ var playerStopDrag = 600;
 var maxMoveVelocity = 300;
 
 // Player attack settings
-
 // Knife
-var knifeSpeed = 600;
-var knifeDamage = 1;
-var knifeROF = 200;
+var knifeSpeed = 800;
+var knifeThrowDamage = 1;
+var knifeMeleeDamage = 3;
+var knifeROF = 300;
+var knifeMeleeROF = 500;
 var knifeSecondDamage = 2;
 var knifeSecondRadius = 2;
 
@@ -87,7 +91,7 @@ var turnAroundMult = 1;
 var predictMult = 1.5;
 var predictMinDist = 200;
 var chaserBounce = 0.1;
-var chaserHealth = 3;
+var chaserHealth = 5;
 
 
 // Game controls ----------------------------------------------------------------------------------------------------
