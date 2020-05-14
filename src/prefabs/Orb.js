@@ -1,6 +1,6 @@
 class Orb extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, group, oSpawnX, oSpawnY, state) {
-        super(scene, oSpawnX, oSpawnY, 'orb');
+        super(scene, oSpawnX, oSpawnY, 'orb').setOrigin(0.5, 0.5).setScale(3, 3);
         
         let knife = this;
         this.group = group;
@@ -22,7 +22,7 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         this.body.setMaxVelocity(orbMaxSpeed, orbMaxSpeed);
 
-        this.body.setCircle(50);
+        this.body.setCircle(15, 45, 45);
     }
 
     update(){

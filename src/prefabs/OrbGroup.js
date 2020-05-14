@@ -28,25 +28,27 @@ class OrbGroup extends Phaser.GameObjects.Group {
                 } else if (!enemy.orbBlockInvuln) {
                     enemy.orbBlockInvuln = true;
                     // Stop enemy movement
-                    enemy.moveTimer.paused = true;
-                    enemy.body.stop();
+                    if(enemy.exists){
+                        enemy.moveTimer.paused = true;
+                        enemy.body.stop();
 
-                    increaseCorruption(blockCorruptionGain);
+                        increaseCorruption(blockCorruptionGain);
 
-                    // Calculate knockbackVector
-                    this.enemyKnockbackVector = scaleVectorMagnitude(orbKnockbackVelocity, player.x, player.y, enemy.x, enemy.y); 
-                    // Knockback enemy with calculated accel components
-                    enemy.body.setVelocity(this.enemyKnockbackVector.x, this.enemyKnockbackVector.y);
+                        // Calculate knockbackVector
+                        this.enemyKnockbackVector = scaleVectorMagnitude(orbKnockbackVelocity, player.x, player.y, enemy.x, enemy.y); 
+                        // Knockback enemy with calculated accel components
+                        enemy.body.setVelocity(this.enemyKnockbackVector.x, this.enemyKnockbackVector.y);
 
-                    // Allow enemy movement after short stun
-                    enemy.stunTimer = group.scene.time.delayedCall(orbBlockStunDuration, function () {
-                        enemy.moveTimer.paused = false;
-                    }, null, this.scene);
+                        // Allow enemy movement after short stun
+                        enemy.stunTimer = group.scene.time.delayedCall(orbBlockStunDuration, function () {
+                            enemy.moveTimer.paused = false;
+                        }, null, this.scene);
 
-                    // Allow ability to be blocked again after short invuln time
-                    enemy.blockInvulnTimer = group.scene.time.delayedCall(orbBlockInvulnDuration, function () {
-                        enemy.orbBlockInvuln = false;
-                    }, null, this.scene);
+                        // Allow ability to be blocked again after short invuln time
+                        enemy.blockInvulnTimer = group.scene.time.delayedCall(orbBlockInvulnDuration, function () {
+                            enemy.orbBlockInvuln = false;
+                        }, null, this.scene);
+                    }
                 }
             }
         }, function() {

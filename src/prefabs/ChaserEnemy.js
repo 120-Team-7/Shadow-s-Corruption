@@ -6,9 +6,22 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
             super(scene, oSpawnX, oSpawnY, 'blueObstacle').setOrigin(0.5, 0.5).setScale(0.25);
         }
 
-        this.enemyTextConfig = {
+        this.healthTextConfig = {
             fontFamily: 'Courier',
             fontSize: '18px',
+            color: '#000000',
+            align: 'center',
+            padding: {
+                top: 10,
+                bottom: 10,
+                left: 10,
+                right: 10,
+            },
+            fixedWidth: 0
+        }
+        this.damageTextConfig = {
+            fontFamily: 'Courier',
+            fontSize: '25px',
             color: '#000000',
             align: 'center',
             padding: {
@@ -49,8 +62,8 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Add health text
-        this.healthText = scene.add.text(this.x, this.y, this.health + "/" + chaserHealth, this.enemyTextConfig).setOrigin(0.5, 0.5);
-        this.damageText = scene.add.text(this.x, this.y - 40, "", this.enemyTextConfig).setOrigin(0.5, 0.5);
+        this.healthText = scene.add.text(this.x, this.y, this.health + "/" + chaserHealth, this.healthTextConfig).setOrigin(0.5, 0.5).setDepth(1000);
+        this.damageText = scene.add.text(this.x, this.y - 40, "", this.damageTextConfig).setOrigin(0.5, 0.5).setDepth(1000);
         // this.slowDown = scene.tweens.add({
         //     paused: true,
         //     targets: enemy.body,
@@ -136,10 +149,13 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         this.health -= damage;
         // this.totalDamage += damage;
         this.healthText.setText(this.health + "/" + chaserHealth);
-        this.damageText.setAlpha(1);
         if(this.damageTextDisappearing){
             this.damageTextTimer.destroy();
         }
+        this.damageText.setAlpha(0);
+        this.damageTextTimer = this.scene.time.delayedCall(50, () => {
+            this.damageText.setAlpha(1);
+        }, null, this.scene);
         this.damageText.setText("-" + damage);
         this.damageTextDisappearing = true;
         this.damageTextTimer = this.scene.time.delayedCall(500, () => {

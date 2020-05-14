@@ -12,10 +12,10 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
+            // debug: true,
         }
     },
-    scene: [ Load, Menu, Play, HUD, GameOver ]
+    scene: [ Load, Menu, Instructions, Play, HUD, GameOver ]
 }
 
 // Define game
@@ -27,6 +27,7 @@ var screenHeight = game.config.height;
 var centerX = game.config.width/2;
 var centerY = game.config.height/2;
 var textSpacer = 100;
+var smallTextSpacer = 35;
 
 // Text settings
 
@@ -85,7 +86,7 @@ var knifeThrowROF = 200;
 
 // Knife idle
 var knifeMeleeROF = 500;
-var knifeMeleeDamage = 4;
+var knifeMeleeDamage = 3;
 
 // Orb shot
 var orbAccel = 40;  // Initial accel for orb on shoot
@@ -102,7 +103,7 @@ var orbKnockbackVelocity = 800;     // Velocity magnitude of block knockback
 
 // Enemies ----------------------------------------------------------------------------------------------------
 var timedSwitchDelay = 7000;
-var infiniteSpawnerDelay = 12000;
+var infiniteSpawnerDelay = 9000;
 var enemySwitchPause = 1000;
 
 var enemyDamageTextDestoryDelay = 1000;
@@ -125,7 +126,7 @@ var chaserHealth = 10;
 var keyLeft, keyRight, keyUp, keyDown, keySwitch;
 
 // Menu
-var keyStart;
+var keyStart, keyInstructions;
 
 // Audio Settings
 var globalVolume = 1;

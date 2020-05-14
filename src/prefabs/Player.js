@@ -153,7 +153,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.cameras.main.shake(1000, 0.01);
                 isGameOver = true;
                 this.setImmovable(true);
-                this.setAlpha(0.5);
+                this.setAlpha(0.2);
                 this.gameOverTimer = this.scene.time.delayedCall(pDeathDelay, function () {
                     this.scene.stop('playScene');
                     this.scene.stop('hudScene');

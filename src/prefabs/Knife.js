@@ -1,6 +1,6 @@
 class Knife extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, group, oSpawnX, oSpawnY, state) {
-        super(scene, oSpawnX, oSpawnY, 'knife');
+        super(scene, oSpawnX, oSpawnY, 'knife').setOrigin(0.5, 0.5);
         
         let knife = this;
         this.group = group;
@@ -18,7 +18,8 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        this.body.setCircle(5).setOffset(this.width/2, this.height/2);
+        // this.body.setCircle(8, this.width/2, this.height/2);
+        // .setOffset(this.width/2, this.height/2);
     }
 
     update(){
