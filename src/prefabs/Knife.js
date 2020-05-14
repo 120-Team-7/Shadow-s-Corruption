@@ -18,10 +18,11 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        this.body.setCircle(5, this.width/2, this.height/2);
+        this.body.setCircle(5).setOffset(this.width/2, this.height/2);
     }
 
     update(){
+        // Remove if goes off screen
         if(this.x < 0 || this.x > screenWidth || this.y < 0 || this.y > screenHeight) {
             this.group.remove(this, true, true);
         } else {

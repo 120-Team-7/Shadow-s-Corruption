@@ -17,6 +17,8 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         this.health = chaserHealth;
         this.damage = 1;
         this.switching = false;
+        this.orbDamageInvuln = false;
+        this.orbBlockInvuln = false
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -95,7 +97,6 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
                     //     enemy.slowDown.play();
     
                     // }, this, scene);
-                    
                 }, 
                 callbackContext: scene,
                 loop: true,

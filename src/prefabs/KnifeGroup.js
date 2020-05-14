@@ -17,12 +17,14 @@ class KnifeGroup extends Phaser.GameObjects.Group {
         this.kxeCollider = scene.physics.add.overlap(group, redEnemyGroup, function(knife, enemy) {
             knife.destroy();
             enemy.takeDamage(enemy, knife.damage);
+            // If it is a melee hit
             if(!group.isOnCooldown && !knife.shooting){
                 group.isOnCooldown = true;
+                // Start melee cooldown
                 group.knifeCooldown = group.scene.time.delayedCall(knifeMeleeROF, function () {
-                    console.log("offCooldown melee");
                     group.isOnCooldown = false;
                     idleWeaponExists = false;
+                    // Make sure both cooldowns are gone
                     group.knifeCooldown.destroy();
                 }, null, group.scene);
             }
@@ -36,21 +38,27 @@ class KnifeGroup extends Phaser.GameObjects.Group {
 
         
 
+        // Throw the knife
         scene.input.on('pointerdown', function(pointer) {
             if(!isGameOver && playerState == 0){
                 if(!this.isOnCooldown){
+                    // On cooldown
                     this.isOnCooldown = true;
+                    // Stop updating idleWeapon, store the current idleWeapon, remove its reference
                     idleWeaponExists = false;
                     this.knife = player.idleWeapon;
                     player.idleWeapon = null;
+                    // Update knife variables
                     this.knife.shooting = true;
                     this.knife.targetX = pointer.x;
                     this.knife.targetY = pointer.y;
                     this.knife.damage = knifeThrowDamage;
+                    // Triggers knife first throwing state
                     this.knife.first = true;
-                    group.knifeCooldown = this.scene.time.delayedCall(knifeROF, function () {
-                        console.log("offCooldown ranged");
+                    // Start throw cooldown
+                    group.knifeCooldown = this.scene.time.delayedCall(knifeThrowROF, function () {
                         group.isOnCooldown = false;
+                        // Make sure both cooldowns are gone
                         group.knifeCooldown.destroy();
                     }, null, this.scene);
                 }
@@ -59,13 +67,15 @@ class KnifeGroup extends Phaser.GameObjects.Group {
     }
 
     update() {
-        if(!this.isOnCooldown && !idleWeaponExists && !isGameOver) {
+        // Somehow needed to update children
+        this.preUpdate();
+
+        // Adds idle weapon knife when cooldowns are over
+        if(playerState == 0 && !this.isOnCooldown && !idleWeaponExists && !isGameOver) {
             idleWeaponExists = true;
             // Knife(scene, group, oSpawnX, oSpawnY, targetX, targetY, state)
             player.idleWeapon = new Knife(this.scene, this, idleWeaponX, idleWeaponY, 0);
             this.add(player.idleWeapon);
         }
-        // Somehow needed to update children
-        this.preUpdate();
     }
 }

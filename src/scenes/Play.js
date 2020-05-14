@@ -114,7 +114,7 @@ class Play extends Phaser.Scene {
         // } else {
         //     this.blueChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
         // }
-        this.redChaserGroup.addEnemy(this.rSpawnX, this.rSpawnY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
-        // this.blueChaserGroup.addEnemy(this.bSpawnX, this.bSpawnY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
+        // this.redChaserGroup.addEnemy(this.rSpawnX, this.rSpawnY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
+        this.blueChaserGroup.addEnemy(this.bSpawnX, this.bSpawnY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
     }
 }

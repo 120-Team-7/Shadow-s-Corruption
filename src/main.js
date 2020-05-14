@@ -41,19 +41,24 @@ var obsHealth = 3;
 
 // Player ----------------------------------------------------------------------------------------------------
 var player;
-// Pointer
+
+// Pointer & idle weapon
 var pointer;
 var idleWeaponDistance = 70;
 var idleWeaponX;
 var idleWeaponY;
+var idleWeaponExists = true;
+
 // Player statistics
 var playerState = 0; // 0 = red, 1 = blue
+
 var isInvuln = false; // invulnerability state after taking damage
-var invulnTime = 1000;
+var invulnDuration = 1000;
+
 var pMaxHealth = 5;
 var pCurrHealth = pMaxHealth;
+
 var pDeathDelay = 3000;
-var idleWeaponExists = true;
 
 
 // Player movement settings
@@ -62,19 +67,29 @@ var playerStopDrag = 600;
 var maxMoveVelocity = 300;
 
 // Player attack settings
-// Knife
+// Knife throw
 var knifeSpeed = 800;
 var knifeThrowDamage = 1;
-var knifeMeleeDamage = 3;
-var knifeROF = 300;
-var knifeMeleeROF = 500;
-var knifeSecondDamage = 2;
+var knifeSecondDamage = 1;
 var knifeSecondRadius = 2;
+var knifeThrowROF = 300;
 
-// Orb
-var orbSpeed = 300;
-var orbDamage = 2;
-var orbROF = 500;
+// Knife idle
+var knifeMeleeROF = 600;
+var knifeMeleeDamage = 3;
+
+// Orb shot
+var orbAccel = 40;
+var orbAccelMult = 1.05;
+var orbMaxSpeed = maxMoveVelocity;
+var orbShootDamage = 1;
+var orbShootROF = 2000;
+var orbShotInvulnDuration = 200;    // Enemy invulnerability duration for orb after being hit by orb
+
+// Orb idle
+var orbBlockStunDuration = 200;
+var orbBlockInvulnDuration = 1000;
+var orbKnockbackVelocity = 500;
 
 // Enemies ----------------------------------------------------------------------------------------------------
 var timedSwitchDelay = 5000;

@@ -56,14 +56,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             // Player color switch
             if(Phaser.Input.Keyboard.JustDown(keySwitch)){
+                if(idleWeaponExists){
+                    this.idleWeapon.destroy();
+                    idleWeaponExists = false;
+                    this.idleWeapon = null;
+                }
                 if(playerState == 0){
                     playerState = 1;
                     this.setTexture('bluePlayer');
-                    this.idleWeapon.setTexture('blueObstacle');
+                    
                 } else {
                     playerState = 0;
                     this.setTexture('redPlayer');
-                    this.idleWeapon.setTexture('redObstacle');
                 }
             }
 
@@ -96,8 +100,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 //     player.idleWeapon.body.setOffset(player.idleWeapon.width/2 + 10, player.idleWeapon.height/2 - 5);
                 // }
                 // player.idleWeapon.body.setOffset(player.idleWeapon.width/2, player.idleWeapon.height/2);
-
-                
             }
 
             // Player flip sprite when mouse on left/right of player character
@@ -132,7 +134,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.setAlpha(0.5);
                 // Camera effects
                 this.scene.cameras.main.flash(200);
-                this.invulnTimer = this.scene.time.delayedCall(invulnTime, function () {
+                this.invulnTimer = this.scene.time.delayedCall(invulnDuration, function () {
                     isInvuln = false;
                     player.setAlpha(1);
                 }, null, this.scene);
