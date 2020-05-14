@@ -30,7 +30,7 @@ class Play extends Phaser.Scene {
 
         // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup)
         player = new Player(this, centerX, centerY);
-
+        
         // ColorGroup(scene, state)
         this.redGroup = new ObsColorGroup(this, 0);
         this.blueGroup = new ObsColorGroup(this, 1);
@@ -108,13 +108,13 @@ class Play extends Phaser.Scene {
         } else {
             this.randSpawnX = screenBuffer;
         }
-        // if(randNum2 < 0.5){
-        //     // EnemyColorGroup.addEnemy(spawnX, spawnY, type, changeCondition, redGroup, blueGroup)
-        //     this.redChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
-        // } else {
-        //     this.blueChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
-        // }
-        // this.redChaserGroup.addEnemy(this.rSpawnX, this.rSpawnY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
+        if(randNum2 < 0.5){
+            // EnemyColorGroup.addEnemy(spawnX, spawnY, type, changeCondition, redGroup, blueGroup)
+            this.redChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
+        } else {
+            this.blueChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
+        }
+        this.redChaserGroup.addEnemy(this.rSpawnX, this.rSpawnY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
         this.blueChaserGroup.addEnemy(this.bSpawnX, this.bSpawnY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
     }
 }

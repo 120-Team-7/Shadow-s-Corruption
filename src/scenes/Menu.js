@@ -35,6 +35,7 @@ class Menu extends Phaser.Scene {
             this.scene.run('hudScene');
             isGameOver = false;
             pCurrHealth = pMaxHealth;
+            corruption = 0;
             isInvuln = false;
         }
     }

@@ -28,6 +28,13 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         } else {
             // First firing direction (where player clicked)
             if(this.first == true){
+                if(usingCorruption) {
+                    this.damage += corruption;
+                    corruption = 0;
+                    usingCorruption = false;
+                    this.scene.corruptionDecayTimer.pause = false;
+                    player.corruptionExpireTimer.destroy();
+                }
                 this.setRotation(Phaser.Math.Angle.Between(player.x, player.y, this.targetX, this.targetY));
                 this.scene.physics.moveTo(this, this.targetX, this.targetY, knifeSpeed);
                 this.first = false;

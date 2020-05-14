@@ -51,15 +51,23 @@ var idleWeaponExists = true;
 
 // Player statistics
 var playerState = 0; // 0 = red, 1 = blue
+var switchOnCooldown = false;
+var switchCooldown = 1000;
 
 var isInvuln = false; // invulnerability state after taking damage
 var invulnDuration = 1000;
 
-var pMaxHealth = 5;
+var pMaxHealth = 1000;
 var pCurrHealth = pMaxHealth;
 
-var pDeathDelay = 3000;
+var usingCorruption = false;
+var corruption = 0;
+var maxCorruption = 5;
+var corruptionDecayDelay = 3000;
+var corruptionExpireDelay = 3000;
+var blockCorruptionGain = 3;
 
+var pDeathDelay = 3000;
 
 // Player movement settings
 var playerRunAccel = 30;
@@ -93,7 +101,7 @@ var orbKnockbackVelocity = 500;
 
 // Enemies ----------------------------------------------------------------------------------------------------
 var timedSwitchDelay = 5000;
-var infiniteSpawnerDelay = 6000;
+var infiniteSpawnerDelay = 8000;
 var enemySwitchPause = 1000;
 
 // Chaser settings
@@ -122,3 +130,29 @@ var normalSoundRate = 1;
 var volumeChange = 0.1;
 
 // Audio
+
+// Given co-ordinates of two points, start and end, and a chosen magnitude, returns a Vector2
+// that has the same direction as the vector from the start point to end point, but has the chosen magnitude
+function scaleVectorMagnitude(targetMagnitude, startX, startY, endX, endY) {
+    // Calculate variables
+    let xDist = endX - startX;
+    let yDist = endY - startY;
+
+    // Converts the xDist, yDist components to combine vector of same direction but with targetMagnitude
+    // Uses Pythagorean theorum to solve for scaleFactor given a, b, and c where c is targetMagnitude and a, b are xDist, yDist
+    let scaleFactor = Math.sqrt(Math.pow(Math.abs(xDist), 2) + Math.pow(Math.abs(yDist), 2)) / targetMagnitude;
+
+    // Use scaleFactor to change components to proper magnitudes
+    let resultX = xDist / scaleFactor;       
+    let resultY = yDist / scaleFactor;
+
+    return new Phaser.Math.Vector2(resultX, resultY);
+}
+
+function increaseCorruption(amount) {
+    if(corruption + amount < maxCorruption){
+        corruption += amount;
+    } else {
+        corruption = maxCorruption;
+    }
+}

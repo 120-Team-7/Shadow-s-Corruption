@@ -12,7 +12,7 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
         this.shotX;
         this.shotY;
         
-        this.damage = 1;
+        this.damage = orbShootDamage;
         this.shooting = false;
         this.shot = false;
 
@@ -26,26 +26,24 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(){
-        // Remove if goes off screen
+        
         if(this.shot){
+            if(usingCorruption) {
+                this.damage += corruption;
+                corruption = 0;
+                usingCorruption = false;
+                this.scene.corruptionDecayTimer.pause = false;
+                player.corruptionExpireTimer.destroy();
+            }
+            // Remove if goes off screen
             if(this.x < 0 || this.x > screenWidth || this.y < 0 || this.y > screenHeight) {
                 this.group.remove(this, true, true);
             } else {
-                // Calculate variables
-                this.xDist = this.targetX - this.shotX;
-                this.yDist = this.targetY - this.shotY;
-
-                // Converts the xDist, yDist components into target components in order to covert to orbAccel vector on combining components
-                // Uses Pythagorean theorum to solve for scaleFactor given a, b, and c where c is orbAccel and a, b are xDist, yDist
-                this.scaleFactor = Math.sqrt(Math.pow(Math.abs(this.xDist), 2) + Math.pow(Math.abs(this.yDist), 2)) / this.accel;
-
-                // Changes components to proper magnitudes
-                this.accelX = this.xDist / this.scaleFactor;       
-                this.accelY = this.yDist / this.scaleFactor;
+                this.accelVector = scaleVectorMagnitude(this.accel, this.shotX, this.shotY, this.targetX, this.targetY)
 
                 // Set new accel
-                this.body.acceleration.x = this.accelX;
-                this.body.acceleration.y = this.accelY;
+                this.body.acceleration.x = this.accelVector.x;
+                this.body.acceleration.y = this.accelVector.y;
 
                 // Increase accel
                 this.accel = this.accel * orbAccelMult;

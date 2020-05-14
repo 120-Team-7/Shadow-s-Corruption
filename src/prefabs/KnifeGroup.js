@@ -17,6 +17,8 @@ class KnifeGroup extends Phaser.GameObjects.Group {
         this.kxeCollider = scene.physics.add.overlap(group, redEnemyGroup, function(knife, enemy) {
             knife.destroy();
             enemy.takeDamage(enemy, knife.damage);
+            increaseCorruption(knife.damage);
+            // console.log("knife damage: " + knife.damage);
             // If it is a melee hit
             if(!group.isOnCooldown && !knife.shooting){
                 group.isOnCooldown = true;
@@ -69,6 +71,12 @@ class KnifeGroup extends Phaser.GameObjects.Group {
     update() {
         // Somehow needed to update children
         this.preUpdate();
+
+        // Destroy cooldowns upon switching
+        if(playerState == 1 && switchOnCooldown && this.isOnCooldown) {
+            this.knifeCooldown.destroy();
+            this.isOnCooldown = false;
+        }
 
         // Adds idle weapon knife when cooldowns are over
         if(playerState == 0 && !this.isOnCooldown && !idleWeaponExists && !isGameOver) {

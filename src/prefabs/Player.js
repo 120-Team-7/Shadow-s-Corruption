@@ -24,6 +24,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // this.idleWeapon = scene.add.sprite(centerX, centerY, 'redObstacle').setScale(0.1, 0.1);
         this.idleWeapon;
         idleWeaponExists = false;
+
+        scene.corruptionDecayTimer = scene.time.addEvent({
+            delay: corruptionDecayDelay,
+            callback: () => {
+                if(corruption != 0){
+                    corruption--;
+                }
+            },
+            callbackContext: scene,
+            loop: true,
+        });
     }
 
 
@@ -55,39 +66,53 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
 
             // Player color switch
-            if(Phaser.Input.Keyboard.JustDown(keySwitch)){
-                if(idleWeaponExists){
-                    this.idleWeapon.destroy();
-                    idleWeaponExists = false;
-                    this.idleWeapon = null;
-                }
+            if(!switchOnCooldown && Phaser.Input.Keyboard.JustDown(keySwitch)){
+                switchOnCooldown = true;
+                // Change state and body appearance
                 if(playerState == 0){
                     playerState = 1;
                     this.setTexture('bluePlayer');
-                    
                 } else {
                     playerState = 0;
                     this.setTexture('redPlayer');
                 }
+                // Remove current idleWeapon
+                if(idleWeaponExists){
+                    console.log("switch idle exists");
+                    this.idleWeapon.destroy();
+                    idleWeaponExists = false;
+                    this.idleWeapon = null;
+                }
+                // Start corruption shot window
+                if(corruption != 0 && !usingCorruption) {
+                    usingCorruption = true;
+                    this.scene.corruptionDecayTimer.pause = true;
+                    // Start timer for corruption charges to expire after not being used
+                    this.corruptionExpireTimer = this.scene.time.delayedCall(corruptionExpireDelay, function () {
+                        corruption = 0;
+                        usingCorruption = false;
+                        player.scene.corruptionDecayTimer.pause = false;
+                    }, null, this.scene);
+                // Remove corruption if switch again
+                } else if(usingCorruption) {
+                    corruption = 0;
+                    usingCorruption = false;
+                    this.scene.corruptionDecayTimer.pause = false;
+                    this.corruptionExpireTimer.destroy();
+                }
+
+                this.switchCooldown = this.scene.time.delayedCall(switchCooldown, function () {
+                    switchOnCooldown = false;
+                }, null, this.scene);
             }
 
-            // Calculate idleWeapon position & angle
-            this.xDist = pointer.x - player.x;
-            this.yDist = pointer.y - player.y;
-            
+            // Calculate angle to set on idleWeapon sprite (toward pointer)
             this.weaponAngle =  Phaser.Math.RadToDeg(Phaser.Math.Angle.Between(player.x, player.y, pointer.x, pointer.y));
+            // Calculate x, y idleWeapon position relative to player
+            this.idleWeaponVector = scaleVectorMagnitude(idleWeaponDistance, player.x, player.y, pointer.x, pointer.y);
 
-            // Converts the xDist, yDist components into target components in order to position at idleWeaponDistance on combining components
-            // Uses Pythagorean theorum to solve for scaleFactor given a, b, and c where c is idleWeaponDistance and a, b are xDist, yDist
-            this.scaleFactor = Math.sqrt(Math.pow(Math.abs(this.xDist), 2) + Math.pow(Math.abs(this.yDist), 2)) / idleWeaponDistance;
-
-            // Changes components to proper magnitudes
-            this.targetX = this.xDist / this.scaleFactor;       
-            this.targetY = this.yDist / this.scaleFactor;
-
-            idleWeaponX = player.x + this.targetX;
-            idleWeaponY = player.y + this.targetY;
-            // idleWeaponBodyOffset = idleWeaponX 
+            idleWeaponX = player.x + this.idleWeaponVector.x;
+            idleWeaponY = player.y + this.idleWeaponVector.y;
 
             if(idleWeaponExists){
                 // Player idle weapon update position & angle
@@ -107,6 +132,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.setFlipX(true);
             } else {
                 this.setFlipX(false);
+            }
+
+            // Pause corruption decay timer when corruption is 0
+            if(corruption == 0){
+                this.scene.corruptionDecayTimer.pause = true;
+            } else {
+                this.scene.corruptionDecayTimer.pause = false;
             }
         }
     }

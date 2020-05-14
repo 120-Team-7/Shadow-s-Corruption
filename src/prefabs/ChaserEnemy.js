@@ -6,6 +6,20 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
             super(scene, oSpawnX, oSpawnY, 'blueObstacle').setOrigin(0.5, 0.5).setScale(0.25);
         }
 
+        let enemyTextConfig = {
+            fontFamily: 'Courier',
+            fontSize: '20px',
+            color: '#000000',
+            align: 'center',
+            padding: {
+                top: 10,
+                bottom: 10,
+                left: 10,
+                right: 10,
+            },
+            fixedWidth: 0
+        }
+
         let enemy = this;
         this.enemy = enemy;
         this.scene = scene;
@@ -14,8 +28,10 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         this.redGroup = redGroup;
         this.blueGroup = blueGroup;
 
+        this.exists = true;
         this.health = chaserHealth;
         this.damage = 1;
+        this.damaged = false;
         this.switching = false;
         this.orbDamageInvuln = false;
         this.orbBlockInvuln = false
@@ -29,6 +45,9 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         if(changeCondition == 'timed') {
             this.timedSwitch();
         }
+
+        // Add damage text
+        this.damageText = scene.add.text(this.x, this.y, '', enemyTextConfig).setOrigin(0.5, 0.5);
 
         // this.slowDown = scene.tweens.add({
         //     paused: true,
@@ -105,22 +124,28 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-
+        this.damageText.x = this.x;
+        this.damageText.y = this.y;
     }
 
     takeDamage(enemy, damage){
         this.health -= damage;
         // If alive show got hit
         if(this.health > 0){
+            this.damaged = true;
             this.setAlpha(0.5)
             this.damagedTimer = this.scene.time.delayedCall(500, function () {
+                this.damaged = false;
                 enemy.setAlpha(1);
             }, null, this.scene);
         // If dead show got hit, stop everything, destroy, show death
         } else {
+            this.exists = false;
             this.startMoving.remove();
             this.moveTimer.remove();
-            this.damagedTimer.remove();
+            if(this.damaged){
+                this.damagedTimer.remove();
+            }
             if(this.changeCondition == 'timed') {
                 this.timedSwitch.destroy();
                 // this.switchPause.destroy();

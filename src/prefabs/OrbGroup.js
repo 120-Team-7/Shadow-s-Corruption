@@ -3,6 +3,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
         // https://photonstorm.github.io/phaser3-docs/Phaser.Types.Physics.Arcade.html#.PhysicsGroupConfig__anchor
         let groupConfig = {
             runChildUpdate: true,
+            maxSize: 2,
         }
         // Group(scene [, children] [, config])
         super(scene, null, groupConfig);
@@ -15,10 +16,11 @@ class OrbGroup extends Phaser.GameObjects.Group {
 
         // Orb x Enemy collider
         this.oxecollider = scene.physics.add.overlap(group, blueEnemyGroup, function(orb, enemy) {
-            if(!enemy.orbDamageInvuln) {
+            if(!enemy.orbDamageInvuln && enemy.exists) {
                 if(orb.shot){
                     enemy.orbDamageInvuln = true;
                     enemy.takeDamage(enemy, orb.damage);
+                    // console.log("orb damage: " + orb.damage);
                     enemy.orbInvulnTimer = group.scene.time.delayedCall(orbShotInvulnDuration, function () {
                         enemy.orbDamageInvuln = false;
                     }, null, this.scene);
@@ -28,20 +30,12 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     // Stop enemy movement
                     enemy.moveTimer.paused = true;
                     enemy.body.stop();
-                    // Calculate variables
-                    this.xDist = enemy.x - orb.x;
-                    this.yDist = enemy.y - orb.y;
 
-                    // Converts the xDist, yDist components into target components in order to covert to orbKnockbackVelocity vector on combining components
-                    // Uses Pythagorean theorum to solve for scaleFactor given a, b, and c where c is orbKnockbackVelocity and a, b are xDist, yDist
-                    this.scaleFactor = Math.sqrt(Math.pow(Math.abs(this.xDist), 2) + Math.pow(Math.abs(this.yDist), 2)) / orbKnockbackVelocity;
+                    increaseCorruption(blockCorruptionGain);
 
-                    // Changes components to proper magnitudes
-                    this.accelX = this.xDist / this.scaleFactor;       
-                    this.accelY = this.yDist / this.scaleFactor;
-
+                    this.enemyKnockbackVector = scaleVectorMagnitude(orbKnockbackVelocity, orb.x, orb.y, enemy.x, enemy.y); 
                     // Knockback enemy with calculated accel components
-                    enemy.body.setVelocity(this.accelX , this.accelY);
+                    enemy.body.setVelocity(this.enemyKnockbackVector.x, this.enemyKnockbackVector.y);
 
                     // Allow enemy movement after short stun
                     enemy.stunTimer = group.scene.time.delayedCall(orbBlockStunDuration, function () {
@@ -62,17 +56,17 @@ class OrbGroup extends Phaser.GameObjects.Group {
             }
         }, scene)
 
-        // Shoot the orb
+        // Shoot a new orb
         scene.input.on('pointerdown', function(pointer) {
             if(!isGameOver && playerState == 1){
-                if(!this.isOnCooldown){
+                if(!group.isOnCooldown){
                     // On cooldown
-                    this.isOnCooldown = true;
-                    // Stop updating idleWeapon, store the current idleWeapon, remove its reference
-                    idleWeaponExists = false;
-                    this.orb = player.idleWeapon;
-                    player.idleWeapon = null;
-                    // Update orb variables
+                    group.isOnCooldown = true;
+                    // Create and add new orb
+                    // Orb(scene, group, oSpawnX, oSpawnY, targetX, targetY, state) 
+                    this.orb = new Orb(this.scene, this, idleWeaponX, idleWeaponY, 0);
+                    this.add(this.orb);
+                    // Pass variables to the orb for this shot
                     this.orb.targetX = pointer.x;
                     this.orb.targetY = pointer.y;
                     this.orb.shotX = this.orb.x;
@@ -92,8 +86,8 @@ class OrbGroup extends Phaser.GameObjects.Group {
     update() {
         // Somehow needed to update children
         this.preUpdate();
-        // Adds idle weapon orb whenever there isn't an idleWeapon
-        if(playerState == 1 && !idleWeaponExists && !isGameOver) {
+        // Adds idle weapon orb after switch
+        if(playerState == 1 && !idleWeaponExists && !isGameOver && switchOnCooldown) {
             idleWeaponExists = true;
             // Orb(scene, group, oSpawnX, oSpawnY, targetX, targetY, state)
             player.idleWeapon = new Orb(this.scene, this, idleWeaponX, idleWeaponY, 0);

@@ -25,7 +25,7 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
 
     update() {
         // Somehow needed to update children
-        // this.preUpdate();
+        this.preUpdate();
     }
 
     addEnemy(spawnX, spawnY, type, changeCondition, redGroup, blueGroup){

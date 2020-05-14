@@ -30,6 +30,8 @@ class HUD extends Phaser.Scene {
 
         this.healthText = this.add.text(200, 20, '', hudConfig).setOrigin(0, 0);
 
+        this.corruptionText = this.add.text(450, 20, '', hudConfig).setOrigin(0, 0);
+
         // this.pointerText = this.add.text(20, 20, '', hudConfig).setOrigin(0, 0);
         // pointer = this.input.activePointer;
 
@@ -37,8 +39,9 @@ class HUD extends Phaser.Scene {
 
     update() {
         this.stateText.setText('State: ' + playerState);
-
         this.healthText.setText('Health: ' + pCurrHealth + "/" + pMaxHealth);
+        this.corruptionText.setText('Corruption: ' + corruption + "/" + maxCorruption + " " + usingCorruption);
+
         
         // this.pointerText.setText([
         //     'pointer.x: ' + pointer.worldX,
