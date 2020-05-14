@@ -78,7 +78,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
                 // Remove current idleWeapon
                 if(idleWeaponExists){
-                    console.log("switch idle exists");
                     this.idleWeapon.destroy();
                     idleWeaponExists = false;
                     this.idleWeapon = null;
@@ -86,18 +85,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 // Start corruption shot window
                 if(corruption != 0 && !usingCorruption) {
                     usingCorruption = true;
-                    this.scene.corruptionDecayTimer.pause = true;
+                    this.scene.corruptionDecayTimer.paused = true;
                     // Start timer for corruption charges to expire after not being used
                     this.corruptionExpireTimer = this.scene.time.delayedCall(corruptionExpireDelay, function () {
                         corruption = 0;
                         usingCorruption = false;
-                        player.scene.corruptionDecayTimer.pause = false;
+                        player.scene.corruptionDecayTimer.paused = false;
                     }, null, this.scene);
                 // Remove corruption if switch again
                 } else if(usingCorruption) {
                     corruption = 0;
                     usingCorruption = false;
-                    this.scene.corruptionDecayTimer.pause = false;
+                    this.scene.corruptionDecayTimer.paused = false;
                     this.corruptionExpireTimer.destroy();
                 }
 

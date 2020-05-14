@@ -60,10 +60,11 @@ var invulnDuration = 1000;
 var pMaxHealth = 1000;
 var pCurrHealth = pMaxHealth;
 
+// Player corruption
 var usingCorruption = false;
 var corruption = 0;
 var maxCorruption = 5;
-var corruptionDecayDelay = 3000;
+var corruptionDecayDelay = 1000;
 var corruptionExpireDelay = 3000;
 var blockCorruptionGain = 3;
 
@@ -76,15 +77,15 @@ var maxMoveVelocity = 300;
 
 // Player attack settings
 // Knife throw
-var knifeSpeed = 800;
+var knifeSpeed = 1000;
 var knifeThrowDamage = 1;
 var knifeSecondDamage = 1;
 var knifeSecondRadius = 2;
-var knifeThrowROF = 300;
+var knifeThrowROF = 200;
 
 // Knife idle
-var knifeMeleeROF = 600;
-var knifeMeleeDamage = 3;
+var knifeMeleeROF = 500;
+var knifeMeleeDamage = 4;
 
 // Orb shot
 var orbAccel = 40;
@@ -101,8 +102,10 @@ var orbKnockbackVelocity = 500;
 
 // Enemies ----------------------------------------------------------------------------------------------------
 var timedSwitchDelay = 5000;
-var infiniteSpawnerDelay = 8000;
+var infiniteSpawnerDelay = 10000;
 var enemySwitchPause = 1000;
+
+var enemyDamageTextDestoryDelay = 1000;
 
 // Chaser settings
 var chaserSpawnPause = 1000;
@@ -114,7 +117,7 @@ var turnAroundMult = 1;
 var predictMult = 1.5;
 var predictMinDist = 200;
 var chaserBounce = 0.1;
-var chaserHealth = 5;
+var chaserHealth = 10;
 
 
 // Game controls ----------------------------------------------------------------------------------------------------

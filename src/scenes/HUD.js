@@ -27,9 +27,7 @@ class HUD extends Phaser.Scene {
         // this.add.rectangle(centerX, centerY, gameWidth, centerY, 0x808080).setOrigin(0.5,0.5);
         // this.add.rectangle(centerX, playHUDY, gameWidth - 20, playHUDHeight - 20, 0xC0C0C0).setOrigin(0.5,0.5);
         this.stateText = this.add.text(20, 20, '', hudConfig).setOrigin(0, 0);
-
         this.healthText = this.add.text(200, 20, '', hudConfig).setOrigin(0, 0);
-
         this.corruptionText = this.add.text(450, 20, '', hudConfig).setOrigin(0, 0);
 
         // this.pointerText = this.add.text(20, 20, '', hudConfig).setOrigin(0, 0);

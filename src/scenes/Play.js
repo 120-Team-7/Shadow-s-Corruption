@@ -30,7 +30,7 @@ class Play extends Phaser.Scene {
 
         // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup)
         player = new Player(this, centerX, centerY);
-        
+
         // ColorGroup(scene, state)
         this.redGroup = new ObsColorGroup(this, 0);
         this.blueGroup = new ObsColorGroup(this, 1);

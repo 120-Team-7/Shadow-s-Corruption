@@ -32,7 +32,7 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
                 this.damage += corruption;
                 corruption = 0;
                 usingCorruption = false;
-                this.scene.corruptionDecayTimer.pause = false;
+                this.scene.corruptionDecayTimer.paused = false;
                 player.corruptionExpireTimer.destroy();
             }
             // Remove if goes off screen

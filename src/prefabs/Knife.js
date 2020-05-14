@@ -32,7 +32,7 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                     this.damage += corruption;
                     corruption = 0;
                     usingCorruption = false;
-                    this.scene.corruptionDecayTimer.pause = false;
+                    this.scene.corruptionDecayTimer.paused = false;
                     player.corruptionExpireTimer.destroy();
                 }
                 this.setRotation(Phaser.Math.Angle.Between(player.x, player.y, this.targetX, this.targetY));

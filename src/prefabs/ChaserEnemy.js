@@ -6,9 +6,9 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
             super(scene, oSpawnX, oSpawnY, 'blueObstacle').setOrigin(0.5, 0.5).setScale(0.25);
         }
 
-        let enemyTextConfig = {
+        this.enemyTextConfig = {
             fontFamily: 'Courier',
-            fontSize: '20px',
+            fontSize: '18px',
             color: '#000000',
             align: 'center',
             padding: {
@@ -36,6 +36,8 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         this.orbDamageInvuln = false;
         this.orbBlockInvuln = false
 
+        this.damageTextDisappearing = false;
+
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.body.setCollideWorldBounds(true);
@@ -46,9 +48,9 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
             this.timedSwitch();
         }
 
-        // Add damage text
-        this.damageText = scene.add.text(this.x, this.y, '', enemyTextConfig).setOrigin(0.5, 0.5);
-
+        // Add health text
+        this.healthText = scene.add.text(this.x, this.y, this.health + "/" + chaserHealth, this.enemyTextConfig).setOrigin(0.5, 0.5);
+        this.damageText = scene.add.text(this.x, this.y - 40, "", this.enemyTextConfig).setOrigin(0.5, 0.5);
         // this.slowDown = scene.tweens.add({
         //     paused: true,
         //     targets: enemy.body,
@@ -124,12 +126,26 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        this.damageText.x = this.x;
-        this.damageText.y = this.y;
+        this.healthText.x = this.body.x + 25;
+        this.healthText.y = this.body.y + 25;
+        this.damageText.x = this.body.x + 25;
+        this.damageText.y = this.body.y - 20;
     }
 
     takeDamage(enemy, damage){
         this.health -= damage;
+        // this.totalDamage += damage;
+        this.healthText.setText(this.health + "/" + chaserHealth);
+        this.damageText.setAlpha(1);
+        if(this.damageTextDisappearing){
+            this.damageTextTimer.destroy();
+        }
+        this.damageText.setText("-" + damage);
+        this.damageTextDisappearing = true;
+        this.damageTextTimer = this.scene.time.delayedCall(500, () => {
+            this.damageTextDisappearing = false;
+            this.damageText.setAlpha(0);
+        }, null, this.scene);
         // If alive show got hit
         if(this.health > 0){
             this.damaged = true;
@@ -148,15 +164,20 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
             }
             if(this.changeCondition == 'timed') {
                 this.timedSwitch.destroy();
-                // this.switchPause.destroy();
             }
-            if(this.state == 0){
-                this.redGroup.remove(this, true, true);
-            } else {
-                this.blueGroup.remove(this, true, true);
-            }
-            // Sometimes not destroyed from removes? Redundancy makes sure
-            this.destroy();
+            this.body.destroy();
+            this.setAlpha(0.2);
+            this.destroyTimer = this.scene.time.delayedCall(enemyDamageTextDestoryDelay, () => {
+                this.healthText.destroy();
+                this.damageText.destroy();
+                if(this.state == 0){
+                    this.redGroup.remove(this, true, true);
+                } else {
+                    this.blueGroup.remove(this, true, true);
+                }
+                // Sometimes not destroyed from removes? Redundancy makes sure
+                this.destroy();
+            }, null, this.scene);
         }
     }
 
