@@ -57,7 +57,7 @@ var switchCooldown = 1000;
 var isInvuln = false; // invulnerability state after taking damage
 var invulnDuration = 1000;
 
-var pMaxHealth = 1000;
+var pMaxHealth = 5;
 var pCurrHealth = pMaxHealth;
 
 // Player corruption
@@ -88,21 +88,21 @@ var knifeMeleeROF = 500;
 var knifeMeleeDamage = 4;
 
 // Orb shot
-var orbAccel = 40;
-var orbAccelMult = 1.05;
+var orbAccel = 40;  // Initial accel for orb on shoot
+var orbAccelMult = 1.05; // Accel multiplier every frame after being shot
 var orbMaxSpeed = maxMoveVelocity;
 var orbShootDamage = 1;
 var orbShootROF = 2000;
-var orbShotInvulnDuration = 200;    // Enemy invulnerability duration for orb after being hit by orb
+var orbShotInvulnDuration = 500;    // Enemy orb damage invulnerability duration after being hit by shot orb
 
 // Orb idle
-var orbBlockStunDuration = 200;
-var orbBlockInvulnDuration = 1000;
-var orbKnockbackVelocity = 500;
+var orbBlockStunDuration = 200;     // Enemy orb stun (unable to move) duration after being blocked by idle orb
+var orbBlockInvulnDuration = 1000;  // Enemy orb block invulnerability duration after being blocked by idle orb
+var orbKnockbackVelocity = 800;     // Velocity magnitude of block knockback
 
 // Enemies ----------------------------------------------------------------------------------------------------
-var timedSwitchDelay = 5000;
-var infiniteSpawnerDelay = 10000;
+var timedSwitchDelay = 7000;
+var infiniteSpawnerDelay = 12000;
 var enemySwitchPause = 1000;
 
 var enemyDamageTextDestoryDelay = 1000;
@@ -110,7 +110,7 @@ var enemyDamageTextDestoryDelay = 1000;
 // Chaser settings
 var chaserSpawnPause = 1000;
 var chaserAccel = 1000;
-var chaserMaxVel = 400;
+var chaserMaxVel = 350;
 var chaserMoveDelay = 100;
 var chaserSlowdownDelay = 1000;
 var turnAroundMult = 1;

@@ -33,7 +33,8 @@ class OrbGroup extends Phaser.GameObjects.Group {
 
                     increaseCorruption(blockCorruptionGain);
 
-                    this.enemyKnockbackVector = scaleVectorMagnitude(orbKnockbackVelocity, orb.x, orb.y, enemy.x, enemy.y); 
+                    // Calculate knockbackVector
+                    this.enemyKnockbackVector = scaleVectorMagnitude(orbKnockbackVelocity, player.x, player.y, enemy.x, enemy.y); 
                     // Knockback enemy with calculated accel components
                     enemy.body.setVelocity(this.enemyKnockbackVector.x, this.enemyKnockbackVector.y);
 
