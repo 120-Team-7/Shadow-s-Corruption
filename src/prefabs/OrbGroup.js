@@ -3,7 +3,6 @@ class OrbGroup extends Phaser.GameObjects.Group {
         // https://photonstorm.github.io/phaser3-docs/Phaser.Types.Physics.Arcade.html#.PhysicsGroupConfig__anchor
         let groupConfig = {
             runChildUpdate: true,
-            maxSize: 2,
         }
         // Group(scene [, children] [, config])
         super(scene, null, groupConfig);
@@ -20,7 +19,6 @@ class OrbGroup extends Phaser.GameObjects.Group {
                 if(orb.shot){
                     enemy.orbDamageInvuln = true;
                     enemy.takeDamage(enemy, orb.damage);
-                    // console.log("orb damage: " + orb.damage);
                     enemy.orbInvulnTimer = group.scene.time.delayedCall(orbShotInvulnDuration, function () {
                         enemy.orbDamageInvuln = false;
                     }, null, this.scene);
@@ -28,7 +26,8 @@ class OrbGroup extends Phaser.GameObjects.Group {
                 } else if (!enemy.orbBlockInvuln) {
                     enemy.orbBlockInvuln = true;
                     // Stop enemy movement
-                    if(enemy.exists){
+                    if(enemy.exists && enemy.moving){
+                        enemy.stunned = true;
                         enemy.moveTimer.paused = true;
                         enemy.body.stop();
 
@@ -42,6 +41,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
                         // Allow enemy movement after short stun
                         enemy.stunTimer = group.scene.time.delayedCall(orbBlockStunDuration, function () {
                             enemy.moveTimer.paused = false;
+                            enemy.stunned = false;
                         }, null, this.scene);
 
                         // Allow ability to be blocked again after short invuln time
@@ -70,10 +70,10 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     this.orb = new Orb(this.scene, this, idleWeaponX, idleWeaponY, 0);
                     this.add(this.orb);
                     // Pass variables to the orb for this shot
-                    this.orb.targetX = pointer.x;
-                    this.orb.targetY = pointer.y;
                     this.orb.shotX = this.orb.x;
                     this.orb.shotY = this.orb.y;
+                    this.orb.targetX = pointer.x;
+                    this.orb.targetY = pointer.y;
                     this.orb.damage = orbShootDamage;
                     // Triggers orb shot
                     this.orb.shot = true;

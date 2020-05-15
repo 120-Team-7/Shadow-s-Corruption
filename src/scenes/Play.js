@@ -8,6 +8,8 @@ class Play extends Phaser.Scene {
 
         keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
+        this.physics.world.debugGraphic.setAlpha(0);
+
         let playConfig = {
             fontFamily: 'Courier',
             fontSize: '40px',
@@ -37,7 +39,14 @@ class Play extends Phaser.Scene {
 
         this.redChaserGroup = new EnemyColorGroup(this, 0);
         this.blueChaserGroup = new EnemyColorGroup(this, 1);
-        this.collideChaserGroups = this.physics.add.collider(this.redChaserGroup, this.blueChaserGroup);
+        // this.collideChaserGroups = this.physics.add.collider(this.redChaserGroup, this.blueChaserGroup);
+        this.collideChaserGroups = this.physics.add.collider(this.redChaserGroup, this.blueChaserGroup, null, function(red, blue) {
+            if(red.stunned || blue.stunned) {
+                return false;
+            } else {
+                return true;
+            }
+          }, this);
 
         // KnifeGroup(scene, state, redEnemyGroup)
         this.knifeGroup = new KnifeGroup(this, 0, this.redChaserGroup);

@@ -41,7 +41,7 @@ class Instructions extends Phaser.Scene {
 
         // Text
         // Black
-        this.add.text(centerX, screenHeight - 10, 'Press I to return to menu', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, screenHeight - 10, 'Press I to return to menu, M to toggle mute, B to toggle physics debug', instructionsConfig).setOrigin(0.5, 0.5);
         this.add.text(centerX, textSpacer, 'WASD to move.    MOUSE to aim and LEFT MOUSE BUTTON to shoot weapon.', instructionsConfig).setOrigin(0.5, 0.5);
         this.add.text(centerX, textSpacer + smallTextSpacer, 'Press SHIFT to SWITCH the player color state between RED and BLUE.', instructionsConfig).setOrigin(0.5, 0.5);
         this.add.text(centerX, textSpacer + 2*smallTextSpacer, 'RED hits RED, BLUE hits BLUE, and OPPOSITES pass through.', instructionsConfig).setOrigin(0.5, 0.5);

@@ -4,8 +4,11 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
-        keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-        keyInstructions = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
+        keyStart = this.input.keyboard.addKey('ENTER');
+        keyInstructions = this.input.keyboard.addKey('I');
+        keyMute = this.input.keyboard.addKey('M');
+
+        // game.sound.mute = true;
 
         let menuConfig = {
             fontFamily: 'Courier',
@@ -44,6 +47,14 @@ class Menu extends Phaser.Scene {
             pCurrHealth = pMaxHealth;
             corruption = 0;
             isInvuln = false;
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(keyMute)) {
+            if(game.sound.mute == false){
+                game.sound.mute = true;
+            } else {
+                game.sound.mute = false;
+            }
         }
     }
 }

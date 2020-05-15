@@ -16,10 +16,13 @@ class Load extends Phaser.Scene {
         this.load.image('redObstacle', './assets/RedObstacle.png');
         this.load.image('blueObstacle', './assets/BlueObstacle.png');
         this.load.image('knife', './assets/knife.png');
+        this.load.image('corruptKnife', './assets/corruptknife.png');
         this.load.image('orb', './assets/orb.png');
+        this.load.image('corruptOrb', './assets/corruptorb.png');
         // Load audio assets
-        this.load.audio('buttonsound', './assets/buttonsound.mp3');
-        
+        this.load.audio('buttonSound', './assets/buttonsound.mp3');
+        this.load.audio('knifeThrow', './assets/knife.mp3');
+        this.load.audio('playerDeath', './assets/demonDeath.mp3');
     }
 
     create() {

@@ -41,7 +41,9 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         this.redGroup = redGroup;
         this.blueGroup = blueGroup;
 
+        this.moving = false;
         this.exists = true;
+        this.stunned = false;
         this.health = chaserHealth;
         this.damage = 1;
         this.damaged = false;
@@ -83,6 +85,7 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
             enemy.moveTimer = scene.time.addEvent({
                 delay: chaserMoveDelay, 
                 callback: () => {
+                    enemy.moving = true;
                     // Predict player movement if more than predictMinDist away from player
                     if(Math.abs(player.x - enemy.x) > predictMinDist && Math.abs(player.y - enemy.y) > predictMinDist){
                         enemy.targetX = player.x + player.body.velocity.x * predictMult;
@@ -173,8 +176,8 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         // If dead show got hit, stop everything, destroy, show death
         } else {
             this.exists = false;
-            this.startMoving.remove();
             this.moveTimer.remove();
+            this.startMoving.remove();
             if(this.damaged){
                 this.damagedTimer.remove();
             }
@@ -201,35 +204,36 @@ class ChaserEnemy extends Phaser.Physics.Arcade.Sprite {
         this.timedSwitch = this.scene.time.addEvent({
             delay: timedSwitchDelay, 
             callback: () => {
-                // Stop enemy->enemy collisions
-                // this.switching = true;
-                this.body.setImmovable(true);
-                // If was red, change to blue
-                if(this.state == 0){
-                    // Pause movement before switching
-                    this.body.stop();
-                    this.moveTimer.paused = true;
-                    this.timedSwitch.paused = true;
-                    this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
-                        if(this.health > 0){
-                            // eSwitchColor(originalGroup, newGroup)
-                            this.eSwitchColor(this.redGroup, this.blueGroup);
-                            this.timedSwitch.paused = false;
-                        }
-                    }, this.enemy, this.scene);
-                // If was blue, change to red
-                } else {
-                    // Pause movement before switching
-                    this.body.stop();
-                    this.moveTimer.paused = true;
-                    this.timedSwitch.paused = true;
-                    this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
-                        if(this.health > 0){
-                            // eSwitchColor(originalGroup, newGroup)
-                            this.eSwitchColor(this.blueGroup, this.redGroup);
-                            this.timedSwitch.paused = false;
-                        }
-                    }, this.enemy, this.scene);
+                if(!this.stunned){
+                    // Stop enemy->enemy collisions
+                    this.body.setImmovable(true);
+                    // If was red, change to blue
+                    if(this.state == 0){
+                        // Pause movement before switching
+                        this.body.stop();
+                        this.moveTimer.paused = true;
+                        this.timedSwitch.paused = true;
+                        this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
+                            if(this.health > 0){
+                                // eSwitchColor(originalGroup, newGroup)
+                                this.eSwitchColor(this.redGroup, this.blueGroup);
+                                this.timedSwitch.paused = false;
+                            }
+                        }, this.enemy, this.scene);
+                    // If was blue, change to red
+                    } else {
+                        // Pause movement before switching
+                        this.body.stop();
+                        this.moveTimer.paused = true;
+                        this.timedSwitch.paused = true;
+                        this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
+                            if(this.health > 0){
+                                // eSwitchColor(originalGroup, newGroup)
+                                this.eSwitchColor(this.blueGroup, this.redGroup);
+                                this.timedSwitch.paused = false;
+                            }
+                        }, this.enemy, this.scene);
+                    }
                 }
             }, 
             callbackContext: this.scene,

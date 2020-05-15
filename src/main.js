@@ -12,7 +12,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            // debug: true,
+            debug: true,
         }
     },
     scene: [ Load, Menu, Instructions, Play, HUD, GameOver ]
@@ -89,17 +89,17 @@ var knifeMeleeROF = 500;
 var knifeMeleeDamage = 3;
 
 // Orb shot
-var orbAccel = 40;  // Initial accel for orb on shoot
+var orbAccel = 50;  // Initial accel for orb on shoot
 var orbAccelMult = 1.05; // Accel multiplier every frame after being shot
-var orbMaxSpeed = maxMoveVelocity;
+var orbMaxSpeed = 500;
 var orbShootDamage = 1;
 var orbShootROF = 2000;
 var orbShotInvulnDuration = 500;    // Enemy orb damage invulnerability duration after being hit by shot orb
 
 // Orb idle
-var orbBlockStunDuration = 200;     // Enemy orb stun (unable to move) duration after being blocked by idle orb
-var orbBlockInvulnDuration = 1000;  // Enemy orb block invulnerability duration after being blocked by idle orb
-var orbKnockbackVelocity = 800;     // Velocity magnitude of block knockback
+var orbBlockStunDuration = 500;     // Enemy orb stun (unable to move) duration after being blocked by idle orb
+var orbBlockInvulnDuration = 500;  // Enemy orb block invulnerability duration after being blocked by idle orb
+var orbKnockbackVelocity = 500;     // Velocity magnitude of block knockback
 
 // Enemies ----------------------------------------------------------------------------------------------------
 var timedSwitchDelay = 7000;
@@ -123,10 +123,10 @@ var chaserHealth = 10;
 
 // Game controls ----------------------------------------------------------------------------------------------------
 // Player
-var keyLeft, keyRight, keyUp, keyDown, keySwitch;
+var keyLeft, keyRight, keyUp, keyDown, keySwitch, keyDebug;
 
 // Menu
-var keyStart, keyInstructions;
+var keyStart, keyInstructions, keyMute;
 
 // Audio Settings
 var globalVolume = 1;

@@ -1,6 +1,10 @@
 class Knife extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, group, oSpawnX, oSpawnY, state) {
-        super(scene, oSpawnX, oSpawnY, 'knife').setOrigin(0.5, 0.5);
+        if(usingCorruption){
+            super(scene, oSpawnX, oSpawnY, 'corruptKnife').setOrigin(0.5, 0.5);
+        } else {
+            super(scene, oSpawnX, oSpawnY, 'knife').setOrigin(0.5, 0.5);
+        }
         
         let knife = this;
         this.group = group;
@@ -18,11 +22,13 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        // this.body.setCircle(8, this.width/2, this.height/2);
-        // .setOffset(this.width/2, this.height/2);
+        this.body.setCircle(25);
     }
 
     update(){
+        if(usingCorruption){
+            this.setTexture('corruptKnife');
+        }
         // Remove if goes off screen
         if(this.x < 0 || this.x > screenWidth || this.y < 0 || this.y > screenHeight) {
             this.group.remove(this, true, true);

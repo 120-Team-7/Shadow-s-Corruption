@@ -15,11 +15,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.setSize(30, 50);
         this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
 
-        keyLeft = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyRight = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        keyUp = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        keyDown = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        keySwitch = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        keyLeft = scene.input.keyboard.addKey('A');
+        keyRight = scene.input.keyboard.addKey('D');
+        keyUp = scene.input.keyboard.addKey('W');
+        keyDown = scene.input.keyboard.addKey('S');
+        keySwitch = scene.input.keyboard.addKey('SHIFT');
+        keyDebug = scene.input.keyboard.addKey('B');
         
         // this.idleWeapon = scene.add.sprite(centerX, centerY, 'redObstacle').setScale(0.1, 0.1);
         this.idleWeapon;
@@ -139,6 +140,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             } else {
                 this.scene.corruptionDecayTimer.pause = false;
             }
+
+            if (Phaser.Input.Keyboard.JustDown(keyDebug)) {
+                if(this.scene.physics.world.debugGraphic.alpha == 1){
+                    this.scene.physics.world.debugGraphic.setAlpha(0);
+                } else {
+                    this.scene.physics.world.debugGraphic.setAlpha(1);
+                }
+            }
         }
     }
 
@@ -152,6 +161,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.cameras.main.flash(1000);
                 this.scene.cameras.main.shake(1000, 0.01);
                 isGameOver = true;
+                this.scene.sound.play('playerDeath');
                 this.setImmovable(true);
                 this.setAlpha(0.2);
                 this.gameOverTimer = this.scene.time.delayedCall(pDeathDelay, function () {
