@@ -25,7 +25,7 @@ class Menu extends Phaser.Scene {
         }
         // add menu screen text
 
-        this.add.text(centerX, centerY - textSpacer, 'Switch', menuConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, centerY - textSpacer, 'Specter Shift', menuConfig).setOrigin(0.5, 0.5);
         menuConfig.fontSize = '40px';
         this.add.text(centerX, centerY + textSpacer, 'Press I for instructions', menuConfig).setOrigin(0.5, 0.5);
         this.add.text(centerX, centerY + 2*textSpacer, 'Press ENTER to start', menuConfig).setOrigin(0.5, 0.5);

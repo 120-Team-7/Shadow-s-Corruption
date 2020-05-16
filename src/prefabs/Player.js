@@ -22,7 +22,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         keySwitch = scene.input.keyboard.addKey('SHIFT');
         keyDebug = scene.input.keyboard.addKey('B');
         
-        // this.idleWeapon = scene.add.sprite(centerX, centerY, 'redObstacle').setScale(0.1, 0.1);
         this.idleWeapon;
         idleWeaponExists = false;
 
@@ -94,12 +93,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         player.scene.corruptionDecayTimer.paused = false;
                     }, null, this.scene);
                 // Remove corruption if switch again
-                } else if(usingCorruption) {
-                    corruption = 0;
-                    usingCorruption = false;
-                    this.scene.corruptionDecayTimer.paused = false;
-                    this.corruptionExpireTimer.destroy();
-                }
+                } 
+                // else if(usingCorruption) {
+                //     corruption = 0;
+                //     usingCorruption = false;
+                //     this.scene.corruptionDecayTimer.paused = false;
+                //     this.corruptionExpireTimer.destroy();
+                // }
 
                 this.switchCooldown = this.scene.time.delayedCall(switchCooldown, function () {
                     switchOnCooldown = false;

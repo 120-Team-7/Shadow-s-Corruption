@@ -11,18 +11,18 @@ class Load extends Phaser.Scene {
             align: 'center',
         }).setOrigin(0.5, 0.5);
         // Load image assets
-        this.load.image('redPlayer', './assets/redPlayer.png');
-        this.load.image('bluePlayer', './assets/bluePlayer.png');
-        this.load.image('redObstacle', './assets/RedObstacle.png');
-        this.load.image('blueObstacle', './assets/BlueObstacle.png');
-        this.load.image('knife', './assets/knife.png');
-        this.load.image('corruptKnife', './assets/corruptknife.png');
-        this.load.image('orb', './assets/orb.png');
-        this.load.image('corruptOrb', './assets/corruptorb.png');
+        this.load.image('redPlayer', './assets/images/redPlayer.png');
+        this.load.image('bluePlayer', './assets/images/bluePlayer.png');
+        this.load.image('redObstacle', './assets/images/RedObstacle.png');
+        this.load.image('blueObstacle', './assets/images/BlueObstacle.png');
+        this.load.image('knife', './assets/images/knife.png');
+        this.load.image('corruptKnife', './assets/images/corruptknife.png');
+        this.load.image('orb', './assets/images/orb.png');
+        this.load.image('corruptOrb', './assets/images/corruptorb.png');
         // Load audio assets
-        this.load.audio('buttonSound', './assets/buttonsound.mp3');
-        this.load.audio('knifeThrow', './assets/knife.mp3');
-        this.load.audio('playerDeath', './assets/demonDeath.mp3');
+        this.load.audio('buttonSound', './assets/sounds/buttonsound.mp3');
+        this.load.audio('knifeThrow', './assets/sounds/knife.mp3');
+        this.load.audio('playerDeath', './assets/sounds/demonDeath.mp3');
     }
 
     create() {
