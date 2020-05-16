@@ -92,7 +92,7 @@ var knifeMeleeDamage = 3;
 var orbAccel = 50;  // Initial accel for orb on shoot
 var orbAccelMult = 1.05; // Accel multiplier every frame after being shot
 var orbMaxSpeed = 500;
-var orbShootDamage = 1;
+var orbShootDamage = 2;
 var orbShootROF = 2000;
 var orbShotInvulnDuration = 500;    // Enemy orb damage invulnerability duration after being hit by shot orb
 
@@ -102,21 +102,21 @@ var orbBlockInvulnDuration = 500;  // Enemy orb block invulnerability duration a
 var orbKnockbackVelocity = 500;     // Velocity magnitude of block knockback
 
 // Enemies ----------------------------------------------------------------------------------------------------
-var timedSwitchDelay = 6000;
-var infiniteSpawnerDelay = 9000;
+var timedSwitchDelay = 5000;
+var infiniteSpawnerDelay = 15000;
 var enemySwitchPause = 1000;
 
 // Enemy text
 var enemyDestroyDelay = 1000;
 
-// Shooting enemy config
+// Chaser enemy config
 var chaserConfig = {
     spawnPause: 1000,
-    accel: 1000,
-    maxVel: 350,
+    accel: 600,
+    maxVel: 300,
     moveDelay: 100,
     slowdownDelay: 1000,
-    turnAroundMult: 1,
+    turnAroundMult: 1.5,
     predictMult: 1.5,
     predictMinDist: 200,
     bounce: 0.1,
@@ -125,18 +125,21 @@ var chaserConfig = {
 }
 
 // Shooter enemy config
-var chaserConfig = {
+var shooterConfig = {
     spawnPause: 1000,
-    accel: 1000,
-    maxVel: 350,
-    moveDelay: 100,
+    accel: 300,
+    maxVel: 150,
+    moveDelay: 50,
     slowdownDelay: 1000,
-    turnAroundMult: 1,
-    predictMult: 1.5,
-    predictMinDist: 200,
+    closeDistance: 500,
+    farDistance: 550,
     bounce: 0.1,
     health: 10,
-    damage: 1
+    damage: 1,
+    bulletSpeed: 350,
+    rof: 3000,
+    shotPredictMult: 1.0000001,
+    overShootDefault: 50,
 }
 
 

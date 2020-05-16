@@ -37,6 +37,7 @@ class Play extends Phaser.Scene {
         this.redGroup = new ObsColorGroup(this, 0);
         this.blueGroup = new ObsColorGroup(this, 1);
 
+        // EnemyColorGroup(scene, state)
         this.redEnemyGroup = new EnemyColorGroup(this, 0);
         this.blueEnemyGroup = new EnemyColorGroup(this, 1);
         this.collideEnemyGroups = this.physics.add.collider(this.redEnemyGroup, this.blueEnemyGroup, null, function(red, blue) {
@@ -45,7 +46,11 @@ class Play extends Phaser.Scene {
             } else {
                 return true;
             }
-          }, this);
+        }, this);
+
+        // EnemyBulletGroup(scene, state)
+        this.redEnemyBulletGroup = new EnemyBulletGroup(this, 0);
+        this.blueEnemyBulletGroup = new EnemyBulletGroup(this, 1);
 
         // KnifeGroup(scene, state, redEnemyGroup)
         this.knifeGroup = new KnifeGroup(this, 0, this.redEnemyGroup);
@@ -62,9 +67,7 @@ class Play extends Phaser.Scene {
         // this.blueGroup.addObstacle(centerX - 200, centerY);
         // this.blueGroup.addObstacle(centerX + 200, centerY + 200);
 
-
         // Add enemies
-
         this.spawnEnemies();
         this.infiniteEnemySpawner = this.time.addEvent({
             delay: infiniteSpawnerDelay,
@@ -83,6 +86,9 @@ class Play extends Phaser.Scene {
         this.orbGroup.update();
         this.redEnemyGroup.update();
         this.blueEnemyGroup.update();
+        this.redEnemyBulletGroup.update();
+        this.blueEnemyBulletGroup.update();
+
 
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
             this.scene.stop('playScene');
@@ -117,12 +123,13 @@ class Play extends Phaser.Scene {
             this.randSpawnX = screenBuffer;
         }
         if(randNum2 < 0.5){
-            // EnemyColorGroup.addEnemy(spawnX, spawnY, type, changeCondition, redGroup, blueGroup)
-            this.redEnemyGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+            // EnemyColorGroup.addShooter(spawnX, spawnY, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
+            this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup)
         } else {
-            this.blueEnemyGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+            this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup)
         }
-        this.redEnemyGroup.addEnemy(this.rSpawnX, this.rSpawnY, 'chaser', 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-        this.blueEnemyGroup.addEnemy(this.bSpawnX, this.bSpawnY, 'chaser', 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+        // EnemyColorGroup.addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
+        this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+        this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'chaser', 'timed', this.redEnemyGroup, this.blueEnemyGroup);
     }
 }

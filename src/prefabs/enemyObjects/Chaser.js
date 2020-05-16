@@ -6,7 +6,7 @@ class Chaser extends Enemy {
 
         this.setOrigin(0.5, 0.5).setScale(0.25);
 
-        // Scope parameters to class
+        // Scope parameters to this instance
         let enemy = this;
         this.enemy = enemy;
         this.scene = scene;
@@ -20,7 +20,7 @@ class Chaser extends Enemy {
         this.body.setMaxVelocity(chaserConfig.maxVel, chaserConfig.maxVel);
 
         if(changeCondition == 'timed') {
-            this.timedSwitch('chaser');
+            this.timedSwitch();
         }
 
         // this.slowDown = scene.tweens.add({
@@ -43,7 +43,8 @@ class Chaser extends Enemy {
                 callback: () => {
                     enemy.moving = true;
                     // Predict player movement if more than predictMinDist away from player
-                    if(Math.abs(player.x - enemy.x) > chaserConfig.predictMinDist && Math.abs(player.y - enemy.y) > chaserConfig.predictMinDist){
+                    this.enemyDistance = Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y);
+                    if(this.enemyDistance > chaserConfig.predictMinDist){
                         enemy.targetX = player.x + player.body.velocity.x * chaserConfig.predictMult;
                         enemy.targetY = player.y + player.body.velocity.y * chaserConfig.predictMult;
                         // If predict to go beyond game bound, set target to directly to player
@@ -100,5 +101,5 @@ class Chaser extends Enemy {
     update() {
         super.update();
     }
-    
+
 }

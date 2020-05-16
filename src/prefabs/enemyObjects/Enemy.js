@@ -6,7 +6,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             super(scene, oSpawnX, oSpawnY, blueTexture);
         }
 
-        // Scope parameters to class
+        // Scope parameters to this instance
         let enemy = this;
         this.enemy = enemy;
         this.scene = scene;
@@ -138,29 +138,31 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                     // If was red, change to blue
                     if(this.state == 0){
                         // Pause movement before switching
+                        this.switching = true;
                         this.body.stop();
                         this.moveTimer.paused = true;
                         this.timedSwitch.paused = true;
                         this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
-                            this.switching = true;
                             if(this.health > 0){
                                 // eSwitchColor(originalGroup, newGroup)
                                 this.eSwitchColor(this.redGroup, this.blueGroup);
                                 this.timedSwitch.paused = false;
+                                this.switching = false;
                             }
                         }, this.enemy, this.scene);
                     // If was blue, change to red
                     } else {
                         // Pause movement before switching
+                        this.switching = true;
                         this.body.stop();
                         this.moveTimer.paused = true;
                         this.timedSwitch.paused = true;
                         this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
-                            this.switching = true;
                             if(this.health > 0){
                                 // eSwitchColor(originalGroup, newGroup)
                                 this.eSwitchColor(this.blueGroup, this.redGroup);
                                 this.timedSwitch.paused = false;
+                                this.switching = false;
                             }
                         }, null, this.scene);
                     }

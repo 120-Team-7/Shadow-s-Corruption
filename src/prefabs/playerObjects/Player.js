@@ -113,7 +113,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     switchOnCooldown = false;
                 }, null, this.scene);
 
-                this.scene.cameras.main.shake(500, 0.003);
+                this.scene.cameras.main.shake(250, 0.003);
             }
 
             // Calculate angle to set on idleWeapon sprite (toward pointer)

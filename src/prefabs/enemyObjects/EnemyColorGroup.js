@@ -34,10 +34,13 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
         this.preUpdate();
     }
 
-    addEnemy(spawnX, spawnY, type, changeCondition, redGroup, blueGroup) {
-        // ChaserEnemy(scene, oSpawnX, oSpawnY, state, changeCondition, redGroup, blueGroup)
-        if(type == 'chaser'){
-            this.add(new Chaser(this.scene, spawnX, spawnY, this.state, changeCondition, redGroup, blueGroup))
-        }
+    addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup) {
+        // Chaser(scene, oSpawnX, oSpawnY, state, changeCondition, redGroup, blueGroup)
+        this.add(new Chaser(this.scene, spawnX, spawnY, this.state, changeCondition, redGroup, blueGroup));
+    }
+        
+    addShooter(spawnX, spawnY, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup) {
+        // Shooter(scene, oSpawnX, oSpawnY, state, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
+        this.add(new Shooter(this.scene, spawnX, spawnY, this.state, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup));
     }
 }

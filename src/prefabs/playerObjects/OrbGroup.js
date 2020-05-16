@@ -81,6 +81,10 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     group.orbCooldown = this.scene.time.delayedCall(orbShootROF, function () {
                         group.isOnCooldown = false;
                     }, null, this.scene);
+                    // Change idle orb back to normal once corruption shot used
+                    if(idleWeaponExists && usingCorruption) {
+                        player.idleWeapon.setTexture('orb');
+                    }
                 }
             }
         }, this);
@@ -93,8 +97,11 @@ class OrbGroup extends Phaser.GameObjects.Group {
         if(playerState == 1 && !idleWeaponExists && !isGameOver && switchOnCooldown) {
             idleWeaponExists = true;
             // Orb(scene, group, oSpawnX, oSpawnY, targetX, targetY, state)
-            player.idleWeapon = new Orb(this.scene, this, idleWeaponX, idleWeaponY, 0);
+            player.idleWeapon = new Orb(this.scene, this, idleWeaponX, idleWeaponY, 1);
             this.add(player.idleWeapon);
+            if(usingCorruption) {
+                player.idleWeapon.setTexture('corruptOrb');
+            }
         }
     }
 }
