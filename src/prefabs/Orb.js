@@ -1,8 +1,12 @@
 class Orb extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, group, oSpawnX, oSpawnY, state) {
-        super(scene, oSpawnX, oSpawnY, 'orb').setOrigin(0.5, 0.5).setScale(1.5, 1.5);
+        if(usingCorruption) {
+            super(scene, oSpawnX, oSpawnY, 'corruptOrb').setOrigin(0.5, 0.5).setScale(1.5, 1.5);
+        } else {
+            super(scene, oSpawnX, oSpawnY, 'orb').setOrigin(0.5, 0.5).setScale(1.5, 1.5);
+        }
 
-        let knife = this;
+        let orb = this;
         this.group = group;
         this.scene = scene;
         this.state = state;
@@ -29,6 +33,9 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
         if(this.shot){
             if(usingCorruption) {
                 this.setTexture('corruptOrb');
+                if(idleWeaponExists && player.idleWeapon.state == 1) {
+                    player.idleWeapon.setTexture('orb');
+                }
                 this.damage += corruption;
                 corruption = 0;
                 usingCorruption = false;

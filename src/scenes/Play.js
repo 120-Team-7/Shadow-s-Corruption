@@ -37,10 +37,9 @@ class Play extends Phaser.Scene {
         this.redGroup = new ObsColorGroup(this, 0);
         this.blueGroup = new ObsColorGroup(this, 1);
 
-        this.redChaserGroup = new EnemyColorGroup(this, 0);
-        this.blueChaserGroup = new EnemyColorGroup(this, 1);
-        // this.collideChaserGroups = this.physics.add.collider(this.redChaserGroup, this.blueChaserGroup);
-        this.collideChaserGroups = this.physics.add.collider(this.redChaserGroup, this.blueChaserGroup, null, function(red, blue) {
+        this.redEnemyGroup = new EnemyColorGroup(this, 0);
+        this.blueEnemyGroup = new EnemyColorGroup(this, 1);
+        this.collideEnemyGroups = this.physics.add.collider(this.redEnemyGroup, this.blueEnemyGroup, null, function(red, blue) {
             if(red.stunned || blue.stunned) {
                 return false;
             } else {
@@ -49,9 +48,9 @@ class Play extends Phaser.Scene {
           }, this);
 
         // KnifeGroup(scene, state, redEnemyGroup)
-        this.knifeGroup = new KnifeGroup(this, 0, this.redChaserGroup);
+        this.knifeGroup = new KnifeGroup(this, 0, this.redEnemyGroup);
         // OrbGroup(scene, state, blueEnemyGroup)
-        this.orbGroup = new OrbGroup(this, 1, this.blueChaserGroup);
+        this.orbGroup = new OrbGroup(this, 1, this.blueEnemyGroup);
 
         // Add play objects ----------------------------------------------------------------------------------------------------
         
@@ -82,8 +81,8 @@ class Play extends Phaser.Scene {
         player.update();
         this.knifeGroup.update();
         this.orbGroup.update();
-        this.redChaserGroup.update();
-        this.blueChaserGroup.update();
+        this.redEnemyGroup.update();
+        this.blueEnemyGroup.update();
 
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
             this.scene.stop('playScene');
@@ -119,11 +118,11 @@ class Play extends Phaser.Scene {
         }
         if(randNum2 < 0.5){
             // EnemyColorGroup.addEnemy(spawnX, spawnY, type, changeCondition, redGroup, blueGroup)
-            this.redChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
+            this.redEnemyGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redEnemyGroup, this.blueEnemyGroup);
         } else {
-            this.blueChaserGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
+            this.blueEnemyGroup.addEnemy(this.randSpawnX, centerY, 'chaser', 'timed', this.redEnemyGroup, this.blueEnemyGroup);
         }
-        this.redChaserGroup.addEnemy(this.rSpawnX, this.rSpawnY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
-        this.blueChaserGroup.addEnemy(this.bSpawnX, this.bSpawnY, 'chaser', 'timed', this.redChaserGroup, this.blueChaserGroup);
+        this.redEnemyGroup.addEnemy(this.rSpawnX, this.rSpawnY, 'chaser', 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+        this.blueEnemyGroup.addEnemy(this.bSpawnX, this.bSpawnY, 'chaser', 'timed', this.redEnemyGroup, this.blueEnemyGroup);
     }
 }

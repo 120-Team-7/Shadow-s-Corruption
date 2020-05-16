@@ -102,23 +102,42 @@ var orbBlockInvulnDuration = 500;  // Enemy orb block invulnerability duration a
 var orbKnockbackVelocity = 500;     // Velocity magnitude of block knockback
 
 // Enemies ----------------------------------------------------------------------------------------------------
-var timedSwitchDelay = 7000;
+var timedSwitchDelay = 6000;
 var infiniteSpawnerDelay = 9000;
 var enemySwitchPause = 1000;
 
-var enemyDamageTextDestoryDelay = 1000;
+// Enemy text
+var enemyDestroyDelay = 1000;
 
-// Chaser settings
-var chaserSpawnPause = 1000;
-var chaserAccel = 1000;
-var chaserMaxVel = 350;
-var chaserMoveDelay = 100;
-var chaserSlowdownDelay = 1000;
-var turnAroundMult = 1;
-var predictMult = 1.5;
-var predictMinDist = 200;
-var chaserBounce = 0.1;
-var chaserHealth = 10;
+// Shooting enemy config
+var chaserConfig = {
+    spawnPause: 1000,
+    accel: 1000,
+    maxVel: 350,
+    moveDelay: 100,
+    slowdownDelay: 1000,
+    turnAroundMult: 1,
+    predictMult: 1.5,
+    predictMinDist: 200,
+    bounce: 0.1,
+    health: 10,
+    damage: 1
+}
+
+// Shooter enemy config
+var chaserConfig = {
+    spawnPause: 1000,
+    accel: 1000,
+    maxVel: 350,
+    moveDelay: 100,
+    slowdownDelay: 1000,
+    turnAroundMult: 1,
+    predictMult: 1.5,
+    predictMinDist: 200,
+    bounce: 0.1,
+    health: 10,
+    damage: 1
+}
 
 
 // Game controls ----------------------------------------------------------------------------------------------------

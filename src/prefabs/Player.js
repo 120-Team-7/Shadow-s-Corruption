@@ -91,19 +91,29 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         corruption = 0;
                         usingCorruption = false;
                         player.scene.corruptionDecayTimer.paused = false;
+                        // Change to regular orb if corruption time expires
+                        if(playerState == 1 && idleWeaponExists && !usingCorruption){
+                            player.idleWeapon.setTexture('orb');
+                        }
+                        // Change to regular knife if corruption time expires
+                        if(playerState == 0 && idleWeaponExists && !usingCorruption){
+                            player.idleWeapon.setTexture('knife');
+                        }
                     }, null, this.scene);
                 // Remove corruption if switch again
                 } 
-                // else if(usingCorruption) {
-                //     corruption = 0;
-                //     usingCorruption = false;
-                //     this.scene.corruptionDecayTimer.paused = false;
-                //     this.corruptionExpireTimer.destroy();
-                // }
+                else if(usingCorruption) {
+                    corruption = 0;
+                    usingCorruption = false;
+                    this.scene.corruptionDecayTimer.paused = false;
+                    this.corruptionExpireTimer.destroy();
+                }
 
                 this.switchCooldown = this.scene.time.delayedCall(switchCooldown, function () {
                     switchOnCooldown = false;
                 }, null, this.scene);
+
+                this.scene.cameras.main.shake(500, 0.003);
             }
 
             // Calculate angle to set on idleWeapon sprite (toward pointer)
@@ -156,7 +166,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             isInvuln = true;
             pCurrHealth -= damage;
             // Player dead
-            if(pCurrHealth <= 0){
+            if(pCurrHealth <= 0) {
+                if(idleWeaponExists){
+                    this.idleWeapon.destroy();
+                }
                 // Camera effects
                 this.scene.cameras.main.flash(1000);
                 this.scene.cameras.main.shake(1000, 0.01);
@@ -169,12 +182,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.scene.stop('hudScene');
                     this.scene.start('gameOverScene');
                 }, this, this.scene);
-
+            // Player hit, but not dead
             } else {
-                // Set invuln timer
                 this.setAlpha(0.5);
                 // Camera effects
                 this.scene.cameras.main.flash(200);
+                // Set invuln timer
                 this.invulnTimer = this.scene.time.delayedCall(invulnDuration, function () {
                     isInvuln = false;
                     player.setAlpha(1);
