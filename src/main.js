@@ -145,7 +145,11 @@ var shooterConfig = {
 
 // Game controls ----------------------------------------------------------------------------------------------------
 // Player
-var keyLeft, keyRight, keyUp, keyDown, keySwitch, keyDebug;
+var keyLeft, keyRight, keyUp, keyDown, keySwitch;
+
+// Dev tools
+var keyDebug, keySuicide, keyGodmode;
+var isGodmode = false;
 
 // Menu
 var keyStart, keyInstructions, keyMute;

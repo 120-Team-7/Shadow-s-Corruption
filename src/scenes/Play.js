@@ -88,7 +88,7 @@ class Play extends Phaser.Scene {
         this.redEnemyBulletGroup.update();
         this.blueEnemyBulletGroup.update();
 
-        console.log(player);
+        // console.log(player);
 
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
             isPaused = true;

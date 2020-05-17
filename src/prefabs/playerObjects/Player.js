@@ -21,9 +21,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         keyDown = scene.input.keyboard.addKey('S');
         keySwitch = scene.input.keyboard.addKey('SHIFT');
         keyDebug = scene.input.keyboard.addKey('B');
+        keySuicide = scene.input.keyboard.addKey('K');
+        keyGodmode = scene.input.keyboard.addKey('PLUS');
         
         this.idleWeapon;
         idleWeaponExists = false;
+
+        this.originalKROF = knifeThrowROF;
+        this.originalOROF = orbShootROF;
 
         scene.corruptionDecayTimer = scene.time.addEvent({
             delay: corruptionDecayDelay,
@@ -156,6 +161,24 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.scene.physics.world.debugGraphic.setAlpha(0);
                 } else {
                     this.scene.physics.world.debugGraphic.setAlpha(1);
+                }
+            }
+
+            if(Phaser.Input.Keyboard.JustDown(keySuicide)) {
+                console.log("dead");
+                this.playerHit(pMaxHealth);
+            }
+            if(Phaser.Input.Keyboard.JustDown(keyGodmode)) {
+                if(!isGodmode) {
+                    isGodmode = true;
+                    pCurrHealth += 100;
+                    knifeThrowROF = 1;
+                    orbShootROF = 1;
+                } else {
+                    isGodmode = false;
+                    pCurrHealth = pMaxHealth;
+                    knifeThrowROF = this.originalKROF;
+                    orbShootROF = this.originalOROF;
                 }
             }
         }
