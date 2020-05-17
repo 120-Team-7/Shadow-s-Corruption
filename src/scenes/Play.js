@@ -5,7 +5,6 @@ class Play extends Phaser.Scene {
 
 
     create() {
-
         keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
         this.physics.world.debugGraphic.setAlpha(0);
@@ -89,11 +88,16 @@ class Play extends Phaser.Scene {
         this.redEnemyBulletGroup.update();
         this.blueEnemyBulletGroup.update();
 
+        console.log(player);
 
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
-            this.scene.stop('playScene');
-            this.scene.stop('hudScene');
-            this.scene.start('menuScene');
+            isPaused = true;
+            this.scene.pause('playScene');
+            this.scene.pause('hudScene');
+            this.scene.setVisible(false, 'playScene');
+            this.scene.setVisible(false, 'hudScene');
+            this.scene.run('menuScene');
+            this.scene.setVisible(true, 'menuScene');
         }
     }
 

@@ -3,11 +3,6 @@ class Instructions extends Phaser.Scene {
         super('instructionsScene');
     }
 
-    // preload() {
-    //     this.load.image('redPlayer', './assets/redPlayer.png');
-    //     this.load.image('bluePlayer', './assets/bluePlayer.png');
-    // }
-
     create() {
         keyInstructions = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
 
@@ -50,10 +45,11 @@ class Instructions extends Phaser.Scene {
         this.add.text(centerX, textSpacer + 3*smallTextSpacer, 'Equiped weapon is based on player color state. The RED KNIFE can be rapidly shot', instructionsConfig).setOrigin(0.5, 0.5);
         this.add.text(centerX, textSpacer + 4*smallTextSpacer, 'or used to stab enemies in close range. The BLUE ORB can be shot as an', instructionsConfig).setOrigin(0.5, 0.5);
         this.add.text(centerX, textSpacer + 5*smallTextSpacer, 'accelerating, piercing projectile or block enemies in close range.', instructionsConfig).setOrigin(0.5, 0.5);
-        this.add.text(centerX, textSpacer + 6*smallTextSpacer, 'Gain CORRUPTION when dealing damage with KNIFE or blocking with ORB.', instructionsConfig).setOrigin(0.5, 0.5);
-        this.add.text(centerX, textSpacer + 7*smallTextSpacer, 'SHIFT and expend CORRUPTION to deliver a single extra damage attack.', instructionsConfig).setOrigin(0.5, 0.5);
-        this.add.text(centerX, textSpacer + 8*smallTextSpacer, 'Strategically SHIFT to evade enemy attacks and use your CORRUPTION often to', instructionsConfig).setOrigin(0.5, 0.5);
-        this.add.text(centerX, textSpacer + 9*smallTextSpacer, 'quickly wipe out enemies before they SHIFT their own color state and overwhelm you!', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, textSpacer + 6*smallTextSpacer, 'Gain CORRUPTION when dealing damage with KNIFE, blocking enemies with ORB, or', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, textSpacer + 7*smallTextSpacer, 'blocking enemy shots with a close range weapon. SHIFT and expend CORRUPTION to ', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, textSpacer + 8*smallTextSpacer, 'deliver a single extra damage attack. Strategically SHIFT to reallocate your', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, textSpacer + 9*smallTextSpacer, 'offensive and defensive capabilities at the right time. Use your CORRUPTION often', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, textSpacer + 10*smallTextSpacer, 'to wipe out enemies before they SHIFT their own color state and overwhelm you!', instructionsConfig).setOrigin(0.5, 0.5);
 
         // Red
         instructionsConfig.color = '#FF0000';
@@ -71,8 +67,9 @@ class Instructions extends Phaser.Scene {
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyInstructions)) {
-            // this.sound.play('buttonsound');
-            this.scene.start('menuScene');
+            this.scene.run('menuScene');
+            this.scene.setVisible(true, 'menuScene');
+            this.scene.stop('instructionsScene');
         }
     }
 }

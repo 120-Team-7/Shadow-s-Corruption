@@ -33,20 +33,29 @@ class Menu extends Phaser.Scene {
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyInstructions)) {
-            // this.sound.play('buttonsound');
-            this.scene.start('instructionsScene');
+        if (Phaser.Input.Keyboard.JustDown(keyInstructions) && isPaused) {
+            this.scene.setVisible(false, 'menuScene');
+            this.scene.run('instructionsScene');
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
-            // this.sound.play('buttonsound');
-            this.scene.stop('menuScene');
-            this.scene.run('playScene');
-            this.scene.run('hudScene');
-            isGameOver = false;
-            pCurrHealth = pMaxHealth;
-            corruption = 0;
-            isInvuln = false;
+            this.scene.setVisible(false, 'menuScene');
+            if(isGameOver) {
+                this.scene.stop('instructionsScene');
+                this.scene.run('playScene');
+                this.scene.run('hudScene');
+                isGameOver = false;
+                pCurrHealth = pMaxHealth;
+                corruption = 0;
+                isInvuln = false;
+            } else if(isPaused) {
+                isPaused = false;
+                this.scene.stop('instructionsScene');
+                this.scene.run('playScene');
+                this.scene.run('hudScene');
+                this.scene.setVisible(true, 'playScene');
+                this.scene.setVisible(true, 'hudScene');
+            }
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyMute)) {

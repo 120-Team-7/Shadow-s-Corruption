@@ -17,17 +17,19 @@ class KnifeGroup extends Phaser.GameObjects.Group {
         this.kxeCollider = scene.physics.add.overlap(group, redEnemyGroup, function(knife, enemy) {
             knife.destroy();
             increaseCorruption(knife.damage);
-            if(usingCorruption) {
-                knife.damage += corruption;
-                corruption = 0;
-                usingCorruption = false;
-                enemy.scene.corruptionDecayTimer.paused = false;
-                player.corruptionExpireTimer.destroy();
+            if(knife.shooting){
+                enemy.takeDamage(enemy, knife.damage);
             }
-            enemy.takeDamage(enemy, knife.damage);
-            // console.log("knife damage: " + knife.damage);
             // If it is a melee hit
             if(!group.isOnCooldown && !knife.shooting){
+                if(usingCorruption) {
+                    knife.damage += corruption;
+                    corruption = 0;
+                    usingCorruption = false;
+                    enemy.scene.corruptionDecayTimer.paused = false;
+                    player.corruptionExpireTimer.destroy();
+                }
+                enemy.takeDamage(enemy, knife.damage);
                 group.isOnCooldown = true;
                 // Start melee cooldown
                 group.knifeCooldown = group.scene.time.delayedCall(knifeMeleeROF, function () {

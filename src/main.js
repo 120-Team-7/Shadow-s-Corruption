@@ -27,14 +27,14 @@ var screenHeight = game.config.height;
 var centerX = game.config.width/2;
 var centerY = game.config.height/2;
 var textSpacer = 100;
-var smallTextSpacer = 35;
+var smallTextSpacer = 32;
 
 // Text settings
 
 // Game globals
-var isGameOver = false;
+var isGameOver = true;
+var isPaused = true;
 var resetAudio = true;
-var pointer;
 
 // Obstacle settings
 var obstacleDrag = 300;

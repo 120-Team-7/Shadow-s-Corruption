@@ -167,8 +167,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             pCurrHealth -= damage;
             // Player dead
             if(pCurrHealth <= 0) {
-                if(idleWeaponExists){
+                if(idleWeaponExists) {
                     this.idleWeapon.destroy();
+                }
+                if(usingCorruption) {
+                    this.corruptionExpireTimer.destroy();
                 }
                 // Camera effects
                 this.scene.cameras.main.flash(1000);
@@ -180,6 +183,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.gameOverTimer = this.scene.time.delayedCall(pDeathDelay, function () {
                     this.scene.stop('playScene');
                     this.scene.stop('hudScene');
+                    this.scene.stop('menuScene');
                     this.scene.start('gameOverScene');
                 }, this, this.scene);
             // Player hit, but not dead
@@ -188,6 +192,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 // Camera effects
                 this.scene.cameras.main.flash(200);
                 // Set invuln timer
+                this.randHurt = Math.random();
+                if(this.randHurt < 0.5) {
+                    this.scene.sound.play('playerHurt1');
+                } else {
+                    this.scene.sound.play('playerHurt2');
+                }
                 this.invulnTimer = this.scene.time.delayedCall(invulnDuration, function () {
                     isInvuln = false;
                     player.setAlpha(1);
