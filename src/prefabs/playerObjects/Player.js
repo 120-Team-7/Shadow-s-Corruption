@@ -1,11 +1,12 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, pSpawnX, pSpawnY) {
+    constructor(scene, hudScene, pSpawnX, pSpawnY) {
         super(scene, pSpawnX, pSpawnY, 'redPlayer').setOrigin(0.5, 0.5);
 
         playerState = 0;
 
         let player = this;
         this.scene = scene;
+        this.hudScene = hudScene;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -154,6 +155,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.corruptionDecayTimer.pause = true;
             } else {
                 this.scene.corruptionDecayTimer.pause = false;
+            }
+
+            // displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime)
+            if(switchOnCooldown) {
+                displayCooldown(this.hudScene.switchCooldownText, this.hudScene.switchCooldownBox, this.switchCooldown, this.switchCooldown.delay);
+            } else {
+                // this.hudScene.switchCooldownImage.setAlpha(1);
+                this.hudScene.switchCooldownText.setText("");
+                this.hudScene.switchCooldownBox.setSize(cooldownBoxWidth, cooldownBoxHeight);
             }
 
             if (Phaser.Input.Keyboard.JustDown(keyDebug)) {

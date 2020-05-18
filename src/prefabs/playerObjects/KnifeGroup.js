@@ -1,5 +1,5 @@
 class KnifeGroup extends Phaser.GameObjects.Group {
-    constructor(scene, state, redEnemyGroup) {
+    constructor(scene, hudScene, state, redEnemyGroup) {
         // https://photonstorm.github.io/phaser3-docs/Phaser.Types.Physics.Arcade.html#.PhysicsGroupConfig__anchor
         let groupConfig = {
             runChildUpdate: true,
@@ -9,6 +9,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
 
         let group = this;
         this.scene = scene;
+        this.hudScene = hudScene;
         this.state = state;
 
         this.isOnCooldown = false;
@@ -23,7 +24,6 @@ class KnifeGroup extends Phaser.GameObjects.Group {
             // If it is a melee hit
             if(!group.isOnCooldown && !knife.shooting){
                 if(usingCorruption) {
-                    knife.damage += corruption;
                     corruption = 0;
                     usingCorruption = false;
                     enemy.scene.corruptionDecayTimer.paused = false;
@@ -63,7 +63,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     this.knife.shooting = true;
                     this.knife.targetX = pointer.x;
                     this.knife.targetY = pointer.y;
-                    this.knife.damage = knifeThrowDamage;
+                    this.knife.damage += knifeThrowDamage - knifeMeleeDamage;
                     // Triggers knife first throwing state
                     this.knife.first = true;
                     this.scene.sound.play('knifeThrow');
@@ -94,6 +94,15 @@ class KnifeGroup extends Phaser.GameObjects.Group {
             // Knife(scene, group, oSpawnX, oSpawnY, targetX, targetY, state)
             player.idleWeapon = new Knife(this.scene, this, idleWeaponX, idleWeaponY, 0);
             this.add(player.idleWeapon);
+        }
+
+        // displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime)
+        if(this.isOnCooldown) {
+            displayCooldown(this.hudScene.knifeCooldownText, this.hudScene.knifeCooldownBox, this.knifeCooldown, this.knifeCooldown.delay);
+        } else {
+            // this.hudScene.knifeCooldownImage.setAlpha(1);
+            this.hudScene.knifeCooldownText.setText("");
+            this.hudScene.knifeCooldownBox.setSize(cooldownBoxWidth, cooldownBoxHeight);
         }
     }
 }

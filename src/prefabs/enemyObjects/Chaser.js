@@ -19,10 +19,6 @@ class Chaser extends Enemy {
         this.body.setBounce(chaserConfig.bounce, chaserConfig.bounce);
         this.body.setMaxVelocity(chaserConfig.maxVel, chaserConfig.maxVel);
 
-        if(changeCondition == 'timed') {
-            this.timedSwitch();
-        }
-
         // this.slowDown = scene.tweens.add({
         //     paused: true,
         //     targets: enemy.body,
@@ -96,6 +92,10 @@ class Chaser extends Enemy {
                 loop: true,
             });
         }, null, this.scene);
+
+        if(changeCondition == 'timed') {
+            this.timedSwitch();
+        }
     }
 
     update() {

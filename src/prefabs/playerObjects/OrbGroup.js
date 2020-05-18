@@ -1,5 +1,5 @@
 class OrbGroup extends Phaser.GameObjects.Group {
-    constructor(scene, state, blueEnemyGroup) {
+    constructor(scene, hudScene, state, blueEnemyGroup) {
         // https://photonstorm.github.io/phaser3-docs/Phaser.Types.Physics.Arcade.html#.PhysicsGroupConfig__anchor
         let groupConfig = {
             runChildUpdate: true,
@@ -9,6 +9,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
 
         let group = this;
         this.scene = scene;
+        this.hudScene = hudScene;
         this.state = state;
 
         this.isOnCooldown = false;
@@ -102,6 +103,22 @@ class OrbGroup extends Phaser.GameObjects.Group {
             if(usingCorruption) {
                 player.idleWeapon.setTexture('corruptOrb');
             }
+        }
+
+        // if(this.isOnCooldown) {
+        //     console.log(this.orbCooldown);
+        //     console.log(this.orbCooldown.delay);
+        // }
+        
+
+        // displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime)
+        if(this.isOnCooldown) {
+            // this.hudScene.orbCooldownImage.setAlpha(0.5);
+            displayCooldown(this.hudScene.orbCooldownText, this.hudScene.orbCooldownBox, this.orbCooldown, orbShootROF);
+        } else {
+            // this.hudScene.orbCooldownImage.setAlpha(1);
+            this.hudScene.orbCooldownText.setText("");
+            this.hudScene.orbCooldownBox.setSize(cooldownBoxWidth, cooldownBoxHeight);
         }
     }
 }

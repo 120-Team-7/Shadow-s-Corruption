@@ -15,6 +15,9 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         this.targetY;
         
         this.damage = knifeMeleeDamage;
+        if(usingCorruption) {
+            this.damage += corruption;
+        }
         this.shooting = false;
         this.first = false;
         this.second = false;
@@ -26,9 +29,6 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(){
-        if(usingCorruption){
-            this.setTexture('corruptKnife');
-        }
         // Remove if goes off screen
         if(this.x < 0 || this.x > screenWidth || this.y < 0 || this.y > screenHeight) {
             this.group.remove(this, true, true);
@@ -36,7 +36,6 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             // First firing direction (where player clicked)
             if(this.first == true){
                 if(usingCorruption) {
-                    this.damage += corruption;
                     corruption = 0;
                     usingCorruption = false;
                     this.scene.corruptionDecayTimer.paused = false;

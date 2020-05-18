@@ -8,8 +8,6 @@ class Menu extends Phaser.Scene {
         keyInstructions = this.input.keyboard.addKey('I');
         keyMute = this.input.keyboard.addKey('M');
 
-        // game.sound.mute = true;
-
         let menuConfig = {
             fontFamily: 'Courier',
             fontSize: '100px',
@@ -30,6 +28,7 @@ class Menu extends Phaser.Scene {
         this.add.text(centerX, centerY + textSpacer, 'Press I for instructions', menuConfig).setOrigin(0.5, 0.5);
         this.add.text(centerX, centerY + 2*textSpacer, 'Press ENTER to start', menuConfig).setOrigin(0.5, 0.5);
 
+        // game.sound.mute = true;
     }
 
     update() {

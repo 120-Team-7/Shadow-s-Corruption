@@ -20,9 +20,10 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.body.setMaxVelocity(orbMaxSpeed, orbMaxSpeed);
+        // this.body.setMaxVelocity(orbMaxSpeed, orbMaxSpeed);
 
         this.body.setCircle(25, 50, 50);
+        // this.setAngularAcceleration(orbAngularAccel);
     }
 
     update(){    
@@ -40,13 +41,14 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
                 this.group.remove(this, true, true);
             } else {
                 this.accelVector = scaleVectorMagnitude(this.accel, this.shotX, this.shotY, this.targetX, this.targetY)
-
+                
                 // Set new accel
-                this.body.acceleration.x = this.accelVector.x;
-                this.body.acceleration.y = this.accelVector.y;
+                // this.body.acceleration.x = this.accelVector.x;
+                // this.body.acceleration.y = this.accelVector.y;
+                this.body.setAcceleration(this.accelVector.x, this.accelVector.y);
 
                 // Increase accel
-                this.accel = this.accel * orbAccelMult;
+                this.accel = Math.round(this.accel * orbAccelMult);
             }
         }
     }

@@ -5,7 +5,6 @@ class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
         } else {
             super(scene, spawnX, spawnY, 'blueObstacle').setOrigin(0.5, 0.5).setScale(0.15, 0.15);
         }
-        
         let bullet = this;
         this.group = group;
         this.spawnX = spawnX;
@@ -23,7 +22,7 @@ class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        this.body.setCircle(5);
+        this.body.setCircle(100);
 
         this.setRotation(Phaser.Math.Angle.Between(this.spawnX, this.spawnY, this.targetX, this.targetY));
         this.scene.physics.moveTo(this, this.targetX, this.targetY, shooterConfig.bulletSpeed);

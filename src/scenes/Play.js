@@ -30,7 +30,7 @@ class Play extends Phaser.Scene {
         pointer = this.input.activePointer;
 
         // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup)
-        player = new Player(this, centerX, centerY);
+        player = new Player(this, game.scene.keys.hudScene, centerX, centerY);
 
         // ColorGroup(scene, state)
         this.redGroup = new ObsColorGroup(this, 0);
@@ -52,9 +52,9 @@ class Play extends Phaser.Scene {
         this.blueEnemyBulletGroup = new EnemyBulletGroup(this, 1);
 
         // KnifeGroup(scene, state, redEnemyGroup)
-        this.knifeGroup = new KnifeGroup(this, 0, this.redEnemyGroup);
+        this.knifeGroup = new KnifeGroup(this, game.scene.keys.hudScene, 0, this.redEnemyGroup);
         // OrbGroup(scene, state, blueEnemyGroup)
-        this.orbGroup = new OrbGroup(this, 1, this.blueEnemyGroup);
+        this.orbGroup = new OrbGroup(this, game.scene.keys.hudScene, 1, this.blueEnemyGroup);
 
         // Add play objects ----------------------------------------------------------------------------------------------------
         
@@ -79,6 +79,8 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        // console.log(game.scene.keys.hudScene);
+
         pointer = this.input.activePointer;
         player.update();
         this.knifeGroup.update();
@@ -134,6 +136,6 @@ class Play extends Phaser.Scene {
         }
         // EnemyColorGroup.addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
         this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-        this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'chaser', 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+        this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
     }
 }
