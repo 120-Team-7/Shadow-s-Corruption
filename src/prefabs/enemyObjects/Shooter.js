@@ -23,10 +23,6 @@ class Shooter extends Enemy {
         this.body.setBounce(chaserConfig.bounce, shooterConfig.bounce);
         this.body.setMaxVelocity(chaserConfig.maxVel, shooterConfig.maxVel);
 
-        if(changeCondition == 'timed') {
-            this.timedSwitch();
-        }
-
         // this.slowDown = scene.tweens.add({
         //     paused: true,
         //     targets: enemy.body,

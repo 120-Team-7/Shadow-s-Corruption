@@ -92,10 +92,6 @@ class Chaser extends Enemy {
                 loop: true,
             });
         }, null, this.scene);
-
-        if(changeCondition == 'timed') {
-            this.timedSwitch();
-        }
     }
 
     update() {

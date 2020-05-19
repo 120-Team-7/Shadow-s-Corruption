@@ -109,6 +109,9 @@ class Play extends Phaser.Scene {
         let randNum2 = Math.random();
         let randNum3 = Math.random();
         let randNum4 = Math.random();
+        let randChange1 = Math.random();
+        let randChange2 = Math.random();
+        let randChange3 = Math.random();
         if(randNum3 < 0.5) {
             this.rSpawnX = screenWidth - screenBuffer;
             this.bSpawnX = screenBuffer;
@@ -129,13 +132,29 @@ class Play extends Phaser.Scene {
             this.randSpawnX = screenBuffer;
         }
         if(randNum2 < 0.5){
-            // EnemyColorGroup.addShooter(spawnX, spawnY, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
-            this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup)
+            if(randChange1 < 0.5) {
+                // EnemyColorGroup.addShooter(spawnX, spawnY, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
+                this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            } else {
+                this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
         } else {
-            this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup)
+            if(randChange1 < 0.5) {
+                this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            } else {
+                this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
         }
-        // EnemyColorGroup.addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
-        this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-        this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+        if(randChange2 < 0.5) {
+            // EnemyColorGroup.addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
+            this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+        } else {
+            this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
+        }
+        if(randChange2 < 0.5) {
+            this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+        } else {
+            this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
+        }
     }
 }

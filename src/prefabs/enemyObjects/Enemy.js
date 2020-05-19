@@ -34,6 +34,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
+        this.body.setDrag(enemyDrag, enemyDrag);
+
+        if(changeCondition == 'timed') {
+            this.timedSwitch();
+        }
+        if(changeCondition == 'damaged') {
+            this.damagedNum = 0;
+        }
+
         this.healthTextConfig = {
             fontFamily: 'Courier',
             fontSize: '18px',
@@ -76,6 +85,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     takeDamage(enemy, damage){
         this.health -= damage;
         this.healthText.setText(this.health + "/" + this.maxHealth);
+
+        if(this.changeCondition == 'damaged' && !this.switching && this.moving) {
+            this.damageSwitch();
+        }
         if(this.damageTextDisappearing){
             this.damageTextTimer.destroy();
         }
@@ -102,14 +115,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.exists = false;
             this.moveTimer.remove();
             this.startMoving.remove();
-            if(this.damaged){
+            
+            if(this.damaged) {
                 this.damagedTimer.remove();
+            }
+            if(this.switching) {
+                this.switchPause.destroy();
             }
             if(this.changeCondition == 'timed') {
                 this.timedSwitch.destroy();
-                if(this.switching) {
-                    this.switchPause.destroy();
-                }
             }
             
             this.body.destroy();
@@ -128,7 +142,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    timedSwitch(){
+    timedSwitch() {
         this.timedSwitch = this.scene.time.addEvent({
             delay: timedSwitchDelay, 
             callback: () => {
@@ -173,11 +187,45 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         });
     }
 
+    damageSwitch() {
+        this.damagedNum++;
+        if(this.health > 0 && this.damagedNum == damageSwitchNum) {
+            this.damagedNum = 0;
+            if(this.state == 0) {
+                // Pause movement before switching
+                this.switching = true;
+                this.body.stop();
+                this.moveTimer.paused = true;
+                this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
+                    if(this.health > 0){
+                        // eSwitchColor(originalGroup, newGroup)
+                        this.eSwitchColor(this.redGroup, this.blueGroup);
+                        this.switching = false;
+                    }
+                }, this.enemy, this.scene);
+            } else {
+                // Pause movement before switching
+                this.switching = true;
+                this.body.stop();
+                this.moveTimer.paused = true;
+                this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
+                    if(this.health > 0){
+                        // eSwitchColor(originalGroup, newGroup)
+                        this.eSwitchColor(this.blueGroup, this.redGroup);
+                        this.switching = false;
+                    }
+                }, this.enemy, this.scene);
+            }
+        }
+    }
+
     // Switch enemy color & everything else related
     eSwitchColor(originalGroup, newGroup) {
         let originalState = this.state;
         originalGroup.remove(this); 
-        this.moveTimer.paused = false
+        if(this.moving) {
+            this.moveTimer.paused = false
+        }
         this.body.setImmovable(false);
         if(originalState == 0){
             this.state = 1;

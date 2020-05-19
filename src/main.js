@@ -32,6 +32,8 @@ var textSpacer = 100;
 var smallTextSpacer = 32;
 
 // Text & GUI settings
+// Instructions
+var imagesY = screenHeight - 100;
 // Cooldown
 var knifeCooldownX = 0;
 var knifeCooldownY = screenHeight - 64;
@@ -119,9 +121,13 @@ var orbBlockInvulnDuration = 500;  // Enemy orb block invulnerability duration a
 var orbKnockbackVelocity = 500;     // Velocity magnitude of block knockback
 
 // Enemies ----------------------------------------------------------------------------------------------------
-var timedSwitchDelay = 5000;
 var infiniteSpawnerDelay = 15000;
 var enemySwitchPause = 1000;
+var enemyDrag = 500;
+
+// Enemy switch conditions
+var timedSwitchDelay = 6000;
+var damageSwitchNum = 3;
 
 // Enemy text
 var enemyDestroyDelay = 1000;
@@ -155,7 +161,7 @@ var shooterConfig = {
     damage: 1,
     bulletSpeed: 400,
     rof: 3000,
-    shotPredictMult: 0.5,
+    shotPredictMult: 0.6,
     overShootDefault: 50,
 }
 
