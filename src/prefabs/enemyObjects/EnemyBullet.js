@@ -1,9 +1,9 @@
 class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, group, spawnX, spawnY, state, targetX, targetY) {
         if(state == 0) {
-            super(scene, spawnX, spawnY, 'redObstacle').setOrigin(0.5, 0.5).setScale(0.15, 0.15);
+            super(scene, spawnX, spawnY, 'redSlimeball').setOrigin(0.5, 0.5);
         } else {
-            super(scene, spawnX, spawnY, 'blueObstacle').setOrigin(0.5, 0.5).setScale(0.15, 0.15);
+            super(scene, spawnX, spawnY, 'blueSlimeball').setOrigin(0.5, 0.5);
         }
         let bullet = this;
         this.group = group;
@@ -22,7 +22,7 @@ class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        this.body.setCircle(100);
+        this.body.setCircle(25);
 
         this.setRotation(Phaser.Math.Angle.Between(this.spawnX, this.spawnY, this.targetX, this.targetY));
         this.scene.physics.moveTo(this, this.targetX, this.targetY, shooterConfig.bulletSpeed);

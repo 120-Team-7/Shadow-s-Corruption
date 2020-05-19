@@ -31,6 +31,17 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                 }
                 enemy.takeDamage(enemy, knife.damage);
                 group.isOnCooldown = true;
+                // Stun enemy on melee stab
+                if(enemy.exists && enemy.moving){
+                    enemy.stunned = true;
+                    enemy.moveTimer.paused = true;
+                    enemy.body.stop();
+                    // Allow enemy movement after short stun
+                    enemy.stunTimer = group.scene.time.delayedCall(knifeMeleeStunDuration, function () {
+                        enemy.moveTimer.paused = false;
+                        enemy.stunned = false;
+                    }, null, this.scene);
+                }
                 // Start melee cooldown
                 group.knifeCooldown = group.scene.time.delayedCall(knifeMeleeROF, function () {
                     group.isOnCooldown = false;
@@ -66,7 +77,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     this.knife.damage += knifeThrowDamage - knifeMeleeDamage;
                     // Triggers knife first throwing state
                     this.knife.first = true;
-                    this.scene.sound.play('knifeThrow');
+                    knifeThrowSound.play();
                     // Start throw cooldown
                     group.knifeCooldown = this.scene.time.delayedCall(knifeThrowROF, function () {
                         group.isOnCooldown = false;

@@ -13,6 +13,8 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
 
         this.targetX;
         this.targetY;
+
+        this.knifeSpeed = knifeSpeed;
         
         this.damage = knifeMeleeDamage;
         if(usingCorruption) {
@@ -36,24 +38,16 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             // First firing direction (where player clicked)
             if(this.first == true){
                 if(usingCorruption) {
+                    this.knifeSpeed = corruptKnifeSpeed;
                     corruption = 0;
                     usingCorruption = false;
                     this.scene.corruptionDecayTimer.paused = false;
                     player.corruptionExpireTimer.destroy();
                 }
                 this.setRotation(Phaser.Math.Angle.Between(player.x, player.y, this.targetX, this.targetY));
-                this.scene.physics.moveTo(this, this.targetX, this.targetY, knifeSpeed);
+                this.scene.physics.moveTo(this, this.targetX, this.targetY, this.knifeSpeed);
                 this.first = false;
-                this.second = true;
             }
-            // Second firing direction (after knife reaches click position in radius)
-            // If true, knife moves toward current pointer position
-            // if(this.second == true && this.x >= this.targetX - knifeSecondRadius && this.x <= this.targetX + knifeSecondRadius &&
-            //     this.y >= this.targetY - knifeSecondRadius && this.y <= this.targetY + knifeSecondRadius) {
-            //     this.setRotation(Phaser.Math.Angle.Between(this.x, this.y, pointer.x, pointer.y));
-            //     this.scene.physics.moveTo(this, pointer.x, pointer.y, knifeSpeed);
-            //     this.second = false;
-            // }   
         }
     }
 }

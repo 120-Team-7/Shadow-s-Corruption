@@ -23,6 +23,12 @@ let config = {
 // Define game
 let game = new Phaser.Game(config);
 
+// Game globals
+var isGameOver = true;
+var isPaused = true;
+var resetAudio = true;
+var globalVolume = 1;
+
 // Game measurements & text placement
 var screenWidth = game.config.width;
 var screenHeight = game.config.height;
@@ -49,10 +55,9 @@ var playerRed = 0xFF0000;
 var playerBlue = 0x0000FF;
 var playerPurple = 0xFF00FF;
 
-// Game globals
-var isGameOver = true;
-var isPaused = true;
-var resetAudio = true;
+// Audio
+var knifeThrowSound;
+var orbShootSound;
 
 // Obstacle settings
 var obstacleDrag = 300;
@@ -101,19 +106,22 @@ var knifeThrowDamage = 1;
 var knifeSecondDamage = 1;
 var knifeSecondRadius = 2;
 var knifeThrowROF = 200;
+var corruptKnifeSpeed = 2000;
 
 // Knife idle
-var knifeMeleeROF = 500;
+var knifeMeleeROF = 1000;
 var knifeMeleeDamage = 3;
+var knifeMeleeStunDuration = 1000;
 
 // Orb shot
 var orbAccel = 50;  // Initial accel for orb on shoot
 var orbAccelMult = 1.05; // Accel multiplier every frame after being shot
-var orbMaxSpeed = 1000;
 var orbShootDamage = 2;
 var orbShootROF = 2000;
 var orbShotInvulnDuration = 500;    // Enemy orb damage invulnerability duration after being hit by shot orb
 var orbAngularAccel = 300;
+var corruptOrbAccel = 100;
+var corruptOrbAccelMult = 1.1;
 
 // Orb idle
 var orbBlockStunDuration = 500;     // Enemy orb stun (unable to move) duration after being blocked by idle orb

@@ -17,7 +17,8 @@ class OrbGroup extends Phaser.GameObjects.Group {
         // Orb x Enemy collider
         this.oxecollider = scene.physics.add.overlap(group, blueEnemyGroup, function(orb, enemy) {
             if(!enemy.orbDamageInvuln && enemy.exists) {
-                if(orb.shot){
+                // Shooting orb
+                if(orb.shooting){
                     enemy.orbDamageInvuln = true;
                     enemy.takeDamage(enemy, orb.damage);
                     enemy.orbInvulnTimer = group.scene.time.delayedCall(orbShotInvulnDuration, function () {
@@ -26,7 +27,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
                 // Idle orb blocking
                 } else if (!enemy.orbBlockInvuln) {
                     enemy.orbBlockInvuln = true;
-                    // Stop enemy movement
+                    // Stun & knockback enemy on block
                     if(enemy.exists && enemy.moving){
                         enemy.stunned = true;
                         enemy.moveTimer.paused = true;
@@ -78,6 +79,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     this.orb.damage = orbShootDamage;
                     // Triggers orb shot
                     this.orb.shot = true;
+                    orbShootSound.play();
                     // Start shot cooldown
                     group.orbCooldown = this.scene.time.delayedCall(orbShootROF, function () {
                         group.isOnCooldown = false;

@@ -40,6 +40,6 @@ class HUD extends Phaser.Scene {
 
     update() {
         this.healthText.setText('Health: ' + pCurrHealth + "/" + pMaxHealth);
-        this.corruptionText.setText('Corruption: ' + corruption + "/" + maxCorruption + "   Using Corruption: " + usingCorruption);
+        this.corruptionText.setText('Corruption: ' + corruption + "/" + maxCorruption);
     }
 }
