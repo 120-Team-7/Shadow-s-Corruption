@@ -36,11 +36,16 @@ class Shooter extends Enemy {
         // });
 
         // Shooter movement
+        this.body.setEnable(false);
         this.startMoving = this.scene.time.delayedCall(shooterConfig.spawnPause, function () {
             enemy.shoot();
             enemy.moveTimer = scene.time.addEvent({
                 delay: shooterConfig.moveDelay, 
                 callback: () => {
+                    if(enemy.firstMoved) {
+                        this.body.setEnable(true);
+                        enemy.firstMoved = false;
+                    }
                     enemy.moving = true;
                     
                     this.enemyDistance = Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y);

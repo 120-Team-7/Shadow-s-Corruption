@@ -22,6 +22,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.health = this.maxHealth;
 
         // Enemy variables
+        this.firstMoved = false;
         this.moving = false;
         this.exists = true;
         this.stunned = false;
@@ -113,9 +114,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // If dead show got hit, stop everything, destroy, show death
         } else {
             this.exists = false;
-            this.moveTimer.remove();
-            this.startMoving.remove();
-            
+            // Remove active timers & functions
+            if(this.moving) {
+                this.moveTimer.remove();
+                this.startMoving.remove();
+            }
             if(this.damaged) {
                 this.damagedTimer.remove();
             }
@@ -125,9 +128,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             if(this.changeCondition == 'timed') {
                 this.timedSwitch.destroy();
             }
-            
+            // Remove physics interactability
             this.body.destroy();
             this.setAlpha(0.2);
+            // Wait to remove enemy corpse & text 
             this.destroyTimer = this.scene.time.delayedCall(enemyDestroyDelay, () => {
                 this.healthText.destroy();
                 this.damageText.destroy();

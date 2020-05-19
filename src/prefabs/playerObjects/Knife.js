@@ -31,23 +31,22 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(){
-        // Remove if goes off screen
-        if(this.x < 0 || this.x > screenWidth || this.y < 0 || this.y > screenHeight) {
-            this.group.remove(this, true, true);
-        } else {
-            // First firing direction (where player clicked)
-            if(this.first == true){
-                if(usingCorruption) {
-                    this.knifeSpeed = corruptKnifeSpeed;
-                    corruption = 0;
-                    usingCorruption = false;
-                    this.scene.corruptionDecayTimer.paused = false;
-                    player.corruptionExpireTimer.destroy();
-                }
-                this.setRotation(Phaser.Math.Angle.Between(player.x, player.y, this.targetX, this.targetY));
-                this.scene.physics.moveTo(this, this.targetX, this.targetY, this.knifeSpeed);
-                this.first = false;
+        // First firing direction (where player clicked)
+        if(this.first == true){
+            // Remove if goes off screen while shooting
+            if(this.x < 0 || this.x > screenWidth || this.y < 0 || this.y > screenHeight) {
+                this.group.remove(this, true, true);
             }
+            if(usingCorruption) {
+                this.knifeSpeed = corruptKnifeSpeed;
+                corruption = 0;
+                usingCorruption = false;
+                this.scene.corruptionDecayTimer.paused = false;
+                player.corruptionExpireTimer.destroy();
+            }
+            this.setRotation(Phaser.Math.Angle.Between(player.x, player.y, this.targetX, this.targetY));
+            this.scene.physics.moveTo(this, this.targetX, this.targetY, this.knifeSpeed);
+            this.first = false;
         }
     }
 }

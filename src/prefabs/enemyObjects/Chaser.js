@@ -33,10 +33,15 @@ class Chaser extends Enemy {
 
 
         // Chaser movement
+        this.body.setEnable(false);
         this.startMoving = this.scene.time.delayedCall(chaserConfig.spawnPause, function () {
             enemy.moveTimer = scene.time.addEvent({
                 delay: chaserConfig.moveDelay, 
                 callback: () => {
+                    if(enemy.firstMoved) {
+                        this.body.setEnable(true);
+                        enemy.firstMoved = false;
+                    }
                     enemy.moving = true;
                     // Predict player movement if more than predictMinDist away from player
                     this.enemyDistance = Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y);

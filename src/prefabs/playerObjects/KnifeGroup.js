@@ -23,14 +23,8 @@ class KnifeGroup extends Phaser.GameObjects.Group {
             }
             // If it is a melee hit
             if(!group.isOnCooldown && !knife.shooting){
-                if(usingCorruption) {
-                    corruption = 0;
-                    usingCorruption = false;
-                    enemy.scene.corruptionDecayTimer.paused = false;
-                    player.corruptionExpireTimer.destroy();
-                }
-                enemy.takeDamage(enemy, knife.damage);
                 group.isOnCooldown = true;
+                enemy.takeDamage(enemy, knife.damage);
                 // Stun enemy on melee stab
                 if(enemy.exists && enemy.moving){
                     enemy.stunned = true;
@@ -42,13 +36,27 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                         enemy.stunned = false;
                     }, null, this.scene);
                 }
-                // Start melee cooldown
-                group.knifeCooldown = group.scene.time.delayedCall(knifeMeleeROF, function () {
+                // Start longer melee cooldown if didn't kill
+                if(enemy.health > 0) {
+                    if(usingCorruption) {
+                        corruption = 0;
+                        usingCorruption = false;
+                        enemy.scene.corruptionDecayTimer.paused = false;
+                        player.corruptionExpireTimer.destroy();
+                    }
+                    group.knifeCooldown = group.scene.time.delayedCall(knifeMeleeROF, function () {
+                        group.isOnCooldown = false;
+                        idleWeaponExists = false;
+                        // Make sure both cooldowns are gone
+                        group.knifeCooldown.destroy();
+                    }, null, group.scene);
+                } else {
+                    // If enemy killed set no cooldown, increase corruption to max, don't reset corruption
+                    increaseCorruption(maxCorruption);
                     group.isOnCooldown = false;
                     idleWeaponExists = false;
-                    // Make sure both cooldowns are gone
-                    group.knifeCooldown.destroy();
-                }, null, group.scene);
+                }
+
             }
         }, function() {
             if(group.state == redEnemyGroup.state){
