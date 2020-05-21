@@ -39,7 +39,7 @@ var smallTextSpacer = 32;
 
 // Text & GUI settings
 // Instructions
-var imagesY = screenHeight - 100;
+var imagesY = screenHeight - 200;
 // Cooldown
 var knifeCooldownX = 0;
 var knifeCooldownY = screenHeight - 64;
@@ -51,6 +51,7 @@ var cooldownBoxWidth = 64;
 var cooldownBoxHeight = 64;
 
 // Colors
+var black = 0x000000;
 var playerRed = 0xFF0000;
 var playerBlue = 0x0000FF;
 var playerPurple = 0xFF00FF;
@@ -81,7 +82,7 @@ var switchCooldown = 1000;
 var isInvuln = false; // invulnerability state after taking damage
 var invulnDuration = 1000;
 
-var pMaxHealth = 5;
+var pMaxHealth = 10;
 var pCurrHealth = pMaxHealth;
 
 // Player corruption

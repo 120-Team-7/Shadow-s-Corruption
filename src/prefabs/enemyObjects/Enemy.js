@@ -20,6 +20,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.damage = damage;
 
         this.health = this.maxHealth;
+        this.isDummy = false;
 
         // Enemy variables
         this.firstMoved = false;

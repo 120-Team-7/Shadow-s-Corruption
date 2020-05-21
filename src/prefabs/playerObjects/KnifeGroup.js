@@ -36,8 +36,14 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                         enemy.stunned = false;
                     }, null, this.scene);
                 }
+
+                // If enemy killed set no cooldown, increase corruption to max, don't reset corruption
+                if(enemy.health <= 0) {
+                    increaseCorruption(maxCorruption);
+                    group.isOnCooldown = false;
+                    idleWeaponExists = false;
                 // Start longer melee cooldown if didn't kill
-                if(enemy.health > 0) {
+                } else {
                     if(usingCorruption) {
                         corruption = 0;
                         usingCorruption = false;
@@ -50,13 +56,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                         // Make sure both cooldowns are gone
                         group.knifeCooldown.destroy();
                     }, null, group.scene);
-                } else {
-                    // If enemy killed set no cooldown, increase corruption to max, don't reset corruption
-                    increaseCorruption(maxCorruption);
-                    group.isOnCooldown = false;
-                    idleWeaponExists = false;
                 }
-
             }
         }, function() {
             if(group.state == redEnemyGroup.state){

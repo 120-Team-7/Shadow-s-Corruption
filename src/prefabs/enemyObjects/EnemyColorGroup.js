@@ -11,7 +11,9 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
         this.state = state;
 
         this.playerCollider = scene.physics.add.collider(group, player, function(player, enemy) {
-            player.playerHit(enemy.damage);
+            if(!enemy.isDummy) {
+                player.playerHit(enemy.damage);
+            }
         }, function() {
             if(group.state == playerState){
                 return true;
@@ -32,6 +34,11 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
     update() {
         // Somehow needed to update children
         this.preUpdate();
+    }
+
+    addDummy(spawnX, spawnY, redGroup, blueGroup) {
+        // Dummy(scene, oSpawnX, oSpawnY, state, redGroup, blueGroup)
+        this.add(new Dummy(this.scene, spawnX, spawnY, this.state, redGroup, blueGroup));
     }
 
     addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup) {

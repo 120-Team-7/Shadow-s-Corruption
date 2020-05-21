@@ -28,9 +28,11 @@ class OrbGroup extends Phaser.GameObjects.Group {
                 } else if (!enemy.orbBlockInvuln) {
                     enemy.orbBlockInvuln = true;
                     // Stun & knockback enemy on block
-                    if(enemy.exists && enemy.moving){
+                    if(enemy.exists){
                         enemy.stunned = true;
-                        enemy.moveTimer.paused = true;
+                        if(enemy.moving) {
+                            enemy.moveTimer.paused = true;
+                        }
                         enemy.body.stop();
 
                         increaseCorruption(blockCorruptionGain);
@@ -42,7 +44,9 @@ class OrbGroup extends Phaser.GameObjects.Group {
 
                         // Allow enemy movement after short stun
                         enemy.stunTimer = group.scene.time.delayedCall(orbBlockStunDuration, function () {
-                            enemy.moveTimer.paused = false;
+                            if(enemy.moving) {
+                                enemy.moveTimer.paused = false;
+                            }
                             enemy.stunned = false;
                         }, null, this.scene);
 

@@ -19,9 +19,11 @@ class HUD extends Phaser.Scene {
             fixedWidth: 0
         }
 
+        this.corruptionSize = '30px';
+
         // HUD ---------------------------------------------------------------------------------
-        this.healthText = this.add.text(screenWidth - 50, screenHeight - 50, '', hudConfig).setOrigin(1, 0);
-        this.corruptionText = this.add.text(centerX, 10, '', hudConfig).setOrigin(0.5, 0);
+        this.healthText = this.add.text(screenWidth - 25, screenHeight - 50, '', hudConfig).setOrigin(1, 0);
+        this.corruptionText = this.add.text(centerX, screenHeight - 50, '', hudConfig).setOrigin(0.5, 0);
         
         this.knifeCooldownBox = this.add.rectangle(knifeCooldownX, knifeCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(0.25);
         this.knifeBox = this.add.rectangle(knifeCooldownX, knifeCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(0.25);
@@ -40,6 +42,27 @@ class HUD extends Phaser.Scene {
 
     update() {
         this.healthText.setText('Health: ' + pCurrHealth + "/" + pMaxHealth);
+        if(usingCorruption) {
+            this.corruptionText.setStyle({
+                color: '#FF00FF'
+            });
+        } else {
+            this.corruptionText.setStyle({
+                color: '#000000'
+            });
+        }
+        if(corruption != 0) {
+            this.corruptionSize = (30 + corruption*2).toString() + 'px';
+            this.corruptionText.setStyle({
+                fontSize: this.corruptionSize
+            });
+        } else {
+            this.corruptionText.setStyle({
+                fontSize: '30px'
+            });
+        }
+        
         this.corruptionText.setText('Corruption: ' + corruption + "/" + maxCorruption);
+        
     }
 }
