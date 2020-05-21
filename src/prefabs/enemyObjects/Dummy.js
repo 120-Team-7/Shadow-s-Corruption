@@ -1,5 +1,5 @@
 class Dummy extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, oSpawnX, oSpawnY, state, redGroup, blueGroup) {
+    constructor(scene, oSpawnX, oSpawnY, state, redGroup, blueGroup, redBulletGroup, blueBulletGroup, isShooter, shotX, shotY) {
         if(state == 0){
             super(scene, oSpawnX, oSpawnY, 'redObstacle');
         } else {
@@ -12,12 +12,23 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         let enemy = this;
         this.enemy = enemy;
         this.scene = scene;
+        this.oSpawnX = oSpawnX;
+        this.oSpawnY = oSpawnY;
         this.state = state;
         this.redGroup = redGroup;
         this.blueGroup = blueGroup;
-        
+        this.redBulletGroup = redBulletGroup;
+        this.blueBulletGroup = blueBulletGroup;
+        this.isShooter = isShooter;
+        this.shotX = shotX;
+        this.shotY = shotY;
+
+        this.targetX = 0;
+        this.targetY = 0;
         this.damage = 0;
         this.isDummy = true;
+        this.switching = false;
+        this.moving = false;
 
         // Enemy variables
         this.exists = true;
@@ -28,6 +39,9 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.body.setDrag(enemyDrag, enemyDrag);
+        this.body.setMaxVelocity(chaserConfig.maxVel, chaserConfig.maxVel);
+
         // this.customBounds = new Phaser.Geom.Rectangle(100, 100, screenWidth - 200, screenHeight - 200)
         // console.log(this.customBounds);
         // this.body.setBoundsRectangle(this.customBounds);
@@ -50,11 +64,70 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
 
         // Add enemy text
         this.damageText = scene.add.text(this.x, this.y - 40, "", this.damageTextConfig).setOrigin(0.5, 0.5).setDepth(1000);
+
+        if(isShooter) {
+            this.shootTimer = this.scene.time.addEvent({
+                delay: 3000, 
+                callback: () => {
+                    enemy.isShooting = true;
+                    // Update shooting target
+                    this.targetX = this.x + this.shotX * 5;
+                    this.targetY = this.y + this.shotY * 5;
+                    this.shoot();
+                }, 
+                callbackContext: scene,
+                loop: true,
+            });
+        }
+
+        enemy.moveTimer = scene.time.addEvent({
+            delay: chaserConfig.moveDelay, 
+            callback: () => {
+                enemy.moving = true;
+                if(inTutorial) {
+
+                    // Calculate new accel vector
+                    enemy.accelVector = scaleVectorMagnitude(chaserConfig.accel, enemy.x, enemy.y, enemy.oSpawnX, enemy.oSpawnY)
+    
+                    enemy.body.setAcceleration(enemy.accelVector.x, enemy.accelVector.y);
+    
+                }
+
+                // this.slowDownTimer = scene.time.delayedCall(chaserSlowdownDelay, function () {
+                //     // enemy.body.setAcceleration(0, 0);
+                //     enemy.slowDown.play();
+
+                // }, this, scene);
+            }, 
+            callbackContext: scene,
+            loop: true,
+        });
     }
 
     update() {
+        if(!inTutorial){
+            this.removeTimers();
+            this.destroy();
+        }
+
+        if(this.x < this.oSpawnX + 20 && this.x > this.oSpawnX - 20 &&
+            this.y < this.oSpawnY + 20 && this.y > this.oSpawnY - 20 && !this.stunned) {
+            this.body.stop();
+        }
+        // Pause shooting if switching or stunned
+        if(this.isShooting) {
+            if (!this.switching && !this.stunned) {
+                this.shootTimer.paused = false;
+            } else {
+                this.shootTimer.paused = true;
+            }
+        }
+
+        // Update damage text positions
         this.damageText.x = this.body.x + 25;
         this.damageText.y = this.body.y + 25;
+
+        
     }
 
     takeDamage(enemy, damage){
@@ -98,6 +171,25 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             this.setTexture(this.redTexture);
         } else {
             this.setTexture(this.blueTexture);
+        }
+    }
+
+    shoot() {
+        // EnemyBulletGroup.addBullet(state, spawnX, spawnY, targetX, targetY)
+        if(this.state == 0) {
+            this.redBulletGroup.addBullet(this.state, this.x, this.y, this.targetX, this.targetY);
+        }
+        if(this.state == 1) {
+            this.blueBulletGroup.addBullet(this.state, this.x, this.y, this.targetX, this.targetY);
+        }
+    }
+
+    removeTimers() {
+        if(this.isShooting) {
+            this.shootTimer.destroy();
+        }
+        if(this.moving) {
+            this.moveTimer.destroy();
         }
     }
 }

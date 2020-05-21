@@ -61,17 +61,10 @@ class Chaser extends Enemy {
                         enemy.targetY = player.y;
                     }
                     
-                    enemy.xComponent = enemy.targetX - enemy.x;
-                    enemy.yComponent = enemy.targetY - enemy.y;
-    
-                    // Converts the xComponent, yComponent components into accel components in order to achieve given acceleration (diagonal speed) on combining components
-                    // Uses Pythagorean theorum to solve for scaleFactor given a, b, and c where c is acceleration and a, b are xDist, yDist
-                    enemy.scaleFactor = Math.sqrt(Math.pow(Math.abs(enemy.xComponent), 2) + 
-                        Math.pow(Math.abs(enemy.yComponent), 2)) / chaserConfig.accel;
-    
-                    // Changes accel components to proper magnitudes
-                    enemy.xAccel = enemy.xComponent / enemy.scaleFactor;       
-                    enemy.yAccel = enemy.yComponent / enemy.scaleFactor;
+                    // Calculate new accel vector
+                    enemy.accelVector = scaleVectorMagnitude(chaserConfig.accel, enemy.x, enemy.y, enemy.targetX, enemy.targetY)
+                    enemy.xAccel = enemy.accelVector.x
+                    enemy.yAccel = enemy.accelVector.y
     
                     // Turn around faster
                     if(enemy.x < player.x && enemy.body.acceleration.x < 0){

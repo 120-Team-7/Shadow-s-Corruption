@@ -54,7 +54,7 @@ class Instructions extends Phaser.Scene {
         // White bottom
         instructionsConfig.color = '#FFFFFF';
         instructionsConfig.fontSize = '40px';
-        this.add.text(centerX, screenHeight - 80, 'Press I to return to menu, M to toggle mute sound, B to toggle physics debug, + to toggle godmode', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, screenHeight - 80, 'Press I to return to menu, M to toggle mute sound, B to toggle physics debug, K to reset, + to toggle godmode', instructionsConfig).setOrigin(0.5, 0.5);
 
     }
 

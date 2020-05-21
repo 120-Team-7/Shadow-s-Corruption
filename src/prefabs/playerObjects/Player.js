@@ -176,7 +176,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
 
             if(Phaser.Input.Keyboard.JustDown(keySuicide)) {
-                console.log("dead");
                 this.playerHit(pMaxHealth);
             }
             if(Phaser.Input.Keyboard.JustDown(keyGodmode)) {

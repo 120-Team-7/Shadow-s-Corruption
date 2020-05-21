@@ -27,7 +27,7 @@ let game = new Phaser.Game(config);
 var isGameOver = true;
 var isPaused = true;
 var resetAudio = true;
-var globalVolume = 1;
+var inTutorial = false;
 
 // Game measurements & text placement
 var screenWidth = game.config.width;
@@ -57,6 +57,7 @@ var playerBlue = 0x0000FF;
 var playerPurple = 0xFF00FF;
 
 // Audio
+var globalVolume = 1;
 var knifeThrowSound;
 var orbShootSound;
 
@@ -118,7 +119,7 @@ var knifeMeleeStunDuration = 1000;
 var orbAccel = 50;  // Initial accel for orb on shoot
 var orbAccelMult = 1.05; // Accel multiplier every frame after being shot
 var orbShootDamage = 2;
-var orbShootROF = 2000;
+var orbShootROF = 1500;
 var orbShotInvulnDuration = 500;    // Enemy orb damage invulnerability duration after being hit by shot orb
 var orbAngularAccel = 300;
 var corruptOrbAccel = 100;
@@ -131,7 +132,7 @@ var orbKnockbackVelocity = 500;     // Velocity magnitude of block knockback
 
 // Enemies ----------------------------------------------------------------------------------------------------
 var infiniteSpawnerDelay = 15000;
-var enemySwitchPause = 1000;
+var enemySwitchPause = 500;
 var enemyDrag = 500;
 
 // Enemy switch conditions
