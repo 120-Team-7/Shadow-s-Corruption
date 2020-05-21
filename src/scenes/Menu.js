@@ -21,14 +21,26 @@ class Menu extends Phaser.Scene {
             },
             fixedWidth: 0
         }
-        // add menu screen text
 
+        let scene = this;
+
+        // Add menu screen text
         this.add.text(centerX, centerY - textSpacer, 'Specter Shift', menuConfig).setOrigin(0.5, 0.5);
-        menuConfig.fontSize = '40px';
-        this.add.text(centerX, centerY + textSpacer, 'Press I for instructions', menuConfig).setOrigin(0.5, 0.5);
-        this.add.text(centerX, centerY + 2*textSpacer, 'Press ENTER to start', menuConfig).setOrigin(0.5, 0.5);
+        menuConfig.fontSize = '35px';
+        this.add.text(centerX, centerY + textSpacer, 'Press I for controls', menuConfig).setOrigin(0.5, 0.5);
+        this.difficultyText = this.add.text(centerX, centerY + 2*textSpacer, 'Press DOWN ARROW for EASY, Press UP ARROW for NORMAL', menuConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, centerY + 3*textSpacer, 'Press ENTER to start', menuConfig).setOrigin(0.5, 0.5);
 
-        // game.sound.mute = true;
+        this.input.keyboard.on('keydown-UP', function () {
+            chaserConfig.health = 10;
+            shooterConfig.health = 10;
+            scene.difficultyText.setText('Press DOWN ARROW for EASY, Press UP ARROW for [NORMAL]')
+        });
+        this.input.keyboard.on('keydown-DOWN', function () {
+            chaserConfig.health = 5;
+            shooterConfig.health = 5;
+            scene.difficultyText.setText('Press DOWN ARROW for [EASY], Press UP ARROW for NORMAL')
+        });
     }
 
     update() {

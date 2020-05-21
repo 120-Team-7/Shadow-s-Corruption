@@ -25,6 +25,7 @@ class Load extends Phaser.Scene {
         this.load.audio('buttonSound', './assets/sounds/buttonsound.mp3');
         this.load.audio('knifeThrow', './assets/sounds/knife.mp3');
         this.load.audio('orbShoot', './assets/sounds/orb.mp3');
+        this.load.audio('orbBlock', './assets/sounds/orbBlock.mp3');
         this.load.audio('playerDeath', './assets/sounds/demonDeath.mp3');
         this.load.audio('playerHurt1', './assets/sounds/hurt1.mp3');
         this.load.audio('playerHurt2', './assets/sounds/hurt2.mp3');

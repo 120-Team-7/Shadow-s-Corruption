@@ -34,8 +34,8 @@ class Instructions extends Phaser.Scene {
         this.redEnemy = this.add.sprite(50, imagesY, 'redObstacle').setOrigin(0.5, 0.5).setScale(0.25);
         // Blue
         this.bluePlayerImage = this.add.sprite(centerX + 50, imagesY, 'bluePlayer').setOrigin(0.5, 0.5);
-        this.orbImage = this.add.sprite(centerX + (50 + idleWeaponDistance), imagesY, 'orb').setOrigin(0.5, 0.5).setScale(1.5, 1.5);
-        this.corruptOrbImage = this.add.sprite(3*screenWidth/4 + 20, imagesY, 'corruptOrb').setOrigin(0.5, 0.5).setScale(1.5, 1.5);
+        this.orbImage = this.add.sprite(centerX + (50 + idleWeaponDistance), imagesY, 'orb').setOrigin(0.5, 0.5);
+        this.corruptOrbImage = this.add.sprite(3*screenWidth/4 + 20, imagesY, 'corruptOrb').setOrigin(0.5, 0.5);
         this.blueEnemy = this.add.sprite(screenWidth - 50, imagesY, 'blueObstacle').setOrigin(0.5, 0.5).setScale(0.25);
 
         // Text
@@ -47,10 +47,10 @@ class Instructions extends Phaser.Scene {
         // Red
         instructionsConfig.color = '#FF0000';
         instructionsConfig.fontSize = '70px';
-        this.add.text(screenWidth - 300, 60, 'Red State', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(300, 60, 'Red State', instructionsConfig).setOrigin(0.5, 0.5);
         // Blue
         instructionsConfig.color = '#0000FF';
-        this.add.text(300, 60, 'Blue State', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(screenWidth - 300, 60, 'Blue State', instructionsConfig).setOrigin(0.5, 0.5);
         // White bottom
         instructionsConfig.color = '#FFFFFF';
         instructionsConfig.fontSize = '40px';

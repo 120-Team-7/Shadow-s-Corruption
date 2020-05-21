@@ -26,6 +26,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     }, null, this.scene);
                 // Idle orb blocking
                 } else if (!enemy.orbBlockInvuln) {
+                    
                     enemy.orbBlockInvuln = true;
                     // Stun & knockback enemy on block
                     if(enemy.exists){
@@ -41,6 +42,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
                         this.enemyKnockbackVector = scaleVectorMagnitude(orbKnockbackVelocity, player.x, player.y, enemy.x, enemy.y); 
                         // Knockback enemy with calculated accel components
                         enemy.body.setVelocity(this.enemyKnockbackVector.x, this.enemyKnockbackVector.y);
+                        this.sound.play('orbBlock');
 
                         // Allow enemy movement after short stun
                         enemy.stunTimer = group.scene.time.delayedCall(orbBlockStunDuration, function () {

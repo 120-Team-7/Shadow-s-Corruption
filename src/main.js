@@ -144,7 +144,7 @@ var enemyDestroyDelay = 1000;
 
 // Chaser enemy config
 var chaserConfig = {
-    spawnPause: 1000,
+    spawnPause: 0,
     accel: 600,
     maxVel: 300,
     moveDelay: 100,
@@ -159,7 +159,7 @@ var chaserConfig = {
 
 // Shooter enemy config
 var shooterConfig = {
-    spawnPause: 1000,
+    spawnPause: 0,
     accel: 300,
     maxVel: 150,
     moveDelay: 50,
