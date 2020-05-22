@@ -37,9 +37,9 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         this.setDepth(999);
 
         this.fadeAway = this.scene.tweens.add({
-            targets: this,
-            alpha: { from: 0.8, to: 0 },
-            ease: 'Quartic.Out',
+            targets: knife,
+            alpha: { from: 1, to: 0 },
+            ease: 'Quartic.easeIn',
             duration: 1000,
         });
         this.fadeAway.stop();
@@ -57,14 +57,15 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                     lifespan: { min: 500, max: 1000 },
                     frequency: 100 - 20*corruption,
                     quantity: corruption,
-                    active: false,
+                    active: true,
                 });
-                this.particleTrail.active = true;
                 this.knifeSpeed = corruptKnifeSpeed;
                 corruption = 0;
                 usingCorruption = false;
                 this.scene.corruptionDecayTimer.paused = false;
-                player.corruptionExpireTimer.destroy();
+                if(player.corruptionExpiring) {
+                    player.corruptionExpireTimer.destroy();
+                }
             }
             this.knifeAngle = Phaser.Math.Angle.Between(player.x, player.y, this.targetX, this.targetY);
 
@@ -89,18 +90,19 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             }
         }
         if(this.firstStuck) {
-            this.setAlpha(0.8);
             this.firstStuck = false;
-            this.scene.time.delayedCall(500, function () {
-                if(this.exists) { 
-                    this.fadeAway.play();
-                }
-                this.scene.time.delayedCall(1000, function () {
-                    this.exists = false;
-                    this.fadeAway.remove();
-                    this.group.remove(this, true, true);
+            if(this.exists) {
+                this.scene.time.delayedCall(500, function () {
+                    if(this.exists) { 
+                        this.fadeAway.play();
+                        this.scene.time.delayedCall(1000, function () {
+                            this.exists = false;
+                            this.fadeAway.remove();
+                            this.group.remove(this, true, true);
+                        }, null, this);
+                    }
                 }, null, this);
-            }, null, this);
+            }
         }
         if(this.isStuck) {
             this.x = this.stuckEnemy.x + this.stuckOffsetX;

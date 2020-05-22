@@ -114,7 +114,6 @@ class Play extends Phaser.Scene {
         this.input.keyboard.on('keydown-Y', function () {
             if(!this.scene.spawnedEnemies) {
                 inTutorial = true;
-                isInvuln = true;
                 this.scene.tutorialNum++; 
                 if(this.scene.tutorialNum == 1) {
                     this.scene.tutorialText.setText("You are trapped by RED obstacles. Because you are RED, RED objects collide with you. Press WASD to move. (Y)");
@@ -192,7 +191,6 @@ class Play extends Phaser.Scene {
         this.input.keyboard.on('keydown-N', function () {
             if(!this.scene.spawnedEnemies) {
                 inTutorial = false;
-                isInvuln = false;
 
                 this.scene.spawnedEnemies = true;
                 this.scene.tutorialText.destroy();

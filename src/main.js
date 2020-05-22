@@ -28,7 +28,7 @@ var isGameOver = true;
 var isPaused = true;
 var resetAudio = true;
 var inTutorial = false;
-
+var hudScene = game.scene.keys.hudScene;
 
 // Game measurements & text placement
 var screenWidth = game.config.width;
@@ -50,6 +50,11 @@ var switchCooldownX = 128;
 var switchCooldownY = screenHeight - 64;
 var cooldownBoxWidth = 64;
 var cooldownBoxHeight = 64;
+
+var corruptionExpireX = centerX;
+var corruptionExpireY = screenHeight - 8;
+var expireBoxWidth = 400;
+var expireBoxHeight = 16;
 
 // Colors
 var black = 0x000000;

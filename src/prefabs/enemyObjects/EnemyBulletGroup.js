@@ -16,7 +16,7 @@ class EnemyBulletGroup extends Phaser.GameObjects.Group {
         // Bullet x Player collider
         this.bxpCollider = scene.physics.add.overlap(group, player, function(bullet) {
             bullet.destroy();
-            if(!isInvuln) {
+            if(!isInvuln && !inTutorial) {
                 player.playerHit(bullet.damage);
             }
         }, function() {

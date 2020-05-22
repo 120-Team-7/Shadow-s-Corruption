@@ -8,6 +8,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene = scene;
         this.hudScene = hudScene;
 
+        var hudScene = game.scene.keys.hudScene;
+
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.setCollideWorldBounds(true);
@@ -25,6 +27,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         keySuicide = scene.input.keyboard.addKey('K');
         keyGodmode = scene.input.keyboard.addKey('PLUS');
         
+        this.corruptionExpiring = false;
+
         this.idleWeapon;
         idleWeaponExists = false;
 
@@ -64,6 +68,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             speedY: { min: -playerExplodeVel, max: playerExplodeVel },
         });
         this.corruptionBleed.stop();
+        this.particleTrail = corruptionParticles.createEmitter({
+            emitZone: { source: this.emitCircle },
+            alpha: { start: 1, end: 0 },
+            scale: { start: 0.5, end: 0 },
+            speed: { min: 0, max: 20 },
+            lifespan: { min: 500, max: 1000 },
+            frequency: 50,
+            quantity: 2,
+        });
+        this.particleTrail.stop();
     }
 
 
@@ -118,10 +132,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     // Increase player speed 
                     this.body.setMaxVelocity(playerCorruptMaxVelocity, playerCorruptMaxVelocity);
                     this.playerAccel = playerCorruptAccel;
+                    this.particleTrail.start();
+
                     usingCorruption = true;
                     this.scene.corruptionDecayTimer.paused = true;
+                    this.corruptionExpiring = true;
                     // Start timer for corruption charges to expire after not being used
                     this.corruptionExpireTimer = this.scene.time.delayedCall(corruptionExpireDelay, function () {
+                        this.corruptionExpiring = false;
                         corruption = 0;
                         usingCorruption = false;
                         player.scene.corruptionDecayTimer.paused = false;
@@ -134,6 +152,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                             player.idleWeapon.setTexture('knife');
                         }
                     }, null, this.scene);
+                    
                 }
 
                 this.switchCooldown = this.scene.time.delayedCall(switchCooldown, function () {
@@ -142,6 +161,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
                 this.scene.cameras.main.shake(250, 0.003);
             }
+                
+            if(!usingCorruption) {
+                this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
+                this.playerAccel = this.playerAccel;
+                this.particleTrail.stop();
+            }
+
+            this.emitCircle.setPosition(this.x, this.y);
 
             // Calculate angle to set on idleWeapon sprite (toward pointer)
             this.weaponAngle =  Phaser.Math.RadToDeg(Phaser.Math.Angle.Between(player.x, player.y, pointer.x, pointer.y));
@@ -166,11 +193,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 // player.idleWeapon.body.setOffset(player.idleWeapon.width/2, player.idleWeapon.height/2);
             }
 
-            if(!usingCorruption) {
-                this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
-                this.playerAccel = this.playerAccel;
-            }
-
             // this.corruptionSiphon.x = this.x;
             // this.corruptionSiphon.y = this.y;
 
@@ -187,6 +209,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             } else {
                 this.scene.corruptionDecayTimer.pause = false;
             }
+
+            this.displayCorruptionExpire();
 
             // displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime)
             if(switchOnCooldown) {
@@ -239,7 +263,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.corruptionExpireTimer.destroy();
                 }
                 // Effects
-                this.emitCircle.setPosition(this.x, this.y);
+                this.particleTrail.stop();
                 this.corruptionBleed.explode(16 + 2*damage);
                 this.scene.cameras.main.flash(1000);
                 this.scene.cameras.main.shake(1000, 0.01);
@@ -249,6 +273,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.setImmovable(true);
                 this.setAlpha(0.05);
                 this.gameOverTimer = this.scene.time.delayedCall(pDeathDelay, function () {
+                    player.particleTrail.remove();
                     this.scene.stop('playScene');
                     this.scene.stop('hudScene');
                     this.scene.stop('menuScene');
@@ -263,7 +288,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 } else {
                     this.scene.sound.play('playerHurt2');
                 }
-                this.emitCircle.setPosition(this.x, this.y);
                 this.corruptionBleed.explode(4 + 2*damage);
                 this.setAlpha(0.2);
                 this.scene.cameras.main.flash(200);
@@ -274,5 +298,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }, null, this.scene);
             }
         }
+    }
+
+    displayCorruptionExpire() {
+        if(corruption == 0) {
+            this.corruptionExpiring = false;
+        }
+        if(this.corruptionExpiring) {
+            this.cooldownBoxDecrease = expireBoxWidth * this.corruptionExpireTimer.getElapsed() / corruptionExpireDelay;
+            this.hudScene.corruptionCooldownBox.setSize(expireBoxWidth - this.cooldownBoxDecrease, expireBoxHeight);
+            this.hudScene.corruptionCooldownBox.setPosition(corruptionExpireX + this.cooldownBoxDecrease/2, corruptionExpireY);
+        } else {
+            this.hudScene.corruptionCooldownBox.setPosition(corruptionExpireX, corruptionExpireY);
+            this.hudScene.corruptionCooldownBox.setSize(0, 0);
+        }
+        
     }
 }

@@ -39,6 +39,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
             increaseCorruption(knife.damage);
             gainingCorruption = true;
             if(gainingActive) {
+                // player.corruptionExpiring = false;
                 group.scene.gainingCorruptionTimer.destroy();
             }
             gainingActive = true;

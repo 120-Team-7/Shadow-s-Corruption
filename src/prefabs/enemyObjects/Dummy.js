@@ -171,13 +171,13 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         }, null, this.scene);    
 
         // Effects
-        this.setAlpha(0.5)
         this.emitCircle.setPosition(this.x, this.y);
         this.corruptionBleed.explode(2 + 2*damage);
-        this.damagedTimer = this.scene.time.delayedCall(500, function () {
-            this.damaged = false;
-            enemy.setAlpha(1);
-        }, null, this.scene);
+        // this.setAlpha(0.5)
+        // this.damagedTimer = this.scene.time.delayedCall(500, function () {
+        //     this.damaged = false;
+        //     enemy.setAlpha(1);
+        // }, null, this.scene);
     }
 
     // Switch enemy color & everything else related

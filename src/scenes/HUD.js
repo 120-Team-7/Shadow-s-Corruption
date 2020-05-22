@@ -22,9 +22,9 @@ class HUD extends Phaser.Scene {
         this.corruptionSize = '40px';
 
         // HUD ---------------------------------------------------------------------------------
-        this.healthText = this.add.text(screenWidth - 25, screenHeight - 60, '', hudConfig).setOrigin(1, 0);
-        this.corruptionText = this.add.text(centerX, screenHeight - 60, '', hudConfig).setOrigin(0.5, 0);
-        
+
+        this.corruptionCooldownBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(0.5);
+        this.corruptionBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(0.3);
         this.knifeCooldownBox = this.add.rectangle(knifeCooldownX, knifeCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(0.25);
         this.knifeBox = this.add.rectangle(knifeCooldownX, knifeCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(0.25);
         this.orbCooldownBox = this.add.rectangle(orbCooldownX, orbCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerBlue).setOrigin(0, 0).setAlpha(0.25);
@@ -34,6 +34,10 @@ class HUD extends Phaser.Scene {
         // this.orbCooldownImage = this.add.sprite(orbCooldownX + 20, orbCooldownY + 20, 'orb').setOrigin(0.5, 0.5);
         // this.knifeCooldownImage = this.add.sprite(knifeCooldownX,knifeCooldownY, 'knife').setOrigin(0, 0);
         // hudConfig.color = playerRed;
+
+        this.healthText = this.add.text(screenWidth - 20, screenHeight - 50, '', hudConfig).setOrigin(1, 0);
+        this.corruptionText = this.add.text(centerX, screenHeight - 60, '', hudConfig).setOrigin(0.5, 0);
+
         hudConfig.fontSize = '30px';
         this.knifeCooldownText = this.add.text(knifeCooldownX, knifeCooldownY + 16, '', hudConfig).setOrigin(0, 0);
         // hudConfig.color =  playerBlue;
@@ -57,7 +61,7 @@ class HUD extends Phaser.Scene {
             });
         }
         if(corruption != 0) {
-            this.corruptionSize = (40 + corruption*2).toString() + 'px';
+            this.corruptionSize = (40 + corruption).toString() + 'px';
             this.corruptionText.setStyle({
                 fontSize: this.corruptionSize
             });
@@ -66,9 +70,18 @@ class HUD extends Phaser.Scene {
                 fontSize: '40px'
             });
         }
+        if(isInvuln) {
+            this.healthText.setStyle({
+                color: '#FF00FF'
+            });
+        } else {
+            this.healthText.setStyle({
+                color: '#000000'
+            });
+        }
         
         this.corruptionText.setText('Corruption: ' + corruption + "/" + maxCorruption);
         
-        // this.testText.setText('Active: ' + gainingActive + " Gaining: " + gainingCorruption);
+        // this.testText.setText('expiring: ' + player.corruptionExpiring);
     }
 }

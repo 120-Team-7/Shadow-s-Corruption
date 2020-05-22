@@ -49,9 +49,8 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
                     lifespan: { min: 500, max: 1000 },
                     frequency: 100 - 20*corruption,
                     quantity: 1,
-                    active: false,
+                    active: true,
                 });
-                this.particleTrail.active = true;
                 this.setTexture('corruptOrb');
                 this.damage += corruption;
                 this.accelMult = corruptOrbAccelMult;
@@ -59,7 +58,9 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
                 corruption = 0;
                 usingCorruption = false;
                 this.scene.corruptionDecayTimer.paused = false;
-                player.corruptionExpireTimer.destroy();
+                if(player.corruptionExpiring) {
+                    player.corruptionExpireTimer.destroy();
+                }
             }
         }
         if(this.shooting) {
