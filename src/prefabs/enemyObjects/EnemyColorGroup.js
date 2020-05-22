@@ -11,7 +11,7 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
         this.state = state;
 
         this.playerCollider = scene.physics.add.collider(group, player, function(player, enemy) {
-            if(!enemy.isDummy) {
+            if(!enemy.isDummy && !enemy.stunned) {
                 player.playerHit(enemy.damage);
             }
         }, function() {

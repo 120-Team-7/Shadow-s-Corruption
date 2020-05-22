@@ -15,7 +15,8 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
         
         this.damage = orbShootDamage;
         this.shooting = false;
-        this.shot;
+        this.shot = false;
+        this.corrupted = false;
 
         this.accel = orbAccel;
         this.accelMult = orbAccelMult;
@@ -26,19 +27,35 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
 
         // this.body.setCircle(25, 50, 50);
         this.body.setCircle(50, 100, 100);
+        this.setDepth(999);
 
-        // this.setAngularAcceleration(orbAngularAccel);
+        this.emitCircle = new Phaser.Geom.Circle(this.x, this.y, 30);
+
+        
     }
 
     update(){    
         if(this.shot) {
+            this.setAngularAcceleration(orbAngularAccel);
             this.shooting = true;
             this.shot = false;
             if(usingCorruption) {
+                this.corrupted = true;
+                this.particleTrail = corruptionParticles.createEmitter({
+                    emitZone: { source: this.emitCircle },
+                    alpha: { start: 1, end: 0},
+                    scale: { start: 0.5, end: 0},
+                    speed: {min: 10, max: 60},
+                    lifespan: { min: 500, max: 1000},
+                    frequency: 100 - 20*corruption,
+                    quantity: 1,
+                    active: false,
+                });
+                this.particleTrail.active = true;
                 this.setTexture('corruptOrb');
                 this.damage += corruption;
-                // this.accel = corruptOrbAccel;
                 this.accelMult = corruptOrbAccelMult;
+                this.setAngularAcceleration(corruptOrbAngularAccel);
                 corruption = 0;
                 usingCorruption = false;
                 this.scene.corruptionDecayTimer.paused = false;
@@ -46,9 +63,20 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
             }
         }
         if(this.shooting) {
+            this.emitCircle.setPosition(this.x, this.y);
+
             // Remove if goes off screen
             if(this.x < 0 || this.x > screenWidth || this.y < 0 || this.y > screenHeight) {
-                this.group.remove(this, true, true);
+                this.shooting = false;
+                if(this.corrupted) {
+                    this.particleTrail.stop();
+                    this.scene.time.delayedCall(particleDestroy, function () {
+                        this.particleTrail.remove();
+                        this.group.remove(this, true, true);
+                    }, null, this);
+                } else {
+                    this.group.remove(this, true, true);
+                }
             } else {
                 this.accelVector = scaleVectorMagnitude(this.accel, this.shotX, this.shotY, this.targetX, this.targetY)
                 

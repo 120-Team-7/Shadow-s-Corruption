@@ -26,17 +26,24 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     }, null, this.scene);
                 // Idle orb blocking
                 } else if (!enemy.orbBlockInvuln) {
-                    
                     enemy.orbBlockInvuln = true;
                     // Stun & knockback enemy on block
                     if(enemy.exists){
-                        enemy.stunned = true;
                         if(enemy.moving) {
                             enemy.moveTimer.paused = true;
                         }
                         enemy.body.stop();
 
                         increaseCorruption(blockCorruptionGain);
+                        gainingCorruption = true;
+                        if(gainingActive) {
+                            group.scene.gainingCorruptionTimer.destroy();
+                        }
+                        gainingActive = true;
+                        group.scene.gainingCorruptionTimer = group.scene.time.delayedCall(gainingCorruptionDuration, function () {
+                            gainingActive = false;
+                            gainingCorruption = false;
+                        }, null, this.scene);
 
                         // Calculate knockbackVector
                         this.enemyKnockbackVector = scaleVectorMagnitude(orbKnockbackVelocity, player.x, player.y, enemy.x, enemy.y); 
@@ -45,6 +52,10 @@ class OrbGroup extends Phaser.GameObjects.Group {
                         this.sound.play('orbBlock');
 
                         // Allow enemy movement after short stun
+                        if(enemy.stunned) {
+                            enemy.stunTimer.destroy();
+                        }
+                        enemy.stunned = true;
                         enemy.stunTimer = group.scene.time.delayedCall(orbBlockStunDuration, function () {
                             if(enemy.moving) {
                                 enemy.moveTimer.paused = false;

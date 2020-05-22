@@ -29,6 +29,7 @@ var isPaused = true;
 var resetAudio = true;
 var inTutorial = false;
 
+
 // Game measurements & text placement
 var screenWidth = game.config.width;
 var screenHeight = game.config.height;
@@ -61,6 +62,10 @@ var globalVolume = 1;
 var knifeThrowSound;
 var orbShootSound;
 
+// Particles;
+var corruptionParticles;
+var particleDestroy = 1000;
+
 // Obstacle settings
 var obstacleDrag = 300;
 var obsHealth = 3;
@@ -88,6 +93,9 @@ var pCurrHealth = pMaxHealth;
 
 // Player corruption
 var usingCorruption = false;
+var gainingCorruption = false;
+var gainingActive = false;
+var gainingCorruptionDuration = 1000;
 var corruption = 0;
 var maxCorruption = 5;
 var corruptionDecayDelay = 1000;
@@ -97,10 +105,11 @@ var blockCorruptionGain = 3;
 var pDeathDelay = 3000;
 
 // Player movement settings
-var playerRunAccel = 30;
+var playerAccel = 30;
 var playerStopDrag = 600;
 var maxMoveVelocity = 300;
-var maxCorruptMoveVelocity = 400;
+var playerCorruptMaxVelocity = 400;
+var playerCorruptAccel = 40;
 
 
 // Player attack settings
@@ -113,7 +122,7 @@ var knifeThrowROF = 200;
 var corruptKnifeSpeed = 2000;
 
 // Knife idle
-var knifeMeleeROF = 1000;
+var knifeMeleeROF = 800;
 var knifeMeleeDamage = 3;
 var knifeMeleeStunDuration = 1000;
 
@@ -124,13 +133,14 @@ var orbShootDamage = 2;
 var orbShootROF = 1500;
 var orbShotInvulnDuration = 500;    // Enemy orb damage invulnerability duration after being hit by shot orb
 var orbAngularAccel = 300;
+var corruptOrbAngularAccel = 600;
 var corruptOrbAccel = 100;
 var corruptOrbAccelMult = 1.1;
 
 // Orb idle
-var orbBlockStunDuration = 500;     // Enemy orb stun (unable to move) duration after being blocked by idle orb
+var orbBlockStunDuration = 1000;     // Enemy orb stun (unable to move) duration after being blocked by idle orb
 var orbBlockInvulnDuration = 500;  // Enemy orb block invulnerability duration after being blocked by idle orb
-var orbKnockbackVelocity = 500;     // Velocity magnitude of block knockback
+var orbKnockbackVelocity = 250;     // Velocity magnitude of block knockback
 
 // Enemies ----------------------------------------------------------------------------------------------------
 var infiniteSpawnerDelay = 15000;
@@ -156,7 +166,7 @@ var chaserConfig = {
     predictMinDist: 200,
     bounce: 0.1,
     health: 10,
-    damage: 1
+    damage: 2
 }
 
 // Shooter enemy config
@@ -172,7 +182,7 @@ var shooterConfig = {
     health: 10,
     damage: 1,
     bulletSpeed: 400,
-    rof: 3000,
+    rof: 2000,
     shotPredictMult: 0.6,
     overShootDefault: 50,
 }

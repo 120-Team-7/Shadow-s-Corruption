@@ -70,7 +70,7 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             enemy.shooting = true;
 
             this.shootTimer = this.scene.time.addEvent({
-                delay: 3000, 
+                delay: 1000, 
                 callback: () => {
                     if(enemy.shooting && inTutorial) {
                         // Update shooting target

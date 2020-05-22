@@ -78,10 +78,38 @@ class Play extends Phaser.Scene {
         this.redGroup.addObstacle(centerX - 200, centerY + 200);
         this.redGroup.addObstacle(centerX + 200, centerY - 200);
 
+        corruptionParticles = this.add.particles('corruptionParticle');
+        // corruptionParticles.setDepth(1000);
+        // Initialize emit zones
+        // pointerCircle = new Phaser.Geom.Circle(0, 0, 5);
+        // particleLine = new Phaser.Geom.Line(-200, -200, gameWidth, gameHeight);
+        // Particles to show psychic throw velocity vector
+        // particleVector = this.pointerParticles.createEmitter({
+        //     emitZone: { source: particleLine },
+        //     alpha: { start: 1, end: 0 },
+        //     scale: { start: 0.75, end: 0 },
+        //     speed: {min: 0, max: 10},
+        //     lifespan: { min: 500, max: 1000 },
+        //     frequency: 20,
+        //     quantity: 2,
+        // });
+        // Particles on initial click
+        // particlePointer = this.pointerParticles.createEmitter({
+        //     emitZone: { source: pointerCircle},
+        //     alpha: { start: 1, end: 0 },
+        //     scale: { start: 1.5, end: 0 },
+        //     speed: { min: 0, max: 20 },
+        //     lifespan: { min: 3000, max: 4000 },
+        //     frequency: 10000,
+        //     quantity: 10,
+        // });
+        // particleVector.stop();
+        // particlePointer.stop();
+
         // Tutorial text
 
         this.tutorialText = this.add.text(centerX, 0, 'Press Y to continue with the tutorial or N to skip it and start infinite enemy spawner', playConfig).setOrigin(0.5, 0);
-        this.tutorialNum = 0;
+        this.tutorialNum = 4;
 
         this.input.keyboard.on('keydown-Y', function () {
             if(!this.scene.spawnedEnemies) {
@@ -139,19 +167,19 @@ class Play extends Phaser.Scene {
                     this.scene.bDummy3 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, 1, 0);
                 }
                 if(this.scene.tutorialNum == 10) {
-                    this.scene.tutorialText.setText("The RED KNIFE is good for offense and against single enemies, but the BLUE ORB is good for defense and against multiple enemies. (Y)");
+                    this.scene.tutorialText.setText("The RED KNIFE is good at offense and against single enemies. The BLUE ORB is good at defense and against multiple enemies. (Y)");
                 }
                 if(this.scene.tutorialNum == 11) {
-                    this.scene.tutorialText.setText("CORRUPTION is an important mechanic that greatly increases your offensive power enabling you to quickly deal massive damage. Notice the CORRUPTION counter on the bottom of the screen. (Y)");
+                    this.scene.tutorialText.setText("CORRUPTION can greatly increase your offensive power enabling you to quickly deal massive damage. Notice the CORRUPTION counter on the bottom of the screen. (Y)");
                 }
                 if(this.scene.tutorialNum == 12) {
-                    this.scene.tutorialText.setText("Gain CORRUPTION by dealing damage with the RED KNIFE, blocking enemies with the BLUE ORB, or blocking projectiles with an IDLE weapon. Once you have some CORRUPTION, SHIFT to ACTIVATE it and empower your NEXT SHOT with additional damage based on your CORRUPTION. (Y)");
+                    this.scene.tutorialText.setText("Gain CORRUPTION by dealing damage with the RED KNIFE, blocking enemies with the BLUE ORB, or blocking projectiles with an IDLE weapon. (Y)");
                 }
                 if(this.scene.tutorialNum == 13) {
-                    this.scene.tutorialText.setText("CORRUPTION decreases by 1 every second while not ACTIVATED. While ACTIVATED, use the empowered weapon before it EXPIRES. Upon using the CORRUPTION SHOT or when it EXPIRES corruption is set to 0. (Y)");
+                    this.scene.tutorialText.setText("Once you have some CORRUPTION, SHIFT to ACTIVATE it and empower your NEXT ATTACK with additional damage based on your CORRUPTION. (Y)");
                 }
                 if(this.scene.tutorialNum == 14) {
-                    this.scene.tutorialText.setText("In order to survive, you must increase and use your CORRUPTION as quickly and often as you can. (Y)");
+                    this.scene.tutorialText.setText("CORRUPTION decreases by 1 every second while not ACTIVATED. While ACTIVATED, use the empowered weapon before it EXPIRES. Upon using the CORRUPTION SHOT or when it EXPIRES corruption is set to 0. (Y)");
                 }
                 if(this.scene.tutorialNum == 15) {
                     this.scene.tutorialText.setText("Remember that SHIFTING greatly changes your defensive and offensive capabilities. Kill enemies before they SHIFT their own color state and overwhelm you! Press (N) to spawn enemies.");
@@ -188,8 +216,6 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        // console.log(game.scene.keys.hudScene);
-
         pointer = this.input.activePointer;
         player.update();
         this.knifeGroup.update();

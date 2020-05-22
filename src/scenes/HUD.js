@@ -40,6 +40,9 @@ class HUD extends Phaser.Scene {
         this.orbCooldownText = this.add.text(orbCooldownX, orbCooldownY + 16, '', hudConfig).setOrigin(0, 0);
         this.switchCooldownText = this.add.text(switchCooldownX, switchCooldownY + 16, '', hudConfig).setOrigin(0, 0);
         hudConfig.fontSize = '40px';
+
+        this.testText = this.add.text(centerX, 100, '', hudConfig).setOrigin(0.5, 0);
+
     }
 
     update() {
@@ -66,5 +69,6 @@ class HUD extends Phaser.Scene {
         
         this.corruptionText.setText('Corruption: ' + corruption + "/" + maxCorruption);
         
+        // this.testText.setText('Active: ' + gainingActive + " Gaining: " + gainingCorruption);
     }
 }

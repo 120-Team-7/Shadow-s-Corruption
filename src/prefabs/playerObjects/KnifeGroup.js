@@ -16,8 +16,24 @@ class KnifeGroup extends Phaser.GameObjects.Group {
 
         // Knife x Enemy collider
         this.kxeCollider = scene.physics.add.overlap(group, redEnemyGroup, function(knife, enemy) {
+            if(knife.corrupted) {
+                knife.particleTrail.stop();
+                knife.scene.time.delayedCall(particleDestroy, function () {
+                    knife.particleTrail.active = false;
+                    knife.particleTrail.remove();
+                }, null, knife);
+            }
             knife.destroy();
             increaseCorruption(knife.damage);
+            gainingCorruption = true;
+            if(gainingActive) {
+                group.scene.gainingCorruptionTimer.destroy();
+            }
+            gainingActive = true;
+            group.scene.gainingCorruptionTimer = group.scene.time.delayedCall(gainingCorruptionDuration, function () {
+                gainingActive = false;
+                gainingCorruption = false;
+            }, null, this.scene);
             if(knife.shooting){
                 enemy.takeDamage(enemy, knife.damage);
             }
@@ -25,11 +41,15 @@ class KnifeGroup extends Phaser.GameObjects.Group {
             if(!group.isOnCooldown && !knife.shooting){
                 group.isOnCooldown = true;
                 enemy.takeDamage(enemy, knife.damage);
+                
                 // Stun enemy on melee stab
                 if(enemy.exists && enemy.moving){
-                    enemy.stunned = true;
                     enemy.moveTimer.paused = true;
                     enemy.body.stop();
+                    if(enemy.stunned) {
+                        enemy.stunTimer.destroy();
+                    }
+                    enemy.stunned = true;
                     // Allow enemy movement after short stun
                     enemy.stunTimer = group.scene.time.delayedCall(knifeMeleeStunDuration, function () {
                         enemy.moveTimer.paused = false;
@@ -84,7 +104,8 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     this.knife.targetY = pointer.y;
                     this.knife.damage += knifeThrowDamage - knifeMeleeDamage;
                     // Triggers knife first throwing state
-                    this.knife.first = true;
+                    this.knife.shot = true;
+                    this.knife.shooting = true;
                     knifeThrowSound.play();
                     // Start throw cooldown
                     group.knifeCooldown = this.scene.time.delayedCall(knifeThrowROF, function () {

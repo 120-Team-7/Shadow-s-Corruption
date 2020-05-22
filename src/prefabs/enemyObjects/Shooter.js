@@ -38,7 +38,6 @@ class Shooter extends Enemy {
         // Shooter movement
         this.body.setEnable(false);
         this.startMoving = this.scene.time.delayedCall(shooterConfig.spawnPause, function () {
-            enemy.shoot();
             enemy.moveTimer = scene.time.addEvent({
                 delay: shooterConfig.moveDelay, 
                 callback: () => {

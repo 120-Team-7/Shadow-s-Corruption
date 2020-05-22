@@ -41,6 +41,15 @@ class EnemyBulletGroup extends Phaser.GameObjects.Group {
                         this.scene.sound.play('orbBlock');
                     }
                     increaseCorruption(blockCorruptionGain);
+                    gainingCorruption = true;
+                    if(gainingActive) {
+                        this.scene.gainingCorruptionTimer.destroy();
+                    }
+                    gainingActive = true;
+                    this.scene.gainingCorruptionTimer = this.scene.time.delayedCall(gainingCorruptionDuration, function () {
+                        gainingActive = false;
+                        gainingCorruption = false;
+                    }, null, this.scene);
                 }, 
                 () => {
                     if(this.state == player.idleWeapon.state) {

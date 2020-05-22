@@ -28,6 +28,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.idleWeapon;
         idleWeaponExists = false;
 
+        this.playerAccel = playerAccel;
+
         this.originalKROF = knifeThrowROF;
         this.originalOROF = orbShootROF;
         this.originalSCD = switchCooldown;
@@ -35,7 +37,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.corruptionDecayTimer = scene.time.addEvent({
             delay: corruptionDecayDelay,
             callback: () => {
-                if(corruption != 0){
+                if(corruption != 0 && !gainingCorruption){
                     corruption--;
                 }
             },
@@ -51,19 +53,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(keyLeft.isDown || keyRight.isDown || keyUp.isDown || keyDown.isDown){
                 if(keyLeft.isDown || keyRight.isDown){
                     if(keyLeft.isDown) {
-                        this.body.velocity.x -= playerRunAccel;
+                        this.body.velocity.x -= this.playerAccel;
                     } else if(keyRight.isDown) {
-                        this.body.velocity.x += playerRunAccel;
+                        this.body.velocity.x += this.playerAccel;
                     } else {
                         this.body.setDragX(playerStopDrag);
                     }
                 }
                 if(keyUp.isDown || keyDown.isDown){
                     if(keyUp.isDown) {
-                        this.body.velocity.y -= playerRunAccel;
+                        this.body.velocity.y -= this.playerAccel;
                     }
                     if(keyDown.isDown) {
-                        this.body.velocity.y += playerRunAccel;
+                        this.body.velocity.y += this.playerAccel;
                     } else {
                         this.body.setDragY(playerStopDrag);
                     }
@@ -91,7 +93,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
                 // Start corruption shot window
                 if(corruption != 0 && !usingCorruption) {
-                    this.body.setMaxVelocity(maxCorruptMoveVelocity, maxCorruptMoveVelocity);
+                    // Increase player speed 
+                    this.body.setMaxVelocity(playerCorruptMaxVelocity, playerCorruptMaxVelocity);
+                    this.playerAccel = playerCorruptAccel;
                     usingCorruption = true;
                     this.scene.corruptionDecayTimer.paused = true;
                     // Start timer for corruption charges to expire after not being used
@@ -108,14 +112,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                             player.idleWeapon.setTexture('knife');
                         }
                     }, null, this.scene);
-                // Remove corruption if switch again
-                } 
-                // else if(usingCorruption) {
-                //     corruption = 0;
-                //     usingCorruption = false;
-                //     this.scene.corruptionDecayTimer.paused = false;
-                //     this.corruptionExpireTimer.destroy();
-                // }
+                }
 
                 this.switchCooldown = this.scene.time.delayedCall(switchCooldown, function () {
                     switchOnCooldown = false;
@@ -147,6 +144,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if(!usingCorruption) {
                 this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
+                this.playerAccel = this.playerAccel;
             }
 
             // Player flip sprite when mouse on left/right of player character
