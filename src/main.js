@@ -100,6 +100,8 @@ var pDeathDelay = 3000;
 var playerRunAccel = 30;
 var playerStopDrag = 600;
 var maxMoveVelocity = 300;
+var maxCorruptMoveVelocity = 400;
+
 
 // Player attack settings
 // Knife throw

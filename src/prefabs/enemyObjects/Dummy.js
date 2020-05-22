@@ -27,6 +27,7 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         this.targetY = 0;
         this.damage = 0;
         this.isDummy = true;
+        this.shooting = false;
         this.switching = false;
         this.moving = false;
 
@@ -66,14 +67,18 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         this.damageText = scene.add.text(this.x, this.y - 40, "", this.damageTextConfig).setOrigin(0.5, 0.5).setDepth(1000);
 
         if(isShooter) {
+            enemy.shooting = true;
+
             this.shootTimer = this.scene.time.addEvent({
                 delay: 3000, 
                 callback: () => {
-                    enemy.isShooting = true;
-                    // Update shooting target
-                    this.targetX = this.x + this.shotX * 5;
-                    this.targetY = this.y + this.shotY * 5;
-                    this.shoot();
+                    if(enemy.shooting && inTutorial) {
+                        // Update shooting target
+                        this.targetX = this.x + this.shotX * 5;
+                        this.targetY = this.y + this.shotY * 5;
+                        this.shoot();
+                        
+                    }
                 }, 
                 callbackContext: scene,
                 loop: true,
@@ -106,12 +111,18 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         if(!inTutorial){
-            this.removeTimers();
+            if(this.shooting) {
+                this.shooting = false;
+                this.shootTimer.destroy();
+            }
+            if(this.moving) {
+                this.moveTimer.destroy();
+            }
             this.destroy();
         }
 
-        if(this.x < this.oSpawnX + 20 && this.x > this.oSpawnX - 20 &&
-            this.y < this.oSpawnY + 20 && this.y > this.oSpawnY - 20 && !this.stunned) {
+        if(this.x < this.oSpawnX + 30 && this.x > this.oSpawnX - 30 &&
+            this.y < this.oSpawnY + 30 && this.y > this.oSpawnY - 30 && !this.stunned) {
             this.body.stop();
         }
         // Pause shooting if switching or stunned
@@ -126,8 +137,6 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         // Update damage text positions
         this.damageText.x = this.body.x + 25;
         this.damageText.y = this.body.y + 25;
-
-        
     }
 
     takeDamage(enemy, damage){
@@ -181,15 +190,6 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         }
         if(this.state == 1) {
             this.blueBulletGroup.addBullet(this.state, this.x, this.y, this.targetX, this.targetY);
-        }
-    }
-
-    removeTimers() {
-        if(this.isShooting) {
-            this.shootTimer.destroy();
-        }
-        if(this.moving) {
-            this.moveTimer.destroy();
         }
     }
 }

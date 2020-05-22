@@ -21,8 +21,8 @@ class Play extends Phaser.Scene {
             padding: {
                 top: 10,
                 bottom: 10,
-                left: 10,
-                right: 10,
+                left: 0,
+                right: 0,
             },
             fixedWidth: screenWidth,
             wordWrap: {
@@ -92,9 +92,12 @@ class Play extends Phaser.Scene {
                     this.scene.tutorialText.setText("You are trapped by RED obstacles. Because you are RED, RED objects collide with you. Press WASD to move. (Y)");
                 }
                 if(this.scene.tutorialNum == 2) {
-                    this.scene.tutorialText.setText("Press SHIFT to change your color state between RED and BLUE. When you are BLUE, RED objects cannot collide with you, but BLUE objects can collide with you. Try moving through the RED obstacles. (Y)");
+                    this.scene.tutorialText.setText("Press SHIFT to change your color state between RED and BLUE. (Y)");
                 }
                 if(this.scene.tutorialNum == 3) {
+                    this.scene.tutorialText.setText("When you are BLUE, RED objects cannot collide with you, but BLUE objects can collide with you. Try moving through the RED obstacles. (Y)");
+                }
+                if(this.scene.tutorialNum == 4) {
                     this.scene.tutorialText.setText("RED collides with RED, BLUE collides with BLUE, and OPPOSITES pass through. Try freely moving through the obstacles by SHIFTING at the right time. Notice that SHIFTING has a cooldown. (Y)");
                     this.scene.redGroup.clear(true, true);
                     this.scene.blueGroup.clear(true, true);
@@ -110,7 +113,7 @@ class Play extends Phaser.Scene {
                     this.scene.blueGroup.addObstacle(centerX - 400, centerY + 100);
                     this.scene.blueGroup.addObstacle(centerX + 400, centerY + 100);
                 }
-                if(this.scene.tutorialNum == 4) {
+                if(this.scene.tutorialNum == 5) {
                     this.scene.tutorialText.setText("While your body is RED, you have the RED KNIFE equppied. Use the MOUSE to aim and press the LEFT MOUSE BUTTON to rapidly shoot them. (Y)");
                     this.scene.redGroup.clear(true, true);
                     this.scene.blueGroup.clear(true, true);
@@ -118,39 +121,42 @@ class Play extends Phaser.Scene {
                     this.scene.rDummy1 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY + 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
                     this.scene.rDummy2 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY - 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
                 }
-                if(this.scene.tutorialNum == 5) {
-                    this.scene.tutorialText.setText("While you are not shooting, your held weapon is in the IDLE form. The IDLE KNIFE can be used to stab close range enemies dealing extra damage and stunning them, but a sucessful hit starts a much longer cooldown than shooting it. (Y)");
-                }
                 if(this.scene.tutorialNum == 6) {
-                    this.scene.tutorialText.setText("While your body is BLUE, you have the BLUE ORB equppied. When shot, it starts a long cooldown, moves slowly, rapidly accelerates, and pierces enemies. The ORB's IDLE form knocksback and stuns enemies it comes into contact with. (Y)");
+                    this.scene.tutorialText.setText("While you are not shooting, your weapon is in IDLE form. The IDLE KNIFE stuns and deals extra damage, but has longer cooldown than shooting it. (Y)");
+                }
+                if(this.scene.tutorialNum == 7) {
+                    this.scene.tutorialText.setText("While your body is BLUE, you have the BLUE ORB equppied. After shooting, it moves slowly, accelerates, pierces enemies, and starts a long cooldown. (Y)");
                     this.scene.bDummy1 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY + 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
                     this.scene.bDummy2 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY - 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
                 }
-                if(this.scene.tutorialNum == 7) {
+                if(this.scene.tutorialNum == 8) {
+                    this.scene.tutorialText.setText("The IDLE ORB knocksback, stuns, and has no cooldown. (Y)");
+                }
+                if(this.scene.tutorialNum == 9) {
                     this.scene.tutorialText.setText("Each IDLE weapon can also block and destroy enemy projectiles of the same color. (Y)");
                     // Replace dummies with shooting dummies
                     this.scene.rDummy3 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, -1, 0);
-
                     this.scene.bDummy3 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, 1, 0);
                 }
-                if(this.scene.tutorialNum == 8) {
-                    this.scene.tutorialText.setText("Each weapon type has strengths and weaknesses. Both them can only be use on enemies of the weapon's corresponding color. The RED KNIFE is better offensively and against single enemies, but the BLUE orb is better defensively and against many targets. (Y)");
-                }
-                if(this.scene.tutorialNum == 9) {
-                    this.scene.tutorialText.setText("CORRUPTION is an important mechanic that greatly increases your offensive power and allows you to quickly kill swarms of tough enemies. Notice the CORRUPTION counter on the bottom of the screen. (Y)");
-                }
                 if(this.scene.tutorialNum == 10) {
-                    this.scene.tutorialText.setText("Gain CORRUPTION by dealing damage with the RED KNIFE, blocking enemies with the BLUE ORB, or blocking projectiles with an IDLE weapon. Once you have some CORRUPTION, SHIFT to ACTIVATE it and empower your NEXT SHOT with additional damage based on your CORRUPTION. (Y)");
+                    this.scene.tutorialText.setText("The RED KNIFE is good for offense and against single enemies, but the BLUE ORB is good for defense and against multiple enemies. (Y)");
                 }
                 if(this.scene.tutorialNum == 11) {
-                    this.scene.tutorialText.setText("CORRUPTION decreases by 1 every second while not ACTIVATED. While ACTIVATED, use the empowered CORRUPT KNIFE or CORRUPT ORB before the EXPIRE time when CORRUPTION is set back 0. Upon using the CORRUPTION SHOT corruption is set to 0. (Y)");
+                    this.scene.tutorialText.setText("CORRUPTION is an important mechanic that greatly increases your offensive power enabling you to quickly deal massive damage. Notice the CORRUPTION counter on the bottom of the screen. (Y)");
                 }
                 if(this.scene.tutorialNum == 12) {
-                    this.scene.tutorialText.setText("In order to survive, you must build up and use your CORRUPTION as quickly and often as you can. However, don't forget that SHIFTING leaves you vulnerable to enemies of the color you switch to. (Y)");
+                    this.scene.tutorialText.setText("Gain CORRUPTION by dealing damage with the RED KNIFE, blocking enemies with the BLUE ORB, or blocking projectiles with an IDLE weapon. Once you have some CORRUPTION, SHIFT to ACTIVATE it and empower your NEXT SHOT with additional damage based on your CORRUPTION. (Y)");
                 }
                 if(this.scene.tutorialNum == 13) {
-                    this.scene.tutorialText.setText("Remember use CORRUPTION to quickly kill enemies before they SHIFT their own color state and overwhelm you! If you are in danger, remember that SHIFTING makes you immune to enemies of the color you shifted away from! Press (N) to spawn enemies.");
+                    this.scene.tutorialText.setText("CORRUPTION decreases by 1 every second while not ACTIVATED. While ACTIVATED, use the empowered weapon before it EXPIRES. Upon using the CORRUPTION SHOT or when it EXPIRES corruption is set to 0. (Y)");
                 }
+                if(this.scene.tutorialNum == 14) {
+                    this.scene.tutorialText.setText("In order to survive, you must increase and use your CORRUPTION as quickly and often as you can. (Y)");
+                }
+                if(this.scene.tutorialNum == 15) {
+                    this.scene.tutorialText.setText("Remember that SHIFTING greatly changes your defensive and offensive capabilities. Kill enemies before they SHIFT their own color state and overwhelm you! Press (N) to spawn enemies.");
+                }
+
             }
         });
 
@@ -159,6 +165,7 @@ class Play extends Phaser.Scene {
             if(!this.scene.spawnedEnemies) {
                 inTutorial = false;
                 isInvuln = false;
+
                 this.scene.spawnedEnemies = true;
                 this.scene.tutorialText.destroy();
                 this.scene.redGroup.clear(true, true);

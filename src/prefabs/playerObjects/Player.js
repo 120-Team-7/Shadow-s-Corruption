@@ -91,6 +91,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
                 // Start corruption shot window
                 if(corruption != 0 && !usingCorruption) {
+                    this.body.setMaxVelocity(maxCorruptMoveVelocity, maxCorruptMoveVelocity);
                     usingCorruption = true;
                     this.scene.corruptionDecayTimer.paused = true;
                     // Start timer for corruption charges to expire after not being used
@@ -142,6 +143,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 //     player.idleWeapon.body.setOffset(player.idleWeapon.width/2 + 10, player.idleWeapon.height/2 - 5);
                 // }
                 // player.idleWeapon.body.setOffset(player.idleWeapon.width/2, player.idleWeapon.height/2);
+            }
+
+            if(!usingCorruption) {
+                this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
             }
 
             // Player flip sprite when mouse on left/right of player character
