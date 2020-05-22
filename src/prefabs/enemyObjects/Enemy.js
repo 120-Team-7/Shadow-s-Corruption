@@ -4,6 +4,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             super(scene, oSpawnX, oSpawnY, redTexture);
         } else {
             super(scene, oSpawnX, oSpawnY, blueTexture);
+            this.setAlpha(0.4);
         }
 
         // Scope parameters to this instance
@@ -75,9 +76,29 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // Add enemy text
         this.healthText = scene.add.text(this.x, this.y, this.health + "/" + this.maxHealth, this.healthTextConfig).setOrigin(0.5, 0.5).setDepth(1000);
         this.damageText = scene.add.text(this.x, this.y - 40, "", this.damageTextConfig).setOrigin(0.5, 0.5).setDepth(1000);
+    
+        this.emitCircle = new Phaser.Geom.Circle(this.x, this.y, 25);
+
+        this.corruptionBleed = corruptionParticles.createEmitter({
+            emitZone: { source: this.emitCircle },
+            alpha: { start: 1, end: 0 },
+            scale: { start: 0.5, end: 0 },
+            lifespan: { min: 1000, max: 1500 },
+            speedX: { min: -enemyExplodeVel, max: enemyExplodeVel },
+            speedY: { min: -enemyExplodeVel, max: enemyExplodeVel },
+        });
+        this.corruptionBleed.stop();
+
     }
 
     update() {
+        // this.siphonVector = scaleVectorMagnitude(1000, this.x, this.y, player.x + siphonPredictMult*player.body.velocity.x, player.y + siphonPredictMult*player.body.velocity.y);
+        // this.corruptionBleed.forEachAlive(function(particle, emitter) {
+        //     particle.accelerationX = this.siphonVector.x;
+        //     particle.accelerationY = this.siphonVector.y;
+        // }, this)
+        // this.corruptionBleed.setSpeedX(this.siphonVector.x);
+        // this.corruptionBleed.setSpeedY(this.siphonVector.y);
         this.healthText.x = this.body.x + 25;
         this.healthText.y = this.body.y + 25;
         this.damageText.x = this.body.x + 25;
@@ -107,13 +128,25 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // If alive show got hit
         if(this.health > 0){
             this.damaged = true;
-            this.setAlpha(0.5)
+            this.setAlpha(0.2)
+
+            this.emitCircle.setPosition(this.x, this.y);
+            this.corruptionBleed.explode(2 + 2*damage);
+
             this.damagedTimer = this.scene.time.delayedCall(500, function () {
-                this.damaged = false;
-                enemy.setAlpha(1);
-            }, null, this.scene);
+                if(this.exists){
+                    this.damaged = false;
+                    if(this.state == 0) {
+                        this.setAlpha(1);
+                    } else {
+                        this.setAlpha(0.4);
+                    }
+                }
+            }, null, this);
         // If dead show got hit, stop everything, destroy, show death
         } else {
+            this.emitCircle.setPosition(this.x, this.y);
+            this.corruptionBleed.explode(8 + 2*damage);
             this.exists = false;
             // Remove active timers & functions
             if(this.moving) {
@@ -131,11 +164,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             }
             // Remove physics interactability
             this.body.destroy();
-            this.setAlpha(0.2);
+            this.setAlpha(0.05);
             // Wait to remove enemy corpse & text 
             this.destroyTimer = this.scene.time.delayedCall(enemyDestroyDelay, () => {
                 this.healthText.destroy();
                 this.damageText.destroy();
+                this.corruptionBleed.stop();
+                this.scene.time.delayedCall(particleDestroy, () => {
+                    this.corruptionBleed.remove();
+                }, null, this);
                 if(this.state == 0){
                     this.redGroup.remove(this, true, true);
                 } else {
@@ -240,7 +277,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         newGroup.add(this);
         if(this.state == 0){
             this.setTexture(this.redTexture);
+            this.setAlpha(1);
         } else {
+            this.setAlpha(0.4);
             this.setTexture(this.blueTexture);
         }
     }

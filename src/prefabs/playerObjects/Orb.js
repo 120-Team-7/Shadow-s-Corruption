@@ -43,10 +43,10 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
                 this.corrupted = true;
                 this.particleTrail = corruptionParticles.createEmitter({
                     emitZone: { source: this.emitCircle },
-                    alpha: { start: 1, end: 0},
-                    scale: { start: 0.5, end: 0},
-                    speed: {min: 10, max: 60},
-                    lifespan: { min: 500, max: 1000},
+                    alpha: { start: 1, end: 0 },
+                    scale: { start: 0.5, end: 0 },
+                    speed: { min: 10, max: 60 },
+                    lifespan: { min: 500, max: 1000 },
                     frequency: 100 - 20*corruption,
                     quantity: 1,
                     active: false,

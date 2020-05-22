@@ -65,6 +65,10 @@ var orbShootSound;
 // Particles;
 var corruptionParticles;
 var particleDestroy = 1000;
+var siphonPredictMult = 0.5;
+
+var enemyExplodeVel = 100;
+var playerExplodeVel = 150;
 
 // Obstacle settings
 var obstacleDrag = 300;
@@ -113,6 +117,7 @@ var playerCorruptAccel = 40;
 
 
 // Player attack settings
+var knifeStuckOffset = 50;
 // Knife throw
 var knifeSpeed = 1000;
 var knifeThrowDamage = 1;
@@ -149,7 +154,7 @@ var enemyDrag = 500;
 
 // Enemy switch conditions
 var timedSwitchDelay = 6000;
-var damageSwitchNum = 3;
+var damageSwitchNum = 2;
 
 // Enemy text
 var enemyDestroyDelay = 1000;

@@ -39,6 +39,34 @@ class Play extends Phaser.Scene {
         // Pointer
         pointer = this.input.activePointer;
 
+        corruptionParticles = this.add.particles('corruptionParticle');
+        // corruptionParticles.setDepth(1000);
+        // Initialize emit zones
+        // pointerCircle = new Phaser.Geom.Circle(0, 0, 5);
+        // particleLine = new Phaser.Geom.Line(-200, -200, gameWidth, gameHeight);
+        // Particles to show psychic throw velocity vector
+        // particleVector = this.pointerParticles.createEmitter({
+        //     emitZone: { source: particleLine },
+        //     alpha: { start: 1, end: 0 },
+        //     scale: { start: 0.75, end: 0 },
+        //     speed: {min: 0, max: 10},
+        //     lifespan: { min: 500, max: 1000 },
+        //     frequency: 20,
+        //     quantity: 2,
+        // });
+        // Particles on initial click
+        // particlePointer = this.pointerParticles.createEmitter({
+        //     emitZone: { source: pointerCircle},
+        //     alpha: { start: 1, end: 0 },
+        //     scale: { start: 1.5, end: 0 },
+        //     speed: { min: 0, max: 20 },
+        //     lifespan: { min: 3000, max: 4000 },
+        //     frequency: 10000,
+        //     quantity: 10,
+        // });
+        // particleVector.stop();
+        // particlePointer.stop();
+
         // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup)
         player = new Player(this, game.scene.keys.hudScene, centerX, centerY);
 
@@ -78,38 +106,10 @@ class Play extends Phaser.Scene {
         this.redGroup.addObstacle(centerX - 200, centerY + 200);
         this.redGroup.addObstacle(centerX + 200, centerY - 200);
 
-        corruptionParticles = this.add.particles('corruptionParticle');
-        // corruptionParticles.setDepth(1000);
-        // Initialize emit zones
-        // pointerCircle = new Phaser.Geom.Circle(0, 0, 5);
-        // particleLine = new Phaser.Geom.Line(-200, -200, gameWidth, gameHeight);
-        // Particles to show psychic throw velocity vector
-        // particleVector = this.pointerParticles.createEmitter({
-        //     emitZone: { source: particleLine },
-        //     alpha: { start: 1, end: 0 },
-        //     scale: { start: 0.75, end: 0 },
-        //     speed: {min: 0, max: 10},
-        //     lifespan: { min: 500, max: 1000 },
-        //     frequency: 20,
-        //     quantity: 2,
-        // });
-        // Particles on initial click
-        // particlePointer = this.pointerParticles.createEmitter({
-        //     emitZone: { source: pointerCircle},
-        //     alpha: { start: 1, end: 0 },
-        //     scale: { start: 1.5, end: 0 },
-        //     speed: { min: 0, max: 20 },
-        //     lifespan: { min: 3000, max: 4000 },
-        //     frequency: 10000,
-        //     quantity: 10,
-        // });
-        // particleVector.stop();
-        // particlePointer.stop();
-
         // Tutorial text
 
         this.tutorialText = this.add.text(centerX, 0, 'Press Y to continue with the tutorial or N to skip it and start infinite enemy spawner', playConfig).setOrigin(0.5, 0);
-        this.tutorialNum = 4;
+        this.tutorialNum = 0;
 
         this.input.keyboard.on('keydown-Y', function () {
             if(!this.scene.spawnedEnemies) {

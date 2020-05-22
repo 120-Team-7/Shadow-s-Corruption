@@ -16,6 +16,17 @@ class KnifeGroup extends Phaser.GameObjects.Group {
 
         // Knife x Enemy collider
         this.kxeCollider = scene.physics.add.overlap(group, redEnemyGroup, function(knife, enemy) {
+
+            // Stick knife to enemy
+            knife.body.stop();
+            knife.body.destroy();
+            knife.firstStuck = true;
+            knife.isStuck = true;
+            knife.stuckOffsetX = 4.5*(knife.x - enemy.x) / 10;
+            knife.stuckOffsetY = 4.5*(knife.y - enemy.y) / 10;
+            knife.stuckEnemy = enemy;
+
+            // Stop corruption trail if knife is corrupted
             if(knife.corrupted) {
                 knife.particleTrail.stop();
                 knife.scene.time.delayedCall(particleDestroy, function () {
@@ -23,7 +34,8 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     knife.particleTrail.remove();
                 }, null, knife);
             }
-            knife.destroy();
+
+            // Corruption handling: increase corruption, check if gaining
             increaseCorruption(knife.damage);
             gainingCorruption = true;
             if(gainingActive) {
@@ -34,13 +46,12 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                 gainingActive = false;
                 gainingCorruption = false;
             }, null, this.scene);
-            if(knife.shooting){
-                enemy.takeDamage(enemy, knife.damage);
-            }
+
+            enemy.takeDamage(enemy, knife.damage);
             // If it is a melee hit
             if(!group.isOnCooldown && !knife.shooting){
+                idleWeaponExists = false;
                 group.isOnCooldown = true;
-                enemy.takeDamage(enemy, knife.damage);
                 
                 // Stun enemy on melee stab
                 if(enemy.exists && enemy.moving){
@@ -61,7 +72,6 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                 if(enemy.health <= 0) {
                     increaseCorruption(maxCorruption);
                     group.isOnCooldown = false;
-                    idleWeaponExists = false;
                 // Start longer melee cooldown if didn't kill
                 } else {
                     if(usingCorruption) {
@@ -72,7 +82,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     }
                     group.knifeCooldown = group.scene.time.delayedCall(knifeMeleeROF, function () {
                         group.isOnCooldown = false;
-                        idleWeaponExists = false;
+                        // idleWeaponExists = false;
                         // Make sure both cooldowns are gone
                         group.knifeCooldown.destroy();
                     }, null, group.scene);

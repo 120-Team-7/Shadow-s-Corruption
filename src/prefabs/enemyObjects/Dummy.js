@@ -107,10 +107,23 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             callbackContext: scene,
             loop: true,
         });
+
+        this.emitCircle = new Phaser.Geom.Circle(this.x, this.y, 25);
+
+        this.corruptionBleed = corruptionParticles.createEmitter({
+            emitZone: { source: this.emitCircle },
+            alpha: { start: 1, end: 0 },
+            scale: { start: 0.5, end: 0 },
+            lifespan: { min: 1000, max: 1500 },
+            speedX: { min: -enemyExplodeVel, max: enemyExplodeVel },
+            speedY: { min: -enemyExplodeVel, max: enemyExplodeVel },
+        });
+        this.corruptionBleed.stop();
     }
 
     update() {
         if(!inTutorial){
+            this.corruptionBleed.remove();
             if(this.shooting) {
                 this.shooting = false;
                 this.shootTimer.destroy();
@@ -141,6 +154,8 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
 
     takeDamage(enemy, damage){
         this.health -= damage;
+        this.damaged = true;
+        // Update text
         if(this.damageTextDisappearing){
             this.damageTextTimer.destroy();
         }
@@ -154,8 +169,11 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             this.damageTextDisappearing = false;
             this.damageText.setAlpha(0);
         }, null, this.scene);    
-        this.damaged = true;
+
+        // Effects
         this.setAlpha(0.5)
+        this.emitCircle.setPosition(this.x, this.y);
+        this.corruptionBleed.explode(2 + 2*damage);
         this.damagedTimer = this.scene.time.delayedCall(500, function () {
             this.damaged = false;
             enemy.setAlpha(1);

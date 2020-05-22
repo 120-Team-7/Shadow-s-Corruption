@@ -13,9 +13,10 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
 
         this.targetX;
         this.targetY;
-
+        this.stuckEnemy;
+        this.stuckOffsetX;
+        this.stuckOffsetY;
         this.knifeSpeed = knifeSpeed;
-        
         this.damage = knifeMeleeDamage;
         if(usingCorruption) {
             this.damage += corruption;
@@ -23,26 +24,37 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         this.shooting = false;
         this.shot = false;
         this.corrupted = false;
+        this.firstStuck = false;
+        this.isStuck = false;
+        this.exists = true;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
+        this.setAngle(player.weaponAngle);
+
         this.body.setCircle(25);
         this.setDepth(999);
 
-        
+        this.fadeAway = this.scene.tweens.add({
+            targets: this,
+            alpha: { from: 0.8, to: 0 },
+            ease: 'Quartic.Out',
+            duration: 1000,
+        });
+        this.fadeAway.stop();
     }
 
-    update(){
+    update() {
         if(this.shot){
             if(usingCorruption) {
                 this.corrupted = true;
                 this.particleTrail = corruptionParticles.createEmitter({
                     follow: this,
-                    alpha: { start: 1, end: 0},
-                    scale: { start: 0.5, end: 0},
-                    speed: {min: 10, max: 60},
-                    lifespan: { min: 500, max: 1000},
+                    alpha: { start: 1, end: 0 },
+                    scale: { start: 0.5, end: 0 },
+                    speed: { min: 10, max: 60 },
+                    lifespan: { min: 500, max: 1000 },
                     frequency: 100 - 20*corruption,
                     quantity: corruption,
                     active: false,
@@ -73,7 +85,26 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                 } else {
                     this.group.remove(this, true, true);
                 }
+                this.exists = false;
             }
+        }
+        if(this.firstStuck) {
+            this.setAlpha(0.8);
+            this.firstStuck = false;
+            this.scene.time.delayedCall(500, function () {
+                if(this.exists) { 
+                    this.fadeAway.play();
+                }
+                this.scene.time.delayedCall(1000, function () {
+                    this.exists = false;
+                    this.fadeAway.remove();
+                    this.group.remove(this, true, true);
+                }, null, this);
+            }, null, this);
+        }
+        if(this.isStuck) {
+            this.x = this.stuckEnemy.x + this.stuckOffsetX;
+            this.y = this.stuckEnemy.y + this.stuckOffsetY;
         }
     }
 }

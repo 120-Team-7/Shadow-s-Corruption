@@ -44,6 +44,26 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             callbackContext: scene,
             loop: true,
         });
+
+        // this.corruptionSiphon = corruptionParticles.createGravityWell({
+        //     x: this.x,
+        //     y: this.y,
+        //     power: 1,       // strength of grav force (larger = stronger)
+        //     epsilon: screenWidth,   // min. distance for which grav force is calculated
+        //     gravity: 3000,    // grav. force of this well (creates "whipping" effect)
+        // });
+
+        this.emitCircle = new Phaser.Geom.Circle(this.x, this.y, 20);
+
+        this.corruptionBleed = corruptionParticles.createEmitter({
+            emitZone: { source: this.emitCircle },
+            alpha: { start: 1, end: 0 },
+            scale: { start: 1, end: 0 },
+            lifespan: { min: 1000, max: 1500 },
+            speedX: { min: -playerExplodeVel, max: playerExplodeVel },
+            speedY: { min: -playerExplodeVel, max: playerExplodeVel },
+        });
+        this.corruptionBleed.stop();
     }
 
 
@@ -81,9 +101,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 if(playerState == 0){
                     playerState = 1;
                     this.setTexture('bluePlayer');
+                    this.setAlpha(0.6);
                 } else {
                     playerState = 0;
                     this.setTexture('redPlayer');
+                    this.setAlpha(1);
                 }
                 // Remove current idleWeapon
                 if(idleWeaponExists){
@@ -131,7 +153,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if(idleWeaponExists){
                 // Player idle weapon update position & angle
-                player.idleWeapon.setAngle(this.weaponAngle);
+                if(!player.idleWeapon.isStuck){
+                    player.idleWeapon.setAngle(this.weaponAngle);
+                }
                 player.idleWeapon.setPosition(idleWeaponX, idleWeaponY);
                 // if(player.idleWeapon.x < player.x){
                 //     player.idleWeapon.body.setOffset(player.idleWeapon.width/2 - 15, player.idleWeapon.height/2 - 5);
@@ -146,6 +170,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
                 this.playerAccel = this.playerAccel;
             }
+
+            // this.corruptionSiphon.x = this.x;
+            // this.corruptionSiphon.y = this.y;
 
             // Player flip sprite when mouse on left/right of player character
             if(pointer.x < player.x){
@@ -200,7 +227,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     playerHit(damage) {
-        if(!isInvuln){
+        if(!isInvuln) {
             isInvuln = true;
             pCurrHealth -= damage;
             // Player dead
@@ -211,13 +238,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 if(usingCorruption) {
                     this.corruptionExpireTimer.destroy();
                 }
-                // Camera effects
+                // Effects
+                this.emitCircle.setPosition(this.x, this.y);
+                this.corruptionBleed.explode(16 + 2*damage);
                 this.scene.cameras.main.flash(1000);
                 this.scene.cameras.main.shake(1000, 0.01);
-                isGameOver = true;
                 this.scene.sound.play('playerDeath');
+
+                isGameOver = true;
                 this.setImmovable(true);
-                this.setAlpha(0.2);
+                this.setAlpha(0.05);
                 this.gameOverTimer = this.scene.time.delayedCall(pDeathDelay, function () {
                     this.scene.stop('playScene');
                     this.scene.stop('hudScene');
@@ -226,16 +256,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }, this, this.scene);
             // Player hit, but not dead
             } else {
-                this.setAlpha(0.5);
-                // Camera effects
-                this.scene.cameras.main.flash(200);
-                // Set invuln timer
+                // Effects
                 this.randHurt = Math.random();
                 if(this.randHurt < 0.5) {
                     this.scene.sound.play('playerHurt1');
                 } else {
                     this.scene.sound.play('playerHurt2');
                 }
+                this.emitCircle.setPosition(this.x, this.y);
+                this.corruptionBleed.explode(4 + 2*damage);
+                this.setAlpha(0.2);
+                this.scene.cameras.main.flash(200);
+                // Set invuln timer
                 this.invulnTimer = this.scene.time.delayedCall(invulnDuration, function () {
                     isInvuln = false;
                     player.setAlpha(1);
