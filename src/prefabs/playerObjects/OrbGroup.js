@@ -24,6 +24,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     enemy.orbInvulnTimer = group.scene.time.delayedCall(orbShotInvulnDuration, function () {
                         enemy.orbDamageInvuln = false;
                     }, null, this.scene);
+                    orb.scene.sound.play('knifeHitmarker');
                 // Idle orb blocking
                 } else if (!enemy.orbBlockInvuln) {
                     enemy.orbBlockInvuln = true;
@@ -50,7 +51,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
                         this.enemyKnockbackVector = scaleVectorMagnitude(orbKnockbackVelocity, player.x, player.y, enemy.x, enemy.y); 
                         // Knockback enemy with calculated accel components
                         enemy.body.setVelocity(this.enemyKnockbackVector.x, this.enemyKnockbackVector.y);
-                        this.sound.play('orbBlock');
+                        this.sound.play('orbEnemyBlock');
 
                         // Allow enemy movement after short stun
                         if(enemy.stunned) {
@@ -107,7 +108,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     this.orb.damage = orbShootDamage;
                     // Triggers orb shot
                     this.orb.shot = true;
-                    orbShootSound.play();
+                    this.scene.sound.play('orbShoot');
                     // Start shot cooldown
                     group.orbCooldown = this.scene.time.delayedCall(orbShootROF, function () {
                         group.isOnCooldown = false;

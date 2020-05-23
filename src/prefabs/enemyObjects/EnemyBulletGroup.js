@@ -37,8 +37,11 @@ class EnemyBulletGroup extends Phaser.GameObjects.Group {
             this.scene.physics.overlap(this, player.idleWeapon, 
                 (bullet) => {
                     bullet.destroy();
+                    if(player.idleWeapon.state == 0) {
+                        this.scene.sound.play('orbBulletBlock');
+                    }
                     if(player.idleWeapon.state == 1) {
-                        this.scene.sound.play('orbBlock');
+                        this.scene.sound.play('orbBulletBlock');
                     }
                     increaseCorruption(blockCorruptionGain);
                     gainingCorruption = true;

@@ -26,6 +26,8 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                 knife.stuckOffsetY = 4.5*(knife.y - enemy.y) / 10;
                 knife.stuckEnemy = enemy;
 
+                knife.scene.sound.play('knifeHitmarker');
+
                 // Stop corruption trail if knife is corrupted
                 if(knife.corrupted) {
                     knife.particleTrail.stop();
@@ -127,7 +129,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     // Triggers knife first throwing state
                     this.knife.shot = true;
                     this.knife.shooting = true;
-                    knifeThrowSound.play();
+                    this.scene.sound.play('knifeThrow');
                     // Start throw cooldown
                     group.knifeCooldown = this.scene.time.delayedCall(knifeThrowROF, function () {
                         group.isOnCooldown = false;

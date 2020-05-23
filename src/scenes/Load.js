@@ -25,8 +25,10 @@ class Load extends Phaser.Scene {
         // Load audio assets
         this.load.audio('buttonSound', './assets/sounds/buttonsound.mp3');
         this.load.audio('knifeThrow', './assets/sounds/knife.mp3');
+        this.load.audio('knifeHitmarker', './assets/sounds/knifeHitmarker.mp3');
         this.load.audio('orbShoot', './assets/sounds/orb.mp3');
-        this.load.audio('orbBlock', './assets/sounds/orbBlock.mp3');
+        this.load.audio('orbBulletBlock', './assets/sounds/orbBulletBlock.mp3');
+        this.load.audio('orbEnemyBlock', './assets/sounds/orbEnemyBlock.mp3');
         this.load.audio('playerDeath', './assets/sounds/demonDeath.mp3');
         this.load.audio('playerHurt1', './assets/sounds/hurt1.mp3');
         this.load.audio('playerHurt2', './assets/sounds/hurt2.mp3');
@@ -37,19 +39,19 @@ class Load extends Phaser.Scene {
     create() {
         keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
-        knifeThrowSound = game.sound.add('knifeThrow', { 
-            mute: false,
-            volume: globalVolume,
-            rate: 1,
-            loop: false 
-        });
+        // knifeThrowSound = game.sound.add('knifeThrow', { 
+        //     mute: false,
+        //     volume: globalVolume,
+        //     rate: 1,
+        //     loop: false 
+        // });
 
-        orbShootSound = game.sound.add('orbShoot', { 
-            mute: false,
-            volume: 0.5,
-            rate: 1,
-            loop: false 
-        });
+        // orbShootSound = game.sound.add('orbShoot', { 
+        //     mute: false,
+        //     volume: 0.5,
+        //     rate: 1,
+        //     loop: false 
+        // });
 
         this.loadingText.destroy();
         this.add.text(centerX, centerY, 'Press ENTER to start', {
