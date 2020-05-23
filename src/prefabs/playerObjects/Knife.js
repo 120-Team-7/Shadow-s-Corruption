@@ -37,16 +37,18 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         this.setDepth(999);
 
         this.fadeAway = this.scene.tweens.add({
-            targets: knife,
+            targets: this,
             alpha: { from: 1, to: 0 },
-            ease: 'Quartic.easeIn',
+            ease: 'Quart.easeIn',
             duration: 1000,
         });
         this.fadeAway.stop();
     }
 
     update() {
+        // On first shot, apply corruption if using corruption, shoot toward given target
         if(this.shot){
+            this.shot = false;
             if(usingCorruption) {
                 this.corrupted = true;
                 this.particleTrail = corruptionParticles.createEmitter({
@@ -66,15 +68,16 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                 if(player.corruptionExpiring) {
                     player.corruptionExpireTimer.destroy();
                 }
+                this.scene.sound.play('corruptionExpire');
             }
             this.knifeAngle = Phaser.Math.Angle.Between(player.x, player.y, this.targetX, this.targetY);
 
             this.setRotation(this.knifeAngle);
             this.scene.physics.moveTo(this, this.targetX, this.targetY, this.knifeSpeed);
-            this.shot = false;
         }
 
         if(this.shooting) {
+            // If shot out of bounds remove everything
             if(this.x < 0 || this.x > screenWidth || this.y < 0 || this.y > screenHeight) {
                 this.shooting = false;
                 if(this.corrupted) {
@@ -89,6 +92,7 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                 this.exists = false;
             }
         }
+        // On first contact with enemy, play set timers to fade away and destroy this knife
         if(this.firstStuck) {
             this.firstStuck = false;
             if(this.exists) {
@@ -104,6 +108,7 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                 }, null, this);
             }
         }
+        // Update knife's position to stay stuck on enemy
         if(this.isStuck) {
             this.x = this.stuckEnemy.x + this.stuckOffsetX;
             this.y = this.stuckEnemy.y + this.stuckOffsetY;

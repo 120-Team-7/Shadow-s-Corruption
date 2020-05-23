@@ -40,6 +40,7 @@ class Play extends Phaser.Scene {
         pointer = this.input.activePointer;
 
         corruptionParticles = this.add.particles('corruptionParticle');
+        // slimeParticles = this.add.particles('corruptionParticle');
         // corruptionParticles.setDepth(1000);
         // Initialize emit zones
         // pointerCircle = new Phaser.Geom.Circle(0, 0, 5);

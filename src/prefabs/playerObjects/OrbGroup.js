@@ -20,7 +20,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
                 // Shooting orb
                 if(orb.shooting){
                     enemy.orbDamageInvuln = true;
-                    enemy.takeDamage(enemy, orb.damage);
+                    enemy.takeDamage(orb.damage);
                     enemy.orbInvulnTimer = group.scene.time.delayedCall(orbShotInvulnDuration, function () {
                         enemy.orbDamageInvuln = false;
                     }, null, this.scene);
@@ -92,8 +92,18 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     // Pass variables to the orb for this shot
                     this.orb.shotX = this.orb.x;
                     this.orb.shotY = this.orb.y;
-                    this.orb.targetX = pointer.x;
-                    this.orb.targetY = pointer.y;
+                    
+                    // Target x Player distance to check if clicking too close to player 
+                    // (prevent backwards shooting of orb)
+                    this.oxtDist = Phaser.Math.Distance.Between(player.x, player.y, pointer.x, pointer.y);
+                    if(this.pxtDist > minPXTDist) {
+                        this.orb.targetX = pointer.x;
+                        this.orb.targetY = pointer.y;
+                    } else {
+                        this.forwardShootVector = scaleVectorMagnitude(1, player.x, player.y, this.orb.x, this.orb.y);
+                        this.orb.targetX = this.orb.x + this.forwardShootVector.x;
+                        this.orb.targetY = this.orb.y + this.forwardShootVector.y;
+                    }
                     this.orb.damage = orbShootDamage;
                     // Triggers orb shot
                     this.orb.shot = true;

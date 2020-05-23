@@ -16,77 +16,79 @@ class KnifeGroup extends Phaser.GameObjects.Group {
 
         // Knife x Enemy collider
         this.kxeCollider = scene.physics.add.overlap(group, redEnemyGroup, function(knife, enemy) {
+            if(enemy.exists) {
+                // Stick knife to enemy
+                knife.body.stop();
+                knife.body.destroy();
+                knife.firstStuck = true;
+                knife.isStuck = true;
+                knife.stuckOffsetX = 4.5*(knife.x - enemy.x) / 10;
+                knife.stuckOffsetY = 4.5*(knife.y - enemy.y) / 10;
+                knife.stuckEnemy = enemy;
 
-            // Stick knife to enemy
-            knife.body.stop();
-            knife.body.destroy();
-            knife.firstStuck = true;
-            knife.isStuck = true;
-            knife.stuckOffsetX = 4.5*(knife.x - enemy.x) / 10;
-            knife.stuckOffsetY = 4.5*(knife.y - enemy.y) / 10;
-            knife.stuckEnemy = enemy;
-
-            // Stop corruption trail if knife is corrupted
-            if(knife.corrupted) {
-                knife.particleTrail.stop();
-                knife.scene.time.delayedCall(particleDestroy, function () {
-                    knife.particleTrail.active = false;
-                    knife.particleTrail.remove();
-                }, null, knife);
-            }
-
-            // Corruption handling: increase corruption, check if gaining
-            increaseCorruption(knife.damage);
-            gainingCorruption = true;
-            if(gainingActive) {
-                // player.corruptionExpiring = false;
-                group.scene.gainingCorruptionTimer.destroy();
-            }
-            gainingActive = true;
-            group.scene.gainingCorruptionTimer = group.scene.time.delayedCall(gainingCorruptionDuration, function () {
-                gainingActive = false;
-                gainingCorruption = false;
-            }, null, this.scene);
-
-            enemy.takeDamage(enemy, knife.damage);
-            // If it is a melee hit
-            if(!group.isOnCooldown && !knife.shooting){
-                idleWeaponExists = false;
-                group.isOnCooldown = true;
-                
-                // Stun enemy on melee stab
-                if(enemy.exists && enemy.moving){
-                    enemy.moveTimer.paused = true;
-                    enemy.body.stop();
-                    if(enemy.stunned) {
-                        enemy.stunTimer.destroy();
-                    }
-                    enemy.stunned = true;
-                    // Allow enemy movement after short stun
-                    enemy.stunTimer = group.scene.time.delayedCall(knifeMeleeStunDuration, function () {
-                        enemy.moveTimer.paused = false;
-                        enemy.stunned = false;
-                    }, null, this.scene);
+                // Stop corruption trail if knife is corrupted
+                if(knife.corrupted) {
+                    knife.particleTrail.stop();
+                    knife.scene.time.delayedCall(particleDestroy, function () {
+                        knife.particleTrail.active = false;
+                        knife.particleTrail.remove();
+                    }, null, knife);
                 }
 
-                // If enemy killed set no cooldown, increase corruption to max, don't reset corruption
-                if(enemy.health <= 0) {
-                    increaseCorruption(maxCorruption);
-                    group.isOnCooldown = false;
-                // Start longer melee cooldown if didn't kill
-                } else {
-                    if(usingCorruption) {
-                        corruption = 0;
-                        usingCorruption = false;
-                        enemy.scene.corruptionDecayTimer.paused = false;
-                        player.corruptionExpireTimer.destroy();
+                // Corruption handling: increase corruption, check if gaining
+                increaseCorruption(knife.damage);
+                gainingCorruption = true;
+                if(gainingActive) {
+                    // player.corruptionExpiring = false;
+                    group.scene.gainingCorruptionTimer.destroy();
+                }
+                gainingActive = true;
+                group.scene.gainingCorruptionTimer = group.scene.time.delayedCall(gainingCorruptionDuration, function () {
+                    gainingActive = false;
+                    gainingCorruption = false;
+                }, null, this.scene);
+
+                enemy.takeDamage(knife.damage);
+                // If it is a melee hit
+                if(!group.isOnCooldown && !knife.shooting){
+                    idleWeaponExists = false;
+                    group.isOnCooldown = true;
+                    
+                    // Stun enemy on melee stab
+                    if(enemy.exists && enemy.moving){
+                        enemy.moveTimer.paused = true;
+                        enemy.body.stop();
+                        if(enemy.stunned) {
+                            enemy.stunTimer.destroy();
+                        }
+                        enemy.stunned = true;
+                        // Allow enemy movement after short stun
+                        enemy.stunTimer = group.scene.time.delayedCall(knifeMeleeStunDuration, function () {
+                            enemy.moveTimer.paused = false;
+                            enemy.stunned = false;
+                        }, null, this.scene);
                     }
-                    group.knifeCooldown = group.scene.time.delayedCall(knifeMeleeROF, function () {
+
+                    // If enemy killed set no cooldown, increase corruption to max, don't reset corruption
+                    if(enemy.health <= 0) {
+                        increaseCorruption(maxCorruption);
                         group.isOnCooldown = false;
-                        // idleWeaponExists = false;
-                        // Make sure both cooldowns are gone
-                        group.knifeCooldown.destroy();
-                    }, null, group.scene);
+                    // Start longer melee cooldown if didn't kill
+                    } else {
+                        if(usingCorruption) {
+                            corruption = 0;
+                            usingCorruption = false;
+                            enemy.scene.corruptionDecayTimer.paused = false;
+                            player.corruptionExpireTimer.destroy();
+                            enemy.scene.sound.play('corruptionExpire');
+                        }
+                        group.knifeCooldown = group.scene.time.delayedCall(knifeMeleeROF, function () {
+                            group.isOnCooldown = false;
+                            // idleWeaponExists = false;
+                            // Make sure both cooldowns are gone
+                            group.knifeCooldown.destroy();
+                        }, null, group.scene);
+                    }
                 }
             }
         }, function() {
@@ -108,11 +110,19 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     // Stop updating idleWeapon, store the current idleWeapon, remove its reference
                     idleWeaponExists = false;
                     this.knife = player.idleWeapon;
-                    player.idleWeapon = null;
                     // Update knife variables
                     this.knife.shooting = true;
-                    this.knife.targetX = pointer.x;
-                    this.knife.targetY = pointer.y;
+                    // Target x Player distance to check if clicking too close to player 
+                    // (prevent backwards shooting of knife)
+                    this.pxtDist = Phaser.Math.Distance.Between(player.x, player.y, pointer.x, pointer.y);
+                    if(this.pxtDist > minPXTDist) {
+                        this.knife.targetX = pointer.x;
+                        this.knife.targetY = pointer.y;
+                    } else {
+                        this.forwardShootVector = scaleVectorMagnitude(1, player.x, player.y, this.knife.x, this.knife.y);
+                        this.knife.targetX = this.knife.x + this.forwardShootVector.x;
+                        this.knife.targetY = this.knife.y + this.forwardShootVector.y;
+                    }
                     this.knife.damage += knifeThrowDamage - knifeMeleeDamage;
                     // Triggers knife first throwing state
                     this.knife.shot = true;
@@ -124,6 +134,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                         // Make sure both cooldowns are gone
                         group.knifeCooldown.destroy();
                     }, null, this.scene);
+                    player.idleWeapon = null;
                 }
             }
         }, this);

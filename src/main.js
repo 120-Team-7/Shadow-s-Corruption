@@ -84,6 +84,7 @@ var player;
 
 // Pointer & idle weapon
 var pointer;
+var minPXTDist = 80;
 var idleWeaponDistance = 70;
 var idleWeaponX;
 var idleWeaponY;
@@ -93,6 +94,7 @@ var idleWeaponExists = true;
 var playerState = 0; // 0 = red, 1 = blue
 var switchOnCooldown = false;
 var switchCooldown = 1000;
+var switchEffectsDuration = 500;
 
 var isInvuln = false; // invulnerability state after taking damage
 var invulnDuration = 1000;

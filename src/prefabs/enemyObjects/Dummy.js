@@ -37,6 +37,9 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         this.orbDamageInvuln = false;
         this.orbBlockInvuln = false
         this.damageTextDisappearing = false;
+        
+        this.maxHealth = 10;
+        this.health = this.maxHealth;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -48,7 +51,19 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         // this.body.setBoundsRectangle(this.customBounds);
         // this.body.setDrag(enemyDrag, enemyDrag);
         // console.log(this.body);
-
+        this.healthTextConfig = {
+            fontFamily: 'Courier',
+            fontSize: '18px',
+            color: '#000000',
+            align: 'center',
+            padding: {
+                top: 10,
+                bottom: 10,
+                left: 10,
+                right: 10,
+            },
+            fixedWidth: 0
+        }
         this.damageTextConfig = {
             fontFamily: 'Courier',
             fontSize: '25px',
@@ -65,6 +80,7 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
 
         // Add enemy text
         this.damageText = scene.add.text(this.x, this.y - 40, "", this.damageTextConfig).setOrigin(0.5, 0.5).setDepth(1000);
+        this.healthText = scene.add.text(this.x, this.y, this.health + "/" + this.maxHealth, this.healthTextConfig).setOrigin(0.5, 0.5).setDepth(1000);
 
         if(isShooter) {
             enemy.shooting = true;
@@ -85,11 +101,11 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             });
         }
 
+        enemy.moving = true;
         enemy.moveTimer = scene.time.addEvent({
             delay: chaserConfig.moveDelay, 
             callback: () => {
-                enemy.moving = true;
-                if(inTutorial) {
+                if(inTutorial && enemy.moving) {
 
                     // Calculate new accel vector
                     enemy.accelVector = scaleVectorMagnitude(chaserConfig.accel, enemy.x, enemy.y, enemy.oSpawnX, enemy.oSpawnY)
@@ -147,13 +163,17 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             }
         }
 
-        // Update damage text positions
+        // Update text positions
+        this.healthText.x = this.body.x + 25;
+        this.healthText.y = this.body.y + 25;
         this.damageText.x = this.body.x + 25;
-        this.damageText.y = this.body.y + 25;
+        this.damageText.y = this.body.y - 20;
     }
 
-    takeDamage(enemy, damage){
+    takeDamage(damage){
         this.health -= damage;
+        this.healthText.setText(this.health + "/" + this.maxHealth);
+
         this.damaged = true;
         // Update text
         if(this.damageTextDisappearing){
@@ -170,14 +190,48 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             this.damageText.setAlpha(0);
         }, null, this.scene);    
 
-        // Effects
-        this.emitCircle.setPosition(this.x, this.y);
-        this.corruptionBleed.explode(2 + 2*damage);
-        // this.setAlpha(0.5)
-        // this.damagedTimer = this.scene.time.delayedCall(500, function () {
-        //     this.damaged = false;
-        //     enemy.setAlpha(1);
-        // }, null, this.scene);
+        // Hurt but alive
+        if(this.health > 0) {
+            // Effects
+            this.emitCircle.setPosition(this.x, this.y);
+            this.corruptionBleed.explode(2 + 2*damage);
+            // this.setAlpha(0.5)
+            // this.damagedTimer = this.scene.time.delayedCall(500, function () {
+            //     this.damaged = false;
+            //     enemy.setAlpha(1);
+            // }, null, this.scene);
+        // Dead
+        } else {
+            this.exists = false;
+            this.moving = false;
+            this.body.stop();
+            this.emitCircle.setPosition(this.x, this.y);
+            this.corruptionBleed.explode(8 + 2*damage);
+            // this.exists = false;
+            // Remove active timers & functions
+            if(this.moving) {
+                this.moveTimer.paused = true;
+            }
+            // if(this.damaged) {
+            //     this.damagedTimer.remove();
+            // }
+            this.setAlpha(0.05);
+            // Wait to remove enemy corpse & text 
+            this.destroyTimer = this.scene.time.delayedCall(enemyDestroyDelay, () => {
+                this.corruptionBleed.stop();
+                this.scene.time.delayedCall(particleDestroy, () => {
+                    this.corruptionBleed.remove();
+                }, null, this);
+                // Reset dummy position and revive
+                this.body.reset(this.oSpawnX, this.oSpawnY);
+                this.health = this.maxHealth;
+                this.healthText.setText(this.health + "/" + this.maxHealth);
+                this.moveTimer.paused = false;
+                this.moving = true;
+                this.exists = true;
+                this.setAlpha(1);
+            }, null, this);
+        }
     }
 
     // Switch enemy color & everything else related

@@ -78,10 +78,27 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             quantity: 2,
         });
         this.particleTrail.stop();
+
+        scene.shiftCircle = scene.add.ellipse(this.x, this.y, 2*screenWidth, 2*screenWidth);
+        scene.shiftCircle.setAlpha(0);
+        this.shiftCircleShrink = this.scene.tweens.add({
+            targets: scene.shiftCircle,
+            scale: { from: 0, to: 1},
+            alpha: { from: 0.05, to: 0},
+            ease: 'Sine.easeIn',
+            duration: switchEffectsDuration,
+            onComplete: function() {
+                this.shiftCircle.setActive(false);
+            },
+            onCompleteScope: scene
+        });
+        this.shiftCircleShrink.stop();
     }
 
 
     update() {
+        // console.log(this.scene.shiftCircle);
+        this.scene.shiftCircle.setPosition(this.x, this.y);
         if(!isGameOver){
             // Player movement
             if(keyLeft.isDown || keyRight.isDown || keyUp.isDown || keyDown.isDown){
@@ -151,7 +168,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         if(playerState == 0 && idleWeaponExists && !usingCorruption){
                             player.idleWeapon.setTexture('knife');
                         }
+                        player.scene.sound.play('corruptionExpire');
                     }, null, this.scene);
+
+                    
                     
                 }
 
@@ -159,7 +179,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     switchOnCooldown = false;
                 }, null, this.scene);
 
-                this.scene.cameras.main.shake(250, 0.003);
+                // Switch effects
+                this.scene.cameras.main.shake(switchEffectsDuration, 0.002);
+                this.scene.shiftCircle.setActive(true);
+                if(playerState == 0) { 
+                    this.scene.shiftCircle.setFillStyle(playerRed);
+                } else {
+                    this.scene.shiftCircle.setFillStyle(playerBlue);
+                }
+                this.shiftCircleShrink.play();
             }
                 
             if(!usingCorruption) {

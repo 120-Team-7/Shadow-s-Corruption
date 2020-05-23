@@ -30,6 +30,8 @@ class Load extends Phaser.Scene {
         this.load.audio('playerDeath', './assets/sounds/demonDeath.mp3');
         this.load.audio('playerHurt1', './assets/sounds/hurt1.mp3');
         this.load.audio('playerHurt2', './assets/sounds/hurt2.mp3');
+        this.load.audio('corruptionExpire', './assets/sounds/corruptionExpire.mp3');
+
     }
 
     create() {

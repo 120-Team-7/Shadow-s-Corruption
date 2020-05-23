@@ -105,7 +105,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.damageText.y = this.body.y - 20;
     }
 
-    takeDamage(enemy, damage){
+    takeDamage(damage){
         this.health -= damage;
         this.healthText.setText(this.health + "/" + this.maxHealth);
 
