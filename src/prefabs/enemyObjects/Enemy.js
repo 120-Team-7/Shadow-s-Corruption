@@ -165,11 +165,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             // Remove physics interactability
             this.body.destroy();
             this.setAlpha(0.05);
+            this.corruptionBleed.stop();
             // Wait to remove enemy corpse & text 
             this.destroyTimer = this.scene.time.delayedCall(enemyDestroyDelay, () => {
                 this.healthText.destroy();
                 this.damageText.destroy();
-                this.corruptionBleed.stop();
                 this.scene.time.delayedCall(particleDestroy, () => {
                     this.corruptionBleed.remove();
                 }, null, this);

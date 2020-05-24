@@ -49,6 +49,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             loop: true,
         });
 
+        this.damageTextConfig = {
+            fontFamily: 'Courier',
+            fontSize: '35px',
+            color: "#FF00FF",
+            align: 'center',
+            padding: {
+                top: 10,
+                bottom: 10,
+                left: 10,
+                right: 10,
+            },
+            fixedWidth: 0
+        }
+
+        this.damageText = scene.add.text(this.x, this.y - 40, "", this.damageTextConfig).setOrigin(0.5, 0.5).setDepth(1000);
+
+
         // this.corruptionSiphon = corruptionParticles.createGravityWell({
         //     x: this.x,
         //     y: this.y,
@@ -224,6 +241,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             // this.corruptionSiphon.x = this.x;
             // this.corruptionSiphon.y = this.y;
 
+            this.damageText.x = this.body.x + 15;
+            this.damageText.y = this.body.y - 35;
+
             // Player flip sprite when mouse on left/right of player character
             if(pointer.x < player.x){
                 this.setFlipX(true);
@@ -282,6 +302,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(!isInvuln) {
             isInvuln = true;
             pCurrHealth -= damage;
+
+            if(this.damageTextDisappearing){
+                this.damageTextTimer.destroy();
+            }
+            this.damageText.setAlpha(0);
+            this.damageTextTimer = this.scene.time.delayedCall(50, () => {
+                this.damageText.setAlpha(1);
+            }, null, this.scene);
+            this.damageText.setText(damage);
+            this.damageTextDisappearing = true;
+            this.damageTextTimer = this.scene.time.delayedCall(2000, () => {
+                this.damageTextDisappearing = false;
+                this.damageText.setAlpha(0);
+            }, null, this.scene);
+
             // Player dead
             if(pCurrHealth <= 0) {
                 if(idleWeaponExists) {

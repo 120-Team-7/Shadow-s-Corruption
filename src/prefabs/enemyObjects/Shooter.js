@@ -18,6 +18,8 @@ class Shooter extends Enemy {
         this.blueBulletGroup = blueBulletGroup;
 
         this.shooting;
+        this.targetX;
+        this.targetY;
 
         this.body.setCollideWorldBounds(true);
         this.body.setBounce(chaserConfig.bounce, shooterConfig.bounce);
@@ -82,77 +84,111 @@ class Shooter extends Enemy {
             });
         }, null, this.scene);
 
-        this.shooting = true;
-        this.shootTimer = this.scene.time.addEvent({
-            delay: shooterConfig.rof, 
-            callback: () => {
+
+        this.targetLaser = scene.add.line(0, 0, 0, 0, 0, 0, playerRed);
+        this.targetLaser.setLineWidth(3, 0.5);
+        this.targetLaser.setAlpha(0);
+
+        this.fadeIn = this.scene.tweens.add({
+            targets: this.targetLaser,
+            alpha: { from: 0, to: 1 },
+            ease: 'Quart.easeIn',
+            duration: shooterConfig.rof/2,
+            onComplete: function() {
                 this.shoot();
+                this.targetLaser.setAlpha(0);
+            },
+            onCompleteScope: this
+        });
+        this.fadeIn.stop();
+
+        this.shooting = true;
+        this.targetTimer = this.scene.time.addEvent({
+            delay: shooterConfig.rof/2, 
+            callback: () => {
+                this.fadeIn.play();
             }, 
             callbackContext: scene,
             loop: true,
         });
+
     }
 
     update() {
         super.update();
 
         if (!this.switching && !this.stunned) {
-            this.shootTimer.paused = false;
+            this.targetTimer.paused = false;
         } else {
-            this.shootTimer.paused = true;
+            this.targetTimer.paused = true;
         }
 
         if(this.health <= 0 && this.shooting) {
             this.shooting = false;
-            this.shootTimer.destroy();
+            this.fadeIn.remove();
+            this.targetTimer.destroy();
+            this.targetLaser.destroy();
+        }
+        this.enemyDistance = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+
+
+
+        // If player is close enough, target player directly
+        if(this.enemyDistance < shooterConfig.closeTargetDist) {
+            this.targetX = player.x;
+            this.targetY = player.y;
+        } else {
+            this.enemyRange = this.enemyDistance/shooterConfig.farTargetDist;
+            this.targetX = player.x + player.body.velocity.x * this.enemyRange * shooterConfig.shotPredictMult
+            this.targetY = player.y + player.body.velocity.y * this.enemyRange * shooterConfig.shotPredictMult;
+
+            // // If predition goes off screen, target player directly
+            // if(this.targetX < 0 || this.targetX > screenWidth) {
+            //     this.targetX = player.x;
+            //     this.targetY = player.y;
+            // }
+            // if(this.targetY < 0 || this.targetY > screenHeight) {
+            //     this.targetY = player.x;
+            //     this.targetY = player.y;
+            // }
+
+            // If predition is in opposite direction from player, target player directly
+            if(this.targetX < this.x && player.x > this.x) { 
+                this.targetY = player.x;
+                this.targetY = player.y;
+            }
+            if(this.targetX > this.x && player.x < this.x) { 
+                this.targetY = player.x;
+                this.targetY = player.y;
+            }
+            if(this.targetY < this.y && player.y > this.y) { 
+                this.targetY = player.x;
+                this.targetY = player.y;
+            }
+            if(this.targetY > this.y && player.y < this.y) { 
+                this.targetY = player.x;
+                this.targetY = player.y;
+            }
+    
+        }
+
+        
+
+        if(this.health > 0) {
+            this.targetVector = scaleVectorMagnitude(shooterConfig.targetLaserLength, this.x, this.y, this.targetX, this.targetY)
+            this.targetLaser.setTo(this.x, this.y, this.x + this.targetVector.x, this.y + this.targetVector.y);
+            if(this.state == 0) {
+                this.targetLaser.strokeColor = playerRed;
+                // this.targetLaser.setAlpha(1);
+            } else {
+                this.targetLaser.strokeColor = playerBlue;
+                // this.targetLaser.setAlpha(0.5);
+            }
         }
     }
 
     shoot() {
         // EnemyBulletGroup.addBullet(state, spawnX, spawnY, targetX, targetY)
-        this.targetX = player.x + player.body.velocity.x * shooterConfig.shotPredictMult
-        this.targetY = player.y + player.body.velocity.y * shooterConfig.shotPredictMult;
-        this.enemyDistance = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
-
-        // If predition goes off screen, target player directly
-        if(this.targetX < 0 || this.targetX > screenWidth) {
-            this.targetX = player.x;
-            this.targetY = player.y;
-        }
-        if(this.targetY < 0 || this.targetY > screenHeight) {
-            this.targetY = player.x;
-            this.targetY = player.y;
-        }
-
-        // If player is close enough, target player directly
-        if(this.enemyDistance > shooterConfig.closeDistance) {
-            if(this.targetX > screenWidth || this.targetX < 0){
-                this.targetX = player.x;
-            }
-            if(this.targetY > screenHeight || this.targetY < 0){
-                this.targetY = player.y;
-            }
-        }
-
-        // If target is in opposite direction from player, target player directly
-        if(this.targetX < this.x && player.x > this.x) { 
-            this.targetY = player.x;
-            this.targetY = player.y;
-        }
-        if(this.targetX > this.x && player.x < this.x) { 
-            this.targetY = player.x;
-            this.targetY = player.y;
-        }
-        if(this.targetY < this.y && player.y > this.y) { 
-            this.targetY = player.x;
-            this.targetY = player.y;
-        }
-        if(this.targetY > this.y && player.y < this.y) { 
-            this.targetY = player.x;
-            this.targetY = player.y;
-        }
-        
-
         if(this.state == 0) {
             this.redBulletGroup.addBullet(this.state, this.x, this.y, this.targetX, this.targetY);
         }

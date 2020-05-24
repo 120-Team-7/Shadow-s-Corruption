@@ -139,6 +139,9 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         if(!inTutorial){
+            this.damageTextTimer.destroy();
+            this.healthText.destroy();
+            this.damageText.destroy();
             this.corruptionBleed.remove();
             if(this.shooting) {
                 this.shooting = false;
@@ -219,17 +222,19 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             // Wait to remove enemy corpse & text 
             this.destroyTimer = this.scene.time.delayedCall(enemyDestroyDelay, () => {
                 this.corruptionBleed.stop();
-                this.scene.time.delayedCall(particleDestroy, () => {
-                    this.corruptionBleed.remove();
-                }, null, this);
-                // Reset dummy position and revive
-                this.body.reset(this.oSpawnX, this.oSpawnY);
-                this.health = this.maxHealth;
-                this.healthText.setText(this.health + "/" + this.maxHealth);
-                this.moveTimer.paused = false;
-                this.moving = true;
-                this.exists = true;
-                this.setAlpha(1);
+                if(inTutorial) {
+                    this.scene.time.delayedCall(particleDestroy, () => {
+                        this.corruptionBleed.remove();
+                    }, null, this);
+                    // Reset dummy position and revive
+                    this.body.reset(this.oSpawnX, this.oSpawnY);
+                    this.health = this.maxHealth;
+                    this.healthText.setText(this.health + "/" + this.maxHealth);
+                    this.moveTimer.paused = false;
+                    this.moving = true;
+                    this.exists = true;
+                    this.setAlpha(1);
+                }
             }, null, this);
         }
     }

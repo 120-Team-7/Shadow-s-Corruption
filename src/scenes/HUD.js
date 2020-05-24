@@ -23,14 +23,21 @@ class HUD extends Phaser.Scene {
 
         // HUD ---------------------------------------------------------------------------------
 
+        this.borderBox1 = this.add.rectangle(0, screenHeight - 72, 140, 72, black).setOrigin(0, 0).setAlpha(0.8);
+
         this.corruptionCooldownBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(0.5);
         this.corruptionBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(0.3);
-        this.knifeCooldownBox = this.add.rectangle(knifeCooldownX, knifeCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(0.25);
-        this.knifeBox = this.add.rectangle(knifeCooldownX, knifeCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(0.25);
-        this.orbCooldownBox = this.add.rectangle(orbCooldownX, orbCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerBlue).setOrigin(0, 0).setAlpha(0.25);
-        this.orbBox = this.add.rectangle(orbCooldownX, orbCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerBlue).setOrigin(0, 0).setAlpha(0.25);
-        this.switchCooldownBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(0.25);
-        this.switchBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(0.25);
+
+        this.knifeCooldownBox = this.add.rectangle(weaponCooldownX, weaponCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(cooldownAlpha);
+        this.knifeBox = this.add.rectangle(weaponCooldownX, weaponCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(boxAlpha);
+
+        this.orbCooldownBox = this.add.rectangle(weaponCooldownX, weaponCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerBlue).setOrigin(0, 0).setAlpha(cooldownAlpha);
+        this.orbBox = this.add.rectangle(weaponCooldownX, weaponCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerBlue).setOrigin(0, 0).setAlpha(boxAlpha);
+        
+        this.switchCooldownBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(cooldownAlpha);
+        this.switchBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(boxAlpha);
+
+
         // this.orbCooldownImage = this.add.sprite(orbCooldownX + 20, orbCooldownY + 20, 'orb').setOrigin(0.5, 0.5);
         // this.knifeCooldownImage = this.add.sprite(knifeCooldownX,knifeCooldownY, 'knife').setOrigin(0, 0);
         // hudConfig.color = playerRed;
@@ -39,10 +46,10 @@ class HUD extends Phaser.Scene {
         this.corruptionText = this.add.text(centerX, screenHeight - 60, '', hudConfig).setOrigin(0.5, 0);
 
         hudConfig.fontSize = '30px';
-        this.knifeCooldownText = this.add.text(knifeCooldownX, knifeCooldownY + 16, '', hudConfig).setOrigin(0, 0);
+        this.knifeCooldownText = this.add.text(weaponCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
         // hudConfig.color =  playerBlue;
-        this.orbCooldownText = this.add.text(orbCooldownX, orbCooldownY + 16, '', hudConfig).setOrigin(0, 0);
-        this.switchCooldownText = this.add.text(switchCooldownX, switchCooldownY + 16, '', hudConfig).setOrigin(0, 0);
+        this.orbCooldownText = this.add.text(weaponCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
+        this.switchCooldownText = this.add.text(switchCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
         hudConfig.fontSize = '40px';
 
         this.testText = this.add.text(centerX, 100, '', hudConfig).setOrigin(0.5, 0);
@@ -50,7 +57,25 @@ class HUD extends Phaser.Scene {
     }
 
     update() {
+        
         this.healthText.setText('Health: ' + pCurrHealth + "/" + pMaxHealth);
+
+        if(playerState == 0) {
+            this.orbCooldownText.setAlpha(0);
+            this.orbCooldownBox.setAlpha(0);
+            this.orbBox.setAlpha(0);
+            this.knifeCooldownText.setAlpha(1);
+            this.knifeCooldownBox.setAlpha(cooldownAlpha);
+            this.knifeBox.setAlpha(boxAlpha);
+        } else {
+            this.knifeCooldownText.setAlpha(0);
+            this.knifeCooldownBox.setAlpha(0);
+            this.knifeBox.setAlpha(0);
+            this.orbCooldownText.setAlpha(1);
+            this.orbCooldownBox.setAlpha(cooldownAlpha);
+            this.orbBox.setAlpha(boxAlpha);
+        }
+
         if(usingCorruption) {
             this.corruptionText.setStyle({
                 color: '#FF00FF'

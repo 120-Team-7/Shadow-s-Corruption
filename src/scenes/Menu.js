@@ -59,6 +59,7 @@ class Menu extends Phaser.Scene {
                 pCurrHealth = pMaxHealth;
                 corruption = 0;
                 isInvuln = false;
+                usingCorruption = false;
             } else if(isPaused) {
                 isPaused = false;
                 this.scene.stop('instructionsScene');

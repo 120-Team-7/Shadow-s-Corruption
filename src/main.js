@@ -42,14 +42,16 @@ var smallTextSpacer = 32;
 // Instructions
 var imagesY = screenHeight - 200;
 // Cooldown
-var knifeCooldownX = 0;
-var knifeCooldownY = screenHeight - 64;
-var orbCooldownX = 64;
-var orbCooldownY = screenHeight - 64;
-var switchCooldownX = 128;
-var switchCooldownY = screenHeight - 64;
+var weaponCooldownX = 4;
+var weaponCooldownY = screenHeight - 68;
+var cooldownTextY = screenHeight - 48;
+var switchCooldownX = 72;
+var switchCooldownY = screenHeight - 68;
 var cooldownBoxWidth = 64;
 var cooldownBoxHeight = 64;
+
+var boxAlpha = 0.6;
+var cooldownAlpha = 0.4;
 
 var corruptionExpireX = centerX;
 var corruptionExpireY = screenHeight - 8;
@@ -93,7 +95,7 @@ var idleWeaponExists = true;
 // Player statistics
 var playerState = 0; // 0 = red, 1 = blue
 var switchOnCooldown = false;
-var switchCooldown = 1000;
+var switchCooldown = 800;
 var switchEffectsDuration = 500;
 
 var isInvuln = false; // invulnerability state after taking damage
@@ -178,7 +180,7 @@ var chaserConfig = {
     predictMinDist: 200,
     bounce: 0.1,
     health: 10,
-    damage: 2
+    damage: 1
 }
 
 // Shooter enemy config
@@ -186,17 +188,19 @@ var shooterConfig = {
     spawnPause: 0,
     accel: 300,
     maxVel: 150,
-    moveDelay: 50,
+    moveDelay: 200,
     slowdownDelay: 1000,
-    closeDistance: 600,
-    farDistance: 650,
+    closeDistance: 500,
+    farDistance: 550,
+    closeTargetDist: 300,
+    farTargetDist: 600,
     bounce: 0.1,
     health: 10,
     damage: 1,
     bulletSpeed: 400,
     rof: 2000,
-    shotPredictMult: 0.6,
-    overShootDefault: 50,
+    shotPredictMult: 0.8,
+    targetLaserLength: 200,
 }
 
 

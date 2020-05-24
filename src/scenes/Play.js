@@ -35,7 +35,7 @@ class Play extends Phaser.Scene {
 
 
         // Initialize play objects ----------------------------------------------------------------------------------------------------
-        
+
         // Pointer
         pointer = this.input.activePointer;
 
@@ -224,16 +224,16 @@ class Play extends Phaser.Scene {
         this.redEnemyBulletGroup.update();
         this.blueEnemyBulletGroup.update();
 
-        // console.log(player);
-
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
-            isPaused = true;
-            this.scene.pause('playScene');
-            this.scene.pause('hudScene');
-            this.scene.setVisible(false, 'playScene');
-            this.scene.setVisible(false, 'hudScene');
-            this.scene.run('menuScene');
-            this.scene.setVisible(true, 'menuScene');
+            if(!isGameOver) {
+                isPaused = true;
+                this.scene.pause('playScene');
+                this.scene.pause('hudScene');
+                this.scene.setVisible(false, 'playScene');
+                this.scene.setVisible(false, 'hudScene');
+                this.scene.run('menuScene');
+                this.scene.setVisible(true, 'menuScene');
+            }
         }
     }
 
