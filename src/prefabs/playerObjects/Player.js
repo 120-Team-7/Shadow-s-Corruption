@@ -32,6 +32,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.idleWeapon;
         idleWeaponExists = false;
 
+        this.weaponMine;
+        this.weaponMineExists = false;
+
         this.playerAccel = playerAccel;
 
         this.originalKROF = knifeThrowROF;
@@ -100,6 +103,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.shiftCircle.setAlpha(0);
         this.shiftCircleShrink = this.scene.tweens.add({
             targets: scene.shiftCircle,
+            paused: true,
             scale: { from: 0, to: 1},
             alpha: { from: 0.05, to: 0},
             ease: 'Sine.easeIn',
@@ -109,7 +113,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             },
             onCompleteScope: scene
         });
-        this.shiftCircleShrink.stop();
     }
 
 
@@ -149,17 +152,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 if(playerState == 0){
                     playerState = 1;
                     this.setTexture('bluePlayer');
-                    this.setAlpha(0.6);
                 } else {
                     playerState = 0;
                     this.setTexture('redPlayer');
-                    this.setAlpha(1);
                 }
                 // Remove current idleWeapon
-                if(idleWeaponExists){
-                    this.idleWeapon.destroy();
-                    idleWeaponExists = false;
+                if(idleWeaponExists) {
+                    // this.idleWeapon.destroy();
+                    this.weaponMineExists = true;
+                    this.weaponMine = this.idleWeapon;
+                    this.idleWeapon.exists = false;
+                    this.idleWeapon.disapate.play();
                     this.idleWeapon = null;
+                    idleWeaponExists = false;
                 }
                 // Start corruption shot window
                 if(corruption != 0 && !usingCorruption) {
@@ -187,9 +192,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         }
                         player.scene.sound.play('corruptionExpire');
                     }, null, this.scene);
-
-                    
-                    
                 }
 
                 this.switchCooldown = this.scene.time.delayedCall(switchCooldown, function () {
@@ -197,7 +199,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }, null, this.scene);
 
                 // Switch effects
-                this.scene.cameras.main.shake(switchEffectsDuration, 0.002);
+                this.scene.cameras.main.shake(switchEffectsDuration, switchScreenShake);
                 this.scene.shiftCircle.setActive(true);
                 if(playerState == 0) { 
                     this.scene.shiftCircle.setFillStyle(playerRed);
@@ -262,9 +264,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             // displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime)
             if(switchOnCooldown) {
-                displayCooldown(this.hudScene.switchCooldownText, this.hudScene.switchCooldownBox, this.switchCooldown, this.switchCooldown.delay);
+                displayCooldown(this.hudScene.switchCooldownText, this.hudScene.switchCooldownBox, this.switchCooldown, this.switchCooldown.delay, this.hudScene.switchCDImage);
             } else {
-                // this.hudScene.switchCooldownImage.setAlpha(1);
+                this.hudScene.switchCDImage.setAlpha(1);
                 this.hudScene.switchCooldownText.setText("");
                 this.hudScene.switchCooldownBox.setSize(cooldownBoxWidth, cooldownBoxHeight);
             }
@@ -327,14 +329,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
                 // Effects
                 this.particleTrail.stop();
-                this.corruptionBleed.explode(16 + 2*damage);
-                this.scene.cameras.main.flash(1000);
+                this.corruptionBleed.explode(20 + 2*damage);
+                this.scene.cameras.main.flash(1000, 218, 112, 214);
                 this.scene.cameras.main.shake(1000, 0.01);
                 this.scene.sound.play('playerDeath');
 
                 isGameOver = true;
                 this.setImmovable(true);
-                this.setAlpha(0.05);
+                this.setAlpha(0);
                 this.gameOverTimer = this.scene.time.delayedCall(pDeathDelay, function () {
                     player.particleTrail.remove();
                     this.scene.stop('playScene');
@@ -353,7 +355,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
                 this.corruptionBleed.explode(4 + 2*damage);
                 this.setAlpha(0.2);
-                this.scene.cameras.main.flash(200);
+                // this.scene.cameras.main.flash(100, 218, 112, 214);
+                this.scene.cameras.main.shake(500, 0.005);
                 // Set invuln timer
                 this.invulnTimer = this.scene.time.delayedCall(invulnDuration, function () {
                     isInvuln = false;

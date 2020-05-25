@@ -87,8 +87,8 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     // On cooldown
                     group.isOnCooldown = true;
                     // Create and add new orb
-                    // Orb(scene, group, oSpawnX, oSpawnY, targetX, targetY, state) 
-                    this.orb = new Orb(this.scene, this, idleWeaponX, idleWeaponY, 0);
+                    // Orb(scene, group, oSpawnX, oSpawnY, targetX, targetY, state, shot) 
+                    this.orb = new Orb(this.scene, this, idleWeaponX, idleWeaponY, 1, true);
                     this.add(this.orb);
                     // Pass variables to the orb for this shot
                     this.orb.shotX = this.orb.x;
@@ -106,8 +106,6 @@ class OrbGroup extends Phaser.GameObjects.Group {
                         this.orb.targetY = this.orb.y + this.forwardShootVector.y;
                     }
                     this.orb.damage = orbShootDamage;
-                    // Triggers orb shot
-                    this.orb.shot = true;
                     this.scene.sound.play('orbShoot');
                     // Start shot cooldown
                     group.orbCooldown = this.scene.time.delayedCall(orbShootROF, function () {
@@ -126,10 +124,10 @@ class OrbGroup extends Phaser.GameObjects.Group {
         // Somehow needed to update children
         this.preUpdate();
         // Adds idle weapon orb after switch
-        if(playerState == 1 && !idleWeaponExists && !isGameOver && switchOnCooldown) {
+        if(playerState == 1 && !idleWeaponExists && !isGameOver && switchOnCooldown && player.idleWeapon == null) {
             idleWeaponExists = true;
-            // Orb(scene, group, oSpawnX, oSpawnY, targetX, targetY, state)
-            player.idleWeapon = new Orb(this.scene, this, idleWeaponX, idleWeaponY, 1);
+            // Orb(scene, group, oSpawnX, oSpawnY, targetX, targetY, state, shot)
+            player.idleWeapon = new Orb(this.scene, this, idleWeaponX, idleWeaponY, 1, false);
             this.add(player.idleWeapon);
             if(usingCorruption) {
                 player.idleWeapon.setTexture('corruptOrb');
@@ -145,7 +143,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
         // displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime)
         if(this.isOnCooldown) {
             // this.hudScene.orbCooldownImage.setAlpha(0.5);
-            displayCooldown(this.hudScene.orbCooldownText, this.hudScene.orbCooldownBox, this.orbCooldown, orbShootROF);
+            displayCooldown(this.hudScene.orbCooldownText, this.hudScene.orbCooldownBox, this.orbCooldown, orbShootROF, this.hudScene.orbCDImage);
         } else {
             // this.hudScene.orbCooldownImage.setAlpha(1);
             this.hudScene.orbCooldownText.setText("");

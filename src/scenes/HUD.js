@@ -37,13 +37,10 @@ class HUD extends Phaser.Scene {
         this.switchCooldownBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(cooldownAlpha);
         this.switchBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(boxAlpha);
 
-
-        // this.orbCooldownImage = this.add.sprite(orbCooldownX + 20, orbCooldownY + 20, 'orb').setOrigin(0.5, 0.5);
-        // this.knifeCooldownImage = this.add.sprite(knifeCooldownX,knifeCooldownY, 'knife').setOrigin(0, 0);
+       
         // hudConfig.color = playerRed;
 
-        this.healthText = this.add.text(screenWidth - 20, screenHeight - 50, '', hudConfig).setOrigin(1, 0);
-        this.corruptionText = this.add.text(centerX, screenHeight - 60, '', hudConfig).setOrigin(0.5, 0);
+        this.healthText = this.add.text(screenWidth - 10, screenHeight - 45, '', hudConfig).setOrigin(1, 0);
 
         hudConfig.fontSize = '30px';
         this.knifeCooldownText = this.add.text(weaponCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
@@ -52,11 +49,101 @@ class HUD extends Phaser.Scene {
         this.switchCooldownText = this.add.text(switchCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
         hudConfig.fontSize = '40px';
 
+        this.orbCDImage = this.add.sprite(weaponCooldownX + 32, weaponCooldownY + 32, 'orb').setOrigin(0.5, 0.5).setScale(0.4);
+        this.knifeCDImage = this.add.sprite(weaponCooldownX + 5, weaponCooldownY + 10, 'knife').setOrigin(0, 0);
+        this.switchCDImage = this.add.sprite(switchCooldownX + 2, cooldownTextY - 18, 'switchCD').setOrigin(0, 0);
+
+        this.corruptionLevels = this.add.group();
+        this.corruption1 = this.add.sprite(0, 0, 'essCorruptionDim').setOrigin(0.5, 0.5);
+        this.corruption2 = this.add.sprite(0, 0, 'essCorruptionDim').setOrigin(0.5, 0.5);
+        this.corruption3 = this.add.sprite(0, 0, 'essCorruptionDim').setOrigin(0.5, 0.5);
+        this.corruption4 = this.add.sprite(0, 0, 'essCorruptionDim').setOrigin(0.5, 0.5);
+        this.corruption5 = this.add.sprite(0, 0, 'essCorruptionDim').setOrigin(0.5, 0.5);
+
+        this.corruptionLevels.addMultiple([this.corruption1, this.corruption2, this.corruption3, this.corruption4, this.corruption5]);
+
+        let levelPlacementLine = new Phaser.Geom.Line(centerX - 180, screenHeight - 40, centerX + 270, screenHeight - 50);
+        Phaser.Actions.PlaceOnLine(this.corruptionLevels.getChildren(), levelPlacementLine);
+
         this.testText = this.add.text(centerX, 100, '', hudConfig).setOrigin(0.5, 0);
 
     }
 
     update() {
+        if(corruption == 0) {
+            this.corruption1.setAlpha(corruptionLevelAlpha);
+            this.corruption2.setAlpha(corruptionLevelAlpha);
+            this.corruption3.setAlpha(corruptionLevelAlpha);
+            this.corruption4.setAlpha(corruptionLevelAlpha);
+            this.corruption5.setAlpha(corruptionLevelAlpha);
+            this.corruption1.setTexture('essCorruptionDim');
+            this.corruption2.setTexture('essCorruptionDim');
+            this.corruption3.setTexture('essCorruptionDim');
+            this.corruption4.setTexture('essCorruptionDim');
+            this.corruption5.setTexture('essCorruptionDim');
+        } else {
+            if(corruption == 1) {
+                this.corruption1.setAlpha(1);
+                this.corruption2.setAlpha(corruptionLevelAlpha);
+                this.corruption3.setAlpha(corruptionLevelAlpha);
+                this.corruption4.setAlpha(corruptionLevelAlpha);
+                this.corruption5.setAlpha(corruptionLevelAlpha);
+                this.corruption1.setTexture('essCorruptionGlow');
+                this.corruption2.setTexture('essCorruptionDim');
+                this.corruption3.setTexture('essCorruptionDim');
+                this.corruption4.setTexture('essCorruptionDim');
+                this.corruption5.setTexture('essCorruptionDim');
+            }
+            if(corruption == 2) {
+                this.corruption1.setAlpha(1);
+                this.corruption2.setAlpha(1);
+                this.corruption3.setAlpha(corruptionLevelAlpha);
+                this.corruption4.setAlpha(corruptionLevelAlpha);
+                this.corruption5.setAlpha(corruptionLevelAlpha);
+                this.corruption1.setTexture('essCorruptionGlow');
+                this.corruption2.setTexture('essCorruptionGlow');
+                this.corruption3.setTexture('essCorruptionDim');
+                this.corruption4.setTexture('essCorruptionDim');
+                this.corruption5.setTexture('essCorruptionDim');
+            }
+            if(corruption == 3) {
+                this.corruption1.setAlpha(1);
+                this.corruption2.setAlpha(1);
+                this.corruption3.setAlpha(1);
+                this.corruption4.setAlpha(corruptionLevelAlpha);
+                this.corruption5.setAlpha(corruptionLevelAlpha);
+                this.corruption1.setTexture('essCorruptionGlow');
+                this.corruption2.setTexture('essCorruptionGlow');
+                this.corruption3.setTexture('essCorruptionGlow');
+                this.corruption4.setTexture('essCorruptionDim');
+                this.corruption5.setTexture('essCorruptionDim');
+            }
+            if(corruption == 4) {
+                this.corruption1.setAlpha(1);
+                this.corruption2.setAlpha(1);
+                this.corruption3.setAlpha(1);
+                this.corruption4.setAlpha(1);
+                this.corruption5.setAlpha(corruptionLevelAlpha);
+                this.corruption1.setTexture('essCorruptionGlow');
+                this.corruption2.setTexture('essCorruptionGlow');
+                this.corruption3.setTexture('essCorruptionGlow');
+                this.corruption4.setTexture('essCorruptionGlow');
+                this.corruption5.setTexture('essCorruptionDim');
+            }
+            if(corruption == 5) {
+                this.corruption1.setAlpha(1);
+                this.corruption2.setAlpha(1);
+                this.corruption3.setAlpha(1);
+                this.corruption4.setAlpha(1);
+                this.corruption5.setAlpha(1);
+                this.corruption1.setTexture('essCorruptionGlow');
+                this.corruption2.setTexture('essCorruptionGlow');
+                this.corruption3.setTexture('essCorruptionGlow');
+                this.corruption4.setTexture('essCorruptionGlow');
+                this.corruption5.setTexture('essCorruptionGlow');
+            }
+        }
+        
         
         this.healthText.setText('Health: ' + pCurrHealth + "/" + pMaxHealth);
 
@@ -64,37 +151,22 @@ class HUD extends Phaser.Scene {
             this.orbCooldownText.setAlpha(0);
             this.orbCooldownBox.setAlpha(0);
             this.orbBox.setAlpha(0);
+            this.orbCDImage.setAlpha(0);
             this.knifeCooldownText.setAlpha(1);
             this.knifeCooldownBox.setAlpha(cooldownAlpha);
             this.knifeBox.setAlpha(boxAlpha);
+            this.knifeCDImage.setAlpha(1);
         } else {
             this.knifeCooldownText.setAlpha(0);
             this.knifeCooldownBox.setAlpha(0);
             this.knifeBox.setAlpha(0);
+            this.knifeCDImage.setAlpha(0);
             this.orbCooldownText.setAlpha(1);
             this.orbCooldownBox.setAlpha(cooldownAlpha);
             this.orbBox.setAlpha(boxAlpha);
+            this.orbCDImage.setAlpha(1);
         }
 
-        if(usingCorruption) {
-            this.corruptionText.setStyle({
-                color: '#FF00FF'
-            });
-        } else {
-            this.corruptionText.setStyle({
-                color: '#000000'
-            });
-        }
-        if(corruption != 0) {
-            this.corruptionSize = (40 + corruption).toString() + 'px';
-            this.corruptionText.setStyle({
-                fontSize: this.corruptionSize
-            });
-        } else {
-            this.corruptionText.setStyle({
-                fontSize: '40px'
-            });
-        }
         if(isInvuln) {
             this.healthText.setStyle({
                 color: '#FF00FF'
@@ -104,9 +176,7 @@ class HUD extends Phaser.Scene {
                 color: '#000000'
             });
         }
-        
-        this.corruptionText.setText('Corruption: ' + corruption + "/" + maxCorruption);
-        
-        // this.testText.setText('expiring: ' + player.corruptionExpiring);
+                
+        // this.testText.setText('idleWeaponX: ' + Math.round(idleWeaponX) + ' idleWeaponY: ' + Math.round(idleWeaponY));
     }
 }

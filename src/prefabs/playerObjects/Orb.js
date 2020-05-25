@@ -1,6 +1,5 @@
 class Orb extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, group, oSpawnX, oSpawnY, state) {
-        // super(scene, oSpawnX, oSpawnY, 'orb').setOrigin(0.5, 0.5).setScale(1.5, 1.5);
+    constructor(scene, group, oSpawnX, oSpawnY, state, shot) {
         super(scene, oSpawnX, oSpawnY, 'orb').setOrigin(0.5, 0.5);
 
         let orb = this;
@@ -15,8 +14,9 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
         
         this.damage = orbShootDamage;
         this.shooting = false;
-        this.shot = false;
+        this.shot = shot;
         this.corrupted = false;
+        this.exists = true;
 
         this.accel = orbAccel;
         this.accelMult = orbAccelMult;
@@ -31,10 +31,34 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
 
         this.emitCircle = new Phaser.Geom.Circle(this.x, this.y, 30);
 
-        
+        if(!this.shot) {
+            this.fadeIn = this.scene.tweens.add({
+                targets: this,
+                alpha: { from: 0, to: 1 },
+                scale: { from: 0, to: 1 },
+                ease: 'Quart.easeIn',
+                duration: 200,
+            });
+        }
+
+        this.disapate = this.scene.tweens.add({
+            targets: this,
+            paused: true,
+            alpha: { from: 1, to: 0 },
+            scale: { from: 1, to: 0 },
+            ease: 'Quart.easeIn',
+            duration: 500,
+            onComplete: function() {
+                player.weaponMineExists = false;
+                player.weaponMine = undefined;
+                this.group.remove(this, true, true);
+                this.destroy();
+            },
+            onCompleteScope: this
+        });
     }
 
-    update(){    
+    update() {
         if(this.shot) {
             this.setAngularAcceleration(orbAngularAccel);
             this.shooting = true;
@@ -61,6 +85,7 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
                 if(player.corruptionExpiring) {
                     player.corruptionExpireTimer.destroy();
                 }
+                this.scene.cameras.main.shake(500, corruptionScreenShake);
                 this.scene.sound.play('corruptionExpire');
             }
         }

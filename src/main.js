@@ -1,3 +1,8 @@
+/*
+    Shadow's Realm Corruption by Evan Li, Hoang Huynh, Henry Nguyen.
+
+*/
+
 var gravityY = 600;
 
 // define and configure main Phaser game object
@@ -53,6 +58,7 @@ var cooldownBoxHeight = 64;
 var boxAlpha = 0.6;
 var cooldownAlpha = 0.4;
 
+var corruptionLevelAlpha = 0.5;
 var corruptionExpireX = centerX;
 var corruptionExpireY = screenHeight - 8;
 var expireBoxWidth = 400;
@@ -63,6 +69,8 @@ var black = 0x000000;
 var playerRed = 0xFF0000;
 var playerBlue = 0x0000FF;
 var playerPurple = 0xFF00FF;
+var orchid = 0xDA70D6;
+var darkMagenta = 0x8B008B;
 
 // Audio
 var globalVolume = 1;
@@ -97,6 +105,7 @@ var playerState = 0; // 0 = red, 1 = blue
 var switchOnCooldown = false;
 var switchCooldown = 800;
 var switchEffectsDuration = 500;
+var switchScreenShake = 0.002;
 
 var isInvuln = false; // invulnerability state after taking damage
 var invulnDuration = 1000;
@@ -114,6 +123,7 @@ var maxCorruption = 5;
 var corruptionDecayDelay = 1000;
 var corruptionExpireDelay = 3000;
 var blockCorruptionGain = 3;
+var corruptionScreenShake = 0.002;
 
 var pDeathDelay = 3000;
 
@@ -123,7 +133,6 @@ var playerStopDrag = 600;
 var maxMoveVelocity = 300;
 var playerCorruptMaxVelocity = 400;
 var playerCorruptAccel = 40;
-
 
 // Player attack settings
 var knifeStuckOffset = 50;
@@ -156,6 +165,7 @@ var orbBlockStunDuration = 1000;     // Enemy orb stun (unable to move) duration
 var orbBlockInvulnDuration = 500;  // Enemy orb block invulnerability duration after being blocked by idle orb
 var orbKnockbackVelocity = 250;     // Velocity magnitude of block knockback
 
+var orbMineDuration = 500;
 // Enemies ----------------------------------------------------------------------------------------------------
 var infiniteSpawnerDelay = 15000;
 var enemySwitchPause = 500;
@@ -248,9 +258,10 @@ function increaseCorruption(amount) {
     }
 }
 
-function displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime) {
+function displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime, cooldownImage) {
     let timeLeft = Phaser.Math.RoundTo((cooldownTime - cooldownTimer.getElapsed())/1000, -1);
     let cooldownBoxDecrease = cooldownBoxWidth * cooldownTimer.getElapsed()/cooldownTime;
     cooldownText.setText(timeLeft);
     cooldownBox.setSize(cooldownBoxWidth - cooldownBoxDecrease, cooldownBoxHeight);
+    cooldownImage.setAlpha(0);
 }

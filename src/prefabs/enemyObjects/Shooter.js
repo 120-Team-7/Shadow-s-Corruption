@@ -1,10 +1,10 @@
 class Shooter extends Enemy {
     constructor(scene, oSpawnX, oSpawnY, state, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup) {
         // Enemy(scene, oSpawnX, oSpawnY, state, changeCondition, redGroup, blueGroup, redTexture, blueTexture, maxHealth, damage)
-        super(scene, oSpawnX, oSpawnY, state, changeCondition, redGroup, blueGroup, 'redObstacle', 'blueObstacle', 
+        super(scene, oSpawnX, oSpawnY, state, changeCondition, redGroup, blueGroup, 'redChaser', 'blueChaser', 
             shooterConfig.health, shooterConfig.damage);
 
-        this.setOrigin(0.5, 0.5).setScale(0.25);
+        this.setOrigin(0.5, 0.5);
 
         // Scope parameters to this instance
         let enemy = this;

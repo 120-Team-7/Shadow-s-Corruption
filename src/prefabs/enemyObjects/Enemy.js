@@ -4,7 +4,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             super(scene, oSpawnX, oSpawnY, redTexture);
         } else {
             super(scene, oSpawnX, oSpawnY, blueTexture);
-            this.setAlpha(0.4);
         }
 
         // Scope parameters to this instance
@@ -92,17 +91,18 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        // this.siphonVector = scaleVectorMagnitude(1000, this.x, this.y, player.x + siphonPredictMult*player.body.velocity.x, player.y + siphonPredictMult*player.body.velocity.y);
-        // this.corruptionBleed.forEachAlive(function(particle, emitter) {
-        //     particle.accelerationX = this.siphonVector.x;
-        //     particle.accelerationY = this.siphonVector.y;
-        // }, this)
-        // this.corruptionBleed.setSpeedX(this.siphonVector.x);
-        // this.corruptionBleed.setSpeedY(this.siphonVector.y);
-        this.healthText.x = this.body.x + 25;
-        this.healthText.y = this.body.y + 25;
-        this.damageText.x = this.body.x + 25;
-        this.damageText.y = this.body.y - 20;
+        if(!this.stunned) {
+            if(this.body.velocity.x > 0) {
+                this.setFlipX(true);
+            } else if(this.body.velocity.x < 0){
+                this.setFlipX(false);
+            }
+        }
+        this.healthText.x = this.body.x + 35;
+        this.healthText.y = this.body.y - 10;
+        this.damageText.x = this.body.x + 35;
+        this.damageText.y = this.body.y - 35;
+        
     }
 
     takeDamage(damage){
@@ -146,7 +146,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // If dead show got hit, stop everything, destroy, show death
         } else {
             this.emitCircle.setPosition(this.x, this.y);
-            this.corruptionBleed.explode(8 + 2*damage);
+            this.corruptionBleed.explode(12 + 3*damage);
             this.exists = false;
             // Remove active timers & functions
             if(this.moving) {
@@ -164,7 +164,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             }
             // Remove physics interactability
             this.body.destroy();
-            this.setAlpha(0.05);
+            this.setAlpha(0);
             this.corruptionBleed.stop();
             // Wait to remove enemy corpse & text 
             this.destroyTimer = this.scene.time.delayedCall(enemyDestroyDelay, () => {
@@ -191,6 +191,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 if(!this.stunned){
                     // Stop enemy->enemy collisions
                     this.body.setImmovable(true);
+                    this.setTint(orchid);
                     // If was red, change to blue
                     if(this.state == 0){
                         // Pause movement before switching
@@ -233,6 +234,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.damagedNum++;
         if(this.health > 0 && this.damagedNum == damageSwitchNum) {
             this.damagedNum = 0;
+            this.setTint(orchid);
             if(this.state == 0) {
                 // Pause movement before switching
                 this.switching = true;
@@ -275,12 +277,17 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.state = 0;
         }
         newGroup.add(this);
+        this.clearTint();
         if(this.state == 0){
             this.setTexture(this.redTexture);
-            this.setAlpha(1);
+            
         } else {
-            this.setAlpha(0.4);
             this.setTexture(this.blueTexture);
+        }
+        if(this.x < player.x) {
+            this.setFlipX(true);
+        } else {
+            this.setFlipX(false);
         }
     }
 }

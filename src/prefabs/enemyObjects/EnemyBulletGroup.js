@@ -64,6 +64,32 @@ class EnemyBulletGroup extends Phaser.GameObjects.Group {
                 this.scene
             );
         }
+        if(player.weaponMineExists) {
+            this.scene.physics.overlap(this, player.weaponMine, 
+                (bullet) => {
+                    bullet.destroy();
+                    this.scene.sound.play('orbBulletBlock');
+                    increaseCorruption(blockCorruptionGain);
+                    gainingCorruption = true;
+                    if(gainingActive) {
+                        this.scene.gainingCorruptionTimer.destroy();
+                    }
+                    gainingActive = true;
+                    this.scene.gainingCorruptionTimer = this.scene.time.delayedCall(gainingCorruptionDuration, function () {
+                        gainingActive = false;
+                        gainingCorruption = false;
+                    }, null, this.scene);
+                }, 
+                () => {
+                    if(this.state == player.weaponMine.state) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }, 
+                this.scene
+            );
+        }
         
     }
 

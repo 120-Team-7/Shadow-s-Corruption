@@ -4,7 +4,6 @@ class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
             super(scene, spawnX, spawnY, 'redSlimeball').setOrigin(0.5, 0.5);
         } else {
             super(scene, spawnX, spawnY, 'blueSlimeball').setOrigin(0.5, 0.5);
-            this.setAlpha(0.6);
         }
         let bullet = this;
         this.group = group;

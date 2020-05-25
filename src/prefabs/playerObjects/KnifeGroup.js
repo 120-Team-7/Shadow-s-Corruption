@@ -70,6 +70,10 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                             enemy.stunned = false;
                         }, null, this.scene);
                     }
+                    
+                    if(usingCorruption) {
+                        enemy.scene.cameras.main.shake(500, corruptionScreenShake);
+                    }
 
                     // If enemy killed set no cooldown, increase corruption to max, don't reset corruption
                     if(enemy.health <= 0) {
@@ -92,6 +96,10 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                         }, null, group.scene);
                     }
                 }
+            } else {
+                if(knife.corrupted) {
+                    knife.particleTrail.remove();
+                }
             }
         }, function() {
             if(group.state == redEnemyGroup.state){
@@ -112,8 +120,6 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     // Stop updating idleWeapon, store the current idleWeapon, remove its reference
                     idleWeaponExists = false;
                     this.knife = player.idleWeapon;
-                    // Update knife variables
-                    this.knife.shooting = true;
                     // Target x Player distance to check if clicking too close to player 
                     // (prevent backwards shooting of knife)
                     this.pxtDist = Phaser.Math.Distance.Between(player.x, player.y, pointer.x, pointer.y);
@@ -162,7 +168,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
 
         // displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime)
         if(this.isOnCooldown) {
-            displayCooldown(this.hudScene.knifeCooldownText, this.hudScene.knifeCooldownBox, this.knifeCooldown, this.knifeCooldown.delay);
+            displayCooldown(this.hudScene.knifeCooldownText, this.hudScene.knifeCooldownBox, this.knifeCooldown, this.knifeCooldown.delay, this.hudScene.knifeCDImage);
         } else {
             // this.hudScene.knifeCooldownImage.setAlpha(1);
             this.hudScene.knifeCooldownText.setText("");

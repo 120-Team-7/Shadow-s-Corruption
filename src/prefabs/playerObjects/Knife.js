@@ -5,6 +5,7 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         } else {
             super(scene, oSpawnX, oSpawnY, 'knife').setOrigin(0.5, 0.5);
         }
+        this.setAlpha(0);
         
         let knife = this;
         this.group = group;
@@ -38,17 +39,42 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
 
         this.fadeAway = this.scene.tweens.add({
             targets: this,
+            paused: true,
             alpha: { from: 1, to: 0 },
             ease: 'Quart.easeIn',
             duration: 1000,
         });
-        this.fadeAway.stop();
+        this.fadeIn = this.scene.tweens.add({
+            targets: this,
+            alpha: { from: 0, to: 1 },
+            scale: { from: 0, to: 1 },
+            ease: 'Quart.easeIn',
+            duration: 200,
+        });
+        this.disapate = this.scene.tweens.add({
+            targets: this,
+            paused: true,
+            alpha: { from: 1, to: 0 },
+            scale: { from: 1, to: 0 },
+            ease: 'Quart.easeIn',
+            duration: 500,
+            onComplete: function() {
+                player.weaponMineExists = false;
+                player.weaponMine = undefined;
+                this.group.remove(this, true, true);
+            },
+            onCompleteScope: this
+        });
     }
 
     update() {
         // On first shot, apply corruption if using corruption, shoot toward given target
-        if(this.shot){
+        if(this.shot && this.exists) {
+            this.fadeIn.stop();
+            this.setAlpha(1);
+            this.setScale(1);
             this.shot = false;
+            this.shooting = true;
             if(usingCorruption) {
                 this.corrupted = true;
                 this.particleTrail = corruptionParticles.createEmitter({
@@ -68,6 +94,7 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                 if(player.corruptionExpiring) {
                     player.corruptionExpireTimer.destroy();
                 }
+                this.scene.cameras.main.shake(500, corruptionScreenShake);
                 this.scene.sound.play('corruptionExpire');
             }
             this.knifeAngle = Phaser.Math.Angle.Between(player.x, player.y, this.targetX, this.targetY);
