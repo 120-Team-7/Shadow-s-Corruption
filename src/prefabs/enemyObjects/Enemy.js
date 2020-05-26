@@ -33,6 +33,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.orbBlockInvuln = false
         this.damageTextDisappearing = false;
 
+        this.mirrorOnCD = false;
+        this.mirroring = false;
+
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
@@ -98,6 +101,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 this.setFlipX(false);
             }
         }
+        if(this.changeCondition == 'mirror') { 
+            this.mirrorSwitch();
+        }
         this.healthText.x = this.body.x + 35;
         this.healthText.y = this.body.y - 10;
         this.damageText.x = this.body.x + 35;
@@ -162,6 +168,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             if(this.changeCondition == 'timed') {
                 this.timedSwitch.destroy();
             }
+            if(this.changeCondition == 'mirror') {
+                this.mirrorTimer.destroy();
+                this.mirrorCD.destroy();
+            }
             // Remove physics interactability
             this.body.destroy();
             this.setAlpha(0);
@@ -188,41 +198,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.timedSwitch = this.scene.time.addEvent({
             delay: timedSwitchDelay, 
             callback: () => {
-                if(!this.stunned){
-                    // Stop enemy->enemy collisions
-                    this.body.setImmovable(true);
-                    this.setTint(orchid);
-                    // If was red, change to blue
-                    if(this.state == 0){
-                        // Pause movement before switching
-                        this.switching = true;
-                        this.body.stop();
-                        this.moveTimer.paused = true;
-                        this.timedSwitch.paused = true;
-                        this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
-                            if(this.health > 0){
-                                // eSwitchColor(originalGroup, newGroup)
-                                this.eSwitchColor(this.redGroup, this.blueGroup);
-                                this.timedSwitch.paused = false;
-                                this.switching = false;
-                            }
-                        }, this.enemy, this.scene);
-                    // If was blue, change to red
-                    } else {
-                        // Pause movement before switching
-                        this.switching = true;
-                        this.body.stop();
-                        this.moveTimer.paused = true;
-                        this.timedSwitch.paused = true;
-                        this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
-                            if(this.health > 0){
-                                // eSwitchColor(originalGroup, newGroup)
-                                this.eSwitchColor(this.blueGroup, this.redGroup);
-                                this.timedSwitch.paused = false;
-                                this.switching = false;
-                            }
-                        }, null, this.scene);
-                    }
+                if(this.state == 0){
+                    this.eSwitchColor(this.redGroup, this.blueGroup);
+                } else {
+                    this.eSwitchColor(this.blueGroup, this.redGroup);
                 }
             }, 
             callbackContext: this.scene,
@@ -232,62 +211,74 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     damageSwitch() {
         this.damagedNum++;
-        if(this.health > 0 && this.damagedNum == damageSwitchNum) {
+        if(this.damagedNum == damageSwitchNum) {
             this.damagedNum = 0;
-            this.setTint(orchid);
             if(this.state == 0) {
-                // Pause movement before switching
-                this.switching = true;
-                this.body.stop();
-                this.moveTimer.paused = true;
-                this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
-                    if(this.health > 0){
-                        // eSwitchColor(originalGroup, newGroup)
-                        this.eSwitchColor(this.redGroup, this.blueGroup);
-                        this.switching = false;
-                    }
-                }, this.enemy, this.scene);
+                this.eSwitchColor(this.redGroup, this.blueGroup)
             } else {
-                // Pause movement before switching
-                this.switching = true;
-                this.body.stop();
-                this.moveTimer.paused = true;
-                this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
-                    if(this.health > 0){
-                        // eSwitchColor(originalGroup, newGroup)
-                        this.eSwitchColor(this.blueGroup, this.redGroup);
-                        this.switching = false;
-                    }
-                }, this.enemy, this.scene);
+                this.eSwitchColor(this.blueGroup, this.redGroup);
             }
+        }
+    }
+
+    mirrorSwitch() {
+        if(this.health > 0 && this.state == playerState && !this.mirrorOnCD) {
+            this.mirrorOnCD = true;
+            if(this.mirroring) {
+                this.mirrorTimer.destroy();
+            }
+            this.mirrorTimer = this.scene.time.delayedCall(mirrorSwitchDelay, function () {
+                if(this.state == 0) {
+                    this.eSwitchColor(this.redGroup, this.blueGroup)
+                } else {
+                    this.eSwitchColor(this.blueGroup, this.redGroup);
+                }
+            }, null, this);
+
+            this.mirrorCD = this.scene.time.delayedCall(mirrorSwitchCD, function () {
+                this.mirrorOnCD = false;
+            }, null, this);
+
         }
     }
 
     // Switch enemy color & everything else related
     eSwitchColor(originalGroup, newGroup) {
-        let originalState = this.state;
-        originalGroup.remove(this); 
-        if(this.moving) {
-            this.moveTimer.paused = false
-        }
-        this.body.setImmovable(false);
-        if(originalState == 0){
-            this.state = 1;
-        } else {
-            this.state = 0;
-        }
-        newGroup.add(this);
-        this.clearTint();
-        if(this.state == 0){
-            this.setTexture(this.redTexture);
-            
-        } else {
-            this.setTexture(this.blueTexture);
-        }
-        if(this.x < player.x) {
-            this.setFlipX(true);
-        } else {
-            this.setFlipX(false);
+        if(!this.stunned && this.health > 0) {
+            let originalState = this.state;
+            this.switching = true;
+            this.body.stop();
+            this.moveTimer.paused = true;
+            this.setTint(orchid);
+            this.body.setImmovable(true);
+            this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
+                if(this.health > 0) {
+                    this.switching = false;
+                    this.body.setImmovable(false);
+                    originalGroup.remove(this); 
+                    if(this.moving) {
+                        this.moveTimer.paused = false
+                    }
+                    if(originalState == 0){
+                        this.state = 1;
+                    } else {
+                        this.state = 0;
+                    }
+                    newGroup.add(this);
+                    this.clearTint();
+                    if(this.state == 0){
+                        this.setTexture(this.redTexture);
+                        
+                    } else {
+                        this.setTexture(this.blueTexture);
+                    }
+                    if(this.x < player.x) {
+                        this.setFlipX(true);
+                    } else {
+                        this.setFlipX(false);
+                    }
+                }
+            }, this.enemy, this.scene);
         }
     }
 }

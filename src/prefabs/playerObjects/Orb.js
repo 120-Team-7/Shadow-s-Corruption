@@ -52,15 +52,15 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
                 player.weaponMineExists = false;
                 player.weaponMine = undefined;
                 this.group.remove(this, true, true);
-                this.destroy();
             },
             onCompleteScope: this
         });
+
     }
 
     update() {
         // Destroy any orb that is in an expected state: random floating idle
-        if(!this.shot && !this.shooting & this == player.idleWeapon && !this.disapate.isPlaying) {
+        if(!this.shot && !this.shooting && this != player.weaponMine && this != player.idleWeapon && !this.disapate.isPlaying()) {
             this.exists = false;
             this.destroy();
         }
@@ -120,6 +120,13 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
                 // Increase accel
                 this.accel = Math.round(this.accel * this.accelMult);
             }
+        }
+    }
+
+    resetCooldown() {
+        if(this.group.isOnCooldown) {
+            this.group.orbCooldown.destroy();
+            this.group.isOnCooldown = false;
         }
     }
 }

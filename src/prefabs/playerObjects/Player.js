@@ -156,19 +156,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     playerState = 0;
                     this.setTexture('redPlayer');
                 }
+                
                 // Remove current idleWeapon
                 if(idleWeaponExists) {
-                    // this.idleWeapon.destroy();
-                    idleWeaponExists = false;
+                    this.idleWeapon.resetCooldown();
                     this.weaponMineExists = true;
                     this.weaponMine = this.idleWeapon;
-                    this.idleWeapon.exists = false;
-                    this.idleWeapon.disapate.play();
-                    if(this.idleWeapon.corrupted) {
-                        this.idleWeapon.particleTrail.remove();
+                    delete this.idleWeapon;
+                    this.weaponMine.exists = false;
+                    this.weaponMine.disapate.resume();
+                    if(this.weaponMine.corrupted) {
+                        this.weaponMine.particleTrail.remove();
                     }
-                    this.idleWeapon = null;
-                    
+                    idleWeaponExists = false;                    
                 }
                 // Start corruption shot window
                 if(corruption != 0 && !usingCorruption) {

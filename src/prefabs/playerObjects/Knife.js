@@ -43,6 +43,11 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             alpha: { from: 1, to: 0 },
             ease: 'Quart.easeIn',
             duration: 1000,
+            onComplete: function() {
+                this.exists = false;
+                this.group.remove(this, true, true);
+            },
+            onCompleteScope: this
         });
         this.fadeIn = this.scene.tweens.add({
             targets: this,
@@ -69,7 +74,8 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         // Destroy any orb that isn't in an expected state
-        if(!this.shot && !this.shooting & this != player.idleWeapon && !this.disapate.isPlaying) {
+        if(!this.shot && !this.shooting && this != player.weaponMine && this != player.idleWeapon && !this.disapate.isPlaying()) {
+            this.exists = false;
             this.destroy();
         }
         // On first shot, apply corruption if using corruption, shoot toward given target
@@ -130,11 +136,6 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                 this.scene.time.delayedCall(500, function () {
                     if(this.exists) { 
                         this.fadeAway.play();
-                        this.scene.time.delayedCall(1000, function () {
-                            this.exists = false;
-                            this.fadeAway.remove();
-                            this.group.remove(this, true, true);
-                        }, null, this);
                     }
                 }, null, this);
             }
@@ -145,4 +146,12 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             this.y = this.stuckEnemy.y + this.stuckOffsetY;
         }
     }
+
+    resetCooldown() {
+        if(this.group.isOnCooldown) {
+            this.group.knifeCooldown.destroy();
+            this.group.isOnCooldown = false;
+        }
+    }
 }
+

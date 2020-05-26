@@ -177,6 +177,6 @@ class HUD extends Phaser.Scene {
             });
         }
                 
-        // this.testText.setText('idleWeaponX: ' + Math.round(idleWeaponX) + ' idleWeaponY: ' + Math.round(idleWeaponY));
+        // this.testText.setText('idleWeapon: ' + idleWeaponExists);
     }
 }

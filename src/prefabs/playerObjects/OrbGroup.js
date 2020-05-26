@@ -124,7 +124,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
         // Somehow needed to update children
         this.preUpdate();
         // Adds idle weapon orb after switch
-        if(playerState == 1 && !idleWeaponExists && !isGameOver && switchOnCooldown && player.idleWeapon == null) {
+        if(playerState == 1 && !idleWeaponExists && !isGameOver) {
             // Orb(scene, group, oSpawnX, oSpawnY, targetX, targetY, state, shot)
             idleWeaponExists = true;
             player.idleWeapon = new Orb(this.scene, this, idleWeaponX, idleWeaponY, 1, false);
