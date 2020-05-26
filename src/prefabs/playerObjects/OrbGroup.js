@@ -125,20 +125,14 @@ class OrbGroup extends Phaser.GameObjects.Group {
         this.preUpdate();
         // Adds idle weapon orb after switch
         if(playerState == 1 && !idleWeaponExists && !isGameOver && switchOnCooldown && player.idleWeapon == null) {
-            idleWeaponExists = true;
             // Orb(scene, group, oSpawnX, oSpawnY, targetX, targetY, state, shot)
+            idleWeaponExists = true;
             player.idleWeapon = new Orb(this.scene, this, idleWeaponX, idleWeaponY, 1, false);
             this.add(player.idleWeapon);
             if(usingCorruption) {
                 player.idleWeapon.setTexture('corruptOrb');
             }
         }
-
-        // if(this.isOnCooldown) {
-        //     console.log(this.orbCooldown);
-        //     console.log(this.orbCooldown.delay);
-        // }
-        
 
         // displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime)
         if(this.isOnCooldown) {

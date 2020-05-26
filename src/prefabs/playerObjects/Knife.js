@@ -68,6 +68,10 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
+        // Destroy any orb that isn't in an expected state
+        if(!this.shot && !this.shooting & this != player.idleWeapon && !this.disapate.isPlaying) {
+            this.destroy();
+        }
         // On first shot, apply corruption if using corruption, shoot toward given target
         if(this.shot && this.exists) {
             this.fadeIn.stop();

@@ -248,7 +248,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             // this.corruptionSiphon.y = this.y;
 
             this.damageText.x = this.body.x + 15;
-            this.damageText.y = this.body.y - 35;
+            this.damageText.y = this.body.y - 40;
 
             // Player flip sprite when mouse on left/right of player character
             if(pointer.x < player.x){

@@ -59,6 +59,11 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
+        // Destroy any orb that is in an expected state: random floating idle
+        if(!this.shot && !this.shooting & this == player.idleWeapon && !this.disapate.isPlaying) {
+            this.exists = false;
+            this.destroy();
+        }
         if(this.shot) {
             this.setAngularAcceleration(orbAngularAccel);
             this.shooting = true;
