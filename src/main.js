@@ -191,8 +191,8 @@ var enemyDrag = 500;
 // Enemy switch conditions
 var timedSwitchDelay = 5000;
 var damageSwitchNum = 2;
-var mirrorSwitchDelay = 1000;
-var mirrorSwitchCD = 4000;
+var mirrorSwitchDelay = 500;
+var mirrorSwitchCD = 5000;
 
 // Enemy text
 var enemyDestroyDelay = 1000;
