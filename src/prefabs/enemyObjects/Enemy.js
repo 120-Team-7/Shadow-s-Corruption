@@ -111,8 +111,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         
     }
 
-    takeDamage(damage){
+    takeDamage(damage) {
         this.health -= damage;
+        pStats.damageDealt += damage;
         this.healthText.setText(this.health + "/" + this.maxHealth);
 
         if(this.changeCondition == 'damaged' && !this.switching && this.moving) {
@@ -151,6 +152,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             // }, null, this);
         // If dead show got hit, stop everything, destroy, show death
         } else {
+            pStats.enemiesKilled++;
             this.emitCircle.setPosition(this.x, this.y);
             this.corruptionBleed.explode(12 + 3*damage);
             this.exists = false;

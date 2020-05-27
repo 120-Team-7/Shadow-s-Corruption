@@ -38,9 +38,11 @@ class EnemyBulletGroup extends Phaser.GameObjects.Group {
                 (bullet) => {
                     bullet.destroy();
                     if(player.idleWeapon.state == 0) {
+                        pStats.knifeBulletBlock++;
                         this.scene.sound.play('orbBulletBlock');
                     }
                     if(player.idleWeapon.state == 1) {
+                        pStats.orbBulletBlock++;
                         this.scene.sound.play('orbBulletBlock');
                     }
                     increaseCorruption(blockCorruptionGain);
@@ -68,7 +70,14 @@ class EnemyBulletGroup extends Phaser.GameObjects.Group {
             this.scene.physics.overlap(this, player.weaponMine, 
                 (bullet) => {
                     bullet.destroy();
-                    this.scene.sound.play('orbBulletBlock');
+                    if(player.weaponMine.state == 0) {
+                        pStats.knifeBulletBlock++;
+                        this.scene.sound.play('orbBulletBlock');
+                    }
+                    if(player.weaponMine.state == 1) {
+                        pStats.orbBulletBlock++;
+                        this.scene.sound.play('orbBulletBlock');
+                    }
                     increaseCorruption(blockCorruptionGain);
                     gainingCorruption = true;
                     if(gainingActive) {

@@ -21,15 +21,22 @@ class OrbGroup extends Phaser.GameObjects.Group {
                 if(orb.shooting){
                     enemy.orbDamageInvuln = true;
                     enemy.takeDamage(orb.damage);
+                    if(orb.corrupted) {
+                        pStats.orbCorruptedDamage += orb.damage;
+                    }
+                    if(enemy.health <= 0) {
+                        pStats.orbKilled++;
+                    }
                     enemy.orbInvulnTimer = group.scene.time.delayedCall(orbShotInvulnDuration, function () {
                         enemy.orbDamageInvuln = false;
                     }, null, this.scene);
-                    orb.scene.sound.play('knifeHitmarker');
+                    orb.scene.sound.play('orbHitmarker');
                 // Idle orb blocking
                 } else if (!enemy.orbBlockInvuln) {
                     enemy.orbBlockInvuln = true;
                     // Stun & knockback enemy on block
                     if(enemy.exists){
+                        pStats.orbEnemyBlock++;
                         if(enemy.moving) {
                             enemy.moveTimer.paused = true;
                         }
@@ -84,6 +91,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
         scene.input.on('pointerdown', function(pointer) {
             if(!isGameOver && playerState == 1){
                 if(!group.isOnCooldown){
+                    pStats.orbShot++;
                     // On cooldown
                     group.isOnCooldown = true;
                     // Create and add new orb

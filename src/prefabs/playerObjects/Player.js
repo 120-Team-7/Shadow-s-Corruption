@@ -146,6 +146,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             // Player color switch
             if(!switchOnCooldown && Phaser.Input.Keyboard.JustDown(keySwitch)){
+                pStats.switchNum++;
                 switchOnCooldown = true;
                 // Change state and body appearance
                 if(playerState == 0){
@@ -164,9 +165,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     delete this.idleWeapon;
                     this.weaponMine.exists = false;
                     this.weaponMine.disapate.resume();
-                    if(this.weaponMine.corrupted) {
-                        this.weaponMine.particleTrail.remove();
-                    }
+                    // if(this.weaponMine.corrupted) {
+                    //     this.weaponMine.particleTrail.remove();
+                    // }
                     idleWeaponExists = false;                    
                 }
                 // Start corruption shot window
@@ -185,6 +186,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         corruption = 0;
                         usingCorruption = false;
                         player.scene.corruptionDecayTimer.paused = false;
+                        player.idleWeapon.corrupted = false;
                         // Change to regular orb if corruption time expires
                         if(playerState == 1 && idleWeaponExists && !usingCorruption){
                             player.idleWeapon.setTexture('orb');

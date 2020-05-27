@@ -29,16 +29,23 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                 knife.scene.sound.play('knifeHitmarker');
 
                 // Stop corruption trail if knife is corrupted
-                if(knife.corrupted) {
+                if(knife.corrupted && knife.shooting) {
                     knife.particleTrail.stop();
                     knife.scene.time.delayedCall(particleDestroy, function () {
                         knife.particleTrail.active = false;
                         knife.particleTrail.remove();
                     }, null, knife);
                 }
-
+                if(knife.shooting) {
+                    if(knife.corrupted) {
+                        pStats.knifeCorruptedDamage += knife.damage;
+                    } else {
+                        knife.damage = knifeThrowDamage;
+                    }
+                    enemy.takeDamage(knife.damage);
+                    increaseCorruption(knife.damage);
+                }
                 // Corruption handling: increase corruption, check if gaining
-                increaseCorruption(knife.damage);
                 gainingCorruption = true;
                 if(gainingActive) {
                     // player.corruptionExpiring = false;
@@ -49,10 +56,20 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     gainingActive = false;
                     gainingCorruption = false;
                 }, null, this.scene);
-
-                enemy.takeDamage(knife.damage);
+                if(enemy.health <= 0) {
+                    pStats.knifeKilled++;
+                }
                 // If it is a melee hit
                 if(!group.isOnCooldown && !knife.shooting){
+                    pStats.knifeStabbed++;
+                    knife.damage = knifeMeleeDamage;
+                    if(knife.corrupted) {
+                        knife.damage += corruption;
+                        pStats.knifeCorruptedDamage += knife.damage;
+                    }
+                    enemy.takeDamage(knife.damage);
+                    increaseCorruption(knife.damage);
+
                     idleWeaponExists = false;
                     group.isOnCooldown = true;
                     
@@ -115,6 +132,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
         scene.input.on('pointerdown', function(pointer) {
             if(!isGameOver && playerState == 0){
                 if(!this.isOnCooldown){
+                    pStats.knifeThrown++;
                     // On cooldown
                     this.isOnCooldown = true;
                     // Stop updating idleWeapon, store the current idleWeapon, remove its reference
@@ -131,7 +149,9 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                         this.knife.targetX = this.knife.x + this.forwardShootVector.x;
                         this.knife.targetY = this.knife.y + this.forwardShootVector.y;
                     }
-                    this.knife.damage += knifeThrowDamage - knifeMeleeDamage;
+                    if(usingCorruption) {
+                        this.knife.corrupted = true;
+                    }
                     // Triggers knife first throwing state
                     this.knife.shot = true;
                     this.knife.shooting = true;

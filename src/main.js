@@ -92,6 +92,24 @@ var obsHealth = 3;
 // Player ----------------------------------------------------------------------------------------------------
 var player;
 
+// Player statistics
+var pStats = {
+    enemiesKilled: 0,
+    orbKilled: 0,
+    knifeKilled: 0,
+    damageDealt: 0,
+    knifeCorruptedDamage: 0,
+    orbCorruptedDamage: 0,
+    corruptionGained: 0,
+    switchNum: 0,
+    knifeThrown: 0,
+    knifeStabbed: 0,
+    knifeBulletBlock: 0,
+    orbShot: 0,
+    orbEnemyBlock: 0,
+    orbBulletBlock: 0,
+}
+
 // Pointer & idle weapon
 var pointer;
 var minPXTDist = 80;
@@ -100,7 +118,7 @@ var idleWeaponX;
 var idleWeaponY;
 var idleWeaponExists = true;
 
-// Player statistics
+// Player statuses
 var playerState = 0; // 0 = red, 1 = blue
 var switchOnCooldown = false;
 var switchCooldown = 800;
@@ -140,8 +158,6 @@ var knifeStuckOffset = 50;
 // Knife throw
 var knifeSpeed = 1000;
 var knifeThrowDamage = 1;
-var knifeSecondDamage = 1;
-var knifeSecondRadius = 2;
 var knifeThrowROF = 200;
 var corruptKnifeSpeed = 2000;
 
@@ -216,7 +232,6 @@ var shooterConfig = {
     targetLaserLength: 200,
 }
 
-
 // Game controls ----------------------------------------------------------------------------------------------------
 // Player
 var keyLeft, keyRight, keyUp, keyDown, keySwitch, keyPause;
@@ -256,7 +271,9 @@ function scaleVectorMagnitude(targetMagnitude, startX, startY, endX, endY) {
 function increaseCorruption(amount) {
     if(corruption + amount < maxCorruption){
         corruption += amount;
+        pStats.corruptionGained += amount;
     } else {
+        pStats.corruptionGained += maxCorruption - corruption;
         corruption = maxCorruption;
     }
 }

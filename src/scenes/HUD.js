@@ -177,7 +177,7 @@ class HUD extends Phaser.Scene {
                 color: '#000000'
             });
         }
-                
-        // this.testText.setText('idleWeapon: ' + idleWeaponExists);
+
+        // this.testText.setText('orbBulletBlock: ' + pStats.orbBulletBlock);
     }
 }

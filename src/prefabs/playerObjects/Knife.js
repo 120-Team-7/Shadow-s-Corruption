@@ -18,13 +18,15 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         this.stuckOffsetX;
         this.stuckOffsetY;
         this.knifeSpeed = knifeSpeed;
-        this.damage = knifeMeleeDamage;
+        this.damage;
+        this.corrupted;
         if(usingCorruption) {
-            this.damage += corruption;
+            this.corrupted = true;
+        } else {
+            this.corrupted = false;
         }
         this.shooting = false;
         this.shot = false;
-        this.corrupted = false;
         this.firstStuck = false;
         this.isStuck = false;
         this.exists = true;
@@ -73,7 +75,7 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        // Destroy any orb that isn't in an expected state
+        // Destroy any knife that isn't in an expected state
         if(!this.shot && !this.shooting && this != player.weaponMine && this != player.idleWeapon && !this.disapate.isPlaying()) {
             this.exists = false;
             this.destroy();
@@ -87,6 +89,14 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             this.shooting = true;
             if(usingCorruption) {
                 this.corrupted = true;
+                this.damage = knifeThrowDamage + corruption;
+                this.knifeSpeed = corruptKnifeSpeed;
+                corruption = 0;
+                usingCorruption = false;
+                this.scene.corruptionDecayTimer.paused = false;
+                if(player.corruptionExpiring) {
+                    player.corruptionExpireTimer.destroy();
+                }
                 this.particleTrail = corruptionParticles.createEmitter({
                     follow: this,
                     alpha: { start: 1, end: 0 },
@@ -97,13 +107,6 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                     quantity: corruption,
                     active: true,
                 });
-                this.knifeSpeed = corruptKnifeSpeed;
-                corruption = 0;
-                usingCorruption = false;
-                this.scene.corruptionDecayTimer.paused = false;
-                if(player.corruptionExpiring) {
-                    player.corruptionExpireTimer.destroy();
-                }
                 this.scene.cameras.main.shake(500, corruptionScreenShake);
                 this.scene.sound.play('corruptionExpire');
             }

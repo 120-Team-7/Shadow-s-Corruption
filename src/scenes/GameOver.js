@@ -21,21 +21,77 @@ class GameOver extends Phaser.Scene {
                 left: 10,
                 right: 10,
             },
-            fixedWidth: 0
+            fixedWidth: 0,
+            // wordWrap: {
+            //     width: (screenWidth/2) - 50,
+            //     useAdvancedWrap: true,
+            // }
         }
 
+        let spacer = 50;
+        let leftTextX = 20;
+        let leftNumX = centerX - 90
+        let rightNumX = screenWidth - 100;
+        let rightTextX = centerX + 20;
+
         // Add text
-        this.add.text(centerX, centerY, 'You died!', gameOverConfig).setOrigin(0.5, 0.5);
-        this.add.text(centerX, centerY + textSpacer, 'Press ENTER to return to menu', gameOverConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, 50, "Shadow has been banished to the void!", gameOverConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, centerY - 4*spacer, 'Your Statistics ', gameOverConfig).setOrigin(0.5, 0.5);
+        gameOverConfig.align = 'left';
+        this.add.text(leftTextX, centerY - 3*spacer, "Enemies killed: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftNumX, centerY - 3*spacer, pStats.enemiesKilled, gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftTextX, centerY - 2*spacer, "Orb kills: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftNumX, centerY - 2*spacer, pStats.orbKilled, gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftTextX, centerY - spacer, "Knife kills: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftNumX, centerY - spacer, pStats.knifeKilled, gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftTextX, centerY, "Damage dealt: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftNumX, centerY, pStats.damageDealt, gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftTextX, centerY + spacer, "Corruption gained: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftNumX, centerY + spacer, pStats.corruptionGained, gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftTextX, centerY + 2* spacer, "Orb corrupt damage: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftNumX, centerY + 2* spacer, pStats.orbCorruptedDamage, gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftTextX, centerY + 3*spacer, "Knife corrupt damage: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftNumX, centerY + 3*spacer, pStats.knifeCorruptedDamage + 100, gameOverConfig).setOrigin(0, 0);
+
+        this.add.text(rightTextX, centerY - 3*spacer, "Times shifted: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightNumX, centerY - 3*spacer, pStats.switchNum, gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightTextX, centerY - 2*spacer, "Knives thrown: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightNumX, centerY - 2*spacer, pStats.knifeThrown, gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightTextX, centerY - spacer, "Idle knife hits: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightNumX, centerY - spacer, pStats.knifeStabbed, gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightTextX, centerY, "Red bullets blocked: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightNumX, centerY, pStats.knifeBulletBlock, gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightTextX, centerY + spacer, "Orbs shot: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightNumX, centerY + spacer, pStats.orbShot, gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightTextX, centerY + 2*spacer, "Idle orb hits: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightNumX, centerY + 2*spacer, pStats.orbEnemyBlock, gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightTextX, centerY + 3*spacer, "Blue bullets blocked: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightNumX, centerY + 3*spacer, pStats.orbBulletBlock + 100, gameOverConfig).setOrigin(0, 0);
+
+        gameOverConfig.align = 'center';
+        this.add.text(centerX, screenHeight - 50, 'Press ENTER to return to menu', gameOverConfig).setOrigin(0.5, 0.5);
 
         isPaused = false;
-
     }
 
     update() {
         // Input to return to menu
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
             // this.sound.play('buttonsound');
+            pStats.enemiesKilled = 0;
+            pStats.orbKilled = 0;
+            pStats.knifeKilled = 0;
+            pStats.damageDealt = 0;
+            pStats.knifeCorruptedDamage = 0; 
+            pStats.orbCorruptedDamage = 0; 
+            pStats.corruptionGained = 0; 
+            pStats.switchNum = 0; 
+            pStats.knifeThrown = 0; 
+            pStats.knifeStabbed = 0; 
+            pStats.knifeBulletBlock = 0; 
+            pStats.orbShot = 0; 
+            pStats.orbEnemyBlock = 0; 
+            pStats.orbBulletBlock = 0;  
             this.scene.start('menuScene');
         }
     }
