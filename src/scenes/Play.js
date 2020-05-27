@@ -246,24 +246,24 @@ class Play extends Phaser.Scene {
         } else {
             this.randSpawnX = screenBuffer;
         }
-        // if(randNum4 == 0){
-        //     if(randChange1 == 1) {
-        //         // EnemyColorGroup.addShooter(spawnX, spawnY, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
-        //         this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-        //     } else if(randChange1 == 2){
-        //         this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-        //     } else if(randChange1 == 3) { 
-        //         this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-        //     }
-        // } else {
-        //     if(randChange1 == 1) {
-        //         this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-        //     } else if(randChange1 == 2){
-        //         this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-        //     } else if(randChange1 == 3) { 
-        //         this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-        //     }
-        // }
+        if(randNum4 == 0){
+            if(randChange1 == 1) {
+                // EnemyColorGroup.addShooter(spawnX, spawnY, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
+                this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            } else if(randChange1 == 2){
+                this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            } else if(randChange1 == 3) { 
+                this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+        } else {
+            if(randChange1 == 1) {
+                this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            } else if(randChange1 == 2){
+                this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            } else if(randChange1 == 3) { 
+                this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+        }
         if(randChange2 == 1) {
             // EnemyColorGroup.addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
             this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
