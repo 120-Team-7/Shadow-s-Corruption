@@ -67,6 +67,7 @@ class HUD extends Phaser.Scene {
 
         this.testText = this.add.text(centerX, 100, '', hudConfig).setOrigin(0.5, 0);
 
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
     }
 
     update() {

@@ -6,6 +6,7 @@ class Play extends Phaser.Scene {
 
     create() {
         keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
 
         this.spawnedEnemies = false;
@@ -33,7 +34,6 @@ class Play extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#696969');
 
 
-
         // Initialize play objects ----------------------------------------------------------------------------------------------------
 
         // Pointer
@@ -41,33 +41,7 @@ class Play extends Phaser.Scene {
 
         corruptionParticles = this.add.particles('corruptionParticle');
         // slimeParticles = this.add.particles('corruptionParticle');
-        // corruptionParticles.setDepth(1000);
-        // Initialize emit zones
-        // pointerCircle = new Phaser.Geom.Circle(0, 0, 5);
-        // particleLine = new Phaser.Geom.Line(-200, -200, gameWidth, gameHeight);
-        // Particles to show psychic throw velocity vector
-        // particleVector = this.pointerParticles.createEmitter({
-        //     emitZone: { source: particleLine },
-        //     alpha: { start: 1, end: 0 },
-        //     scale: { start: 0.75, end: 0 },
-        //     speed: {min: 0, max: 10},
-        //     lifespan: { min: 500, max: 1000 },
-        //     frequency: 20,
-        //     quantity: 2,
-        // });
-        // Particles on initial click
-        // particlePointer = this.pointerParticles.createEmitter({
-        //     emitZone: { source: pointerCircle},
-        //     alpha: { start: 1, end: 0 },
-        //     scale: { start: 1.5, end: 0 },
-        //     speed: { min: 0, max: 20 },
-        //     lifespan: { min: 3000, max: 4000 },
-        //     frequency: 10000,
-        //     quantity: 10,
-        // });
-        // particleVector.stop();
-        // particlePointer.stop();
-
+        
         // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup)
         player = new Player(this, game.scene.keys.hudScene, centerX, centerY);
 
@@ -97,6 +71,8 @@ class Play extends Phaser.Scene {
 
         // Add play objects ----------------------------------------------------------------------------------------------------
         
+        this.shadowBackground = this.add.sprite(0, 0, 'shadowBackground').setOrigin(0, 0).setAlpha(0).setDepth(10000);
+
         // Add obstacles
         this.redGroup.addObstacle(centerX, centerY + 200);
         this.redGroup.addObstacle(centerX + 200, centerY);
@@ -224,12 +200,17 @@ class Play extends Phaser.Scene {
         this.redEnemyBulletGroup.update();
         this.blueEnemyBulletGroup.update();
 
-        if (Phaser.Input.Keyboard.JustDown(keyStart)) {
+        if(!isPaused) {
+            this.shadowBackground.setAlpha(0);
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(keyStart) || Phaser.Input.Keyboard.JustDown(keyPause)) {
             if(!isGameOver) {
                 isPaused = true;
                 this.scene.pause('playScene');
                 this.scene.pause('hudScene');
-                this.scene.setVisible(false, 'playScene');
+                this.scene.swapPosition('menuScene', 'playScene');
+                this.shadowBackground.setAlpha(0.8);
                 this.scene.setVisible(false, 'hudScene');
                 this.scene.run('menuScene');
                 this.scene.setVisible(true, 'menuScene');
@@ -275,27 +256,27 @@ class Play extends Phaser.Scene {
                 this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
             }
         } else {
-            if(randChange2 == 1) {
+            if(randChange1 == 1) {
                 this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-            } else if(randChange2 == 2){
+            } else if(randChange1 == 2){
                 this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-            } else if(randChange2 == 3) { 
+            } else if(randChange1 == 3) { 
                 this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
             }
         }
-        if(randChange3 == 1) {
+        if(randChange2 == 1) {
             // EnemyColorGroup.addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
             this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange3 == 2) {
+        } else if(randChange2 == 2) {
             this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange3 == 2) {
+        } else if(randChange2 == 3) {
             this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
         }
         if(randChange3 == 1) {
             this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange2 == 2) {
+        } else if(randChange3 == 2) {
             this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange2 == 2) {
+        } else if(randChange3 == 3) {
             this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
         }
     }

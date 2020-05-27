@@ -11,6 +11,7 @@ class Load extends Phaser.Scene {
             align: 'center',
         }).setOrigin(0.5, 0.5);
         // Load image assets
+        this.load.image('shadowBackground', './assets/images/ShadowBackground.png');
         this.load.image('redPlayer', './assets/images/redPlayer.png');
         this.load.image('bluePlayer', './assets/images/bluePlayer.png');
         this.load.image('redObstacle', './assets/images/RedObstacle.png');
@@ -30,7 +31,11 @@ class Load extends Phaser.Scene {
         // Load audio assets
         this.load.audio('buttonSound', './assets/sounds/buttonsound.mp3');
         this.load.audio('knifeThrow', './assets/sounds/knife.mp3');
+        
         this.load.audio('knifeHitmarker', './assets/sounds/knifeHitmarker.mp3');
+        // this.load.audio('knifeHitmarker', './assets/sounds/knifeHitmarker1.mp3');
+        // this.load.audio('knifeHitmarker', './assets/sounds/knifeStab.wav');
+
         this.load.audio('orbShoot', './assets/sounds/orb.mp3');
         this.load.audio('orbBulletBlock', './assets/sounds/orbBulletBlock.mp3');
         this.load.audio('orbEnemyBlock', './assets/sounds/orbEnemyBlock.mp3');

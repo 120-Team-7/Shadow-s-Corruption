@@ -7,7 +7,7 @@ var gravityY = 600;
 
 // define and configure main Phaser game object
 let config = {
-    parent: 'myGame',
+    parent: "Shadow's Realm Corruption",
     type: Phaser.WEBGL,
     // width: 1024,
     // height: 576,
@@ -30,7 +30,7 @@ let game = new Phaser.Game(config);
 
 // Game globals
 var isGameOver = true;
-var isPaused = true;
+var isPaused = false;
 var resetAudio = true;
 var inTutorial = false;
 var hudScene = game.scene.keys.hudScene;
@@ -125,7 +125,8 @@ var corruptionExpireDelay = 3000;
 var blockCorruptionGain = 3;
 var corruptionScreenShake = 0.002;
 
-var pDeathDelay = 3000;
+var deathFadeDuration = 1000;
+var deathFadeDelay = 2000;
 
 // Player movement settings
 var playerAccel = 30;
@@ -218,7 +219,7 @@ var shooterConfig = {
 
 // Game controls ----------------------------------------------------------------------------------------------------
 // Player
-var keyLeft, keyRight, keyUp, keyDown, keySwitch;
+var keyLeft, keyRight, keyUp, keyDown, keySwitch, keyPause;
 
 // Dev tools
 var keyDebug, keySuicide, keyGodmode;

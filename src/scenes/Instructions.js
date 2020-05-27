@@ -54,14 +54,12 @@ class Instructions extends Phaser.Scene {
         // White bottom
         instructionsConfig.color = '#FFFFFF';
         instructionsConfig.fontSize = '40px';
-        this.add.text(centerX, screenHeight - 80, 'Press I to return to menu, ENTER to pause during play, M to toggle mute sound, B to toggle physics debug, K to reset, + to toggle godmode', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, screenHeight - 80, 'Press I to return to menu, ESC or ENTER to pause during play, M to toggle mute, K to reset', instructionsConfig).setOrigin(0.5, 0.5);
 
     }
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyInstructions)) {
-            this.scene.run('menuScene');
-            this.scene.setVisible(true, 'menuScene');
             this.scene.stop('instructionsScene');
         }
     }

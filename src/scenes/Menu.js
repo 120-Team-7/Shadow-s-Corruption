@@ -4,9 +4,9 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
-        keyStart = this.input.keyboard.addKey('ENTER');
-        keyInstructions = this.input.keyboard.addKey('I');
-        keyMute = this.input.keyboard.addKey('M');
+        keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        keyInstructions = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
+        keyMute = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
 
         let menuConfig = {
             fontFamily: 'Courier',
@@ -19,17 +19,21 @@ class Menu extends Phaser.Scene {
                 left: 10,
                 right: 10,
             },
-            fixedWidth: 0
+            fixedWidth: 0,
+            wordWrap: {
+                width: screenWidth,
+                useAdvancedWrap: true,
+            }
         }
 
         let scene = this;
 
         // Add menu screen text
-        this.add.text(centerX, centerY - textSpacer, 'Specter Shift', menuConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, 200, "Shadow's Realm Corruption", menuConfig).setOrigin(0.5, 0.5);
         menuConfig.fontSize = '35px';
         this.add.text(centerX, centerY + textSpacer, 'Press I for controls', menuConfig).setOrigin(0.5, 0.5);
         this.difficultyText = this.add.text(centerX, centerY + 2*textSpacer, 'Press DOWN ARROW for EASY, Press UP ARROW for NORMAL', menuConfig).setOrigin(0.5, 0.5);
-        this.add.text(centerX, centerY + 3*textSpacer, 'Press ENTER to start', menuConfig).setOrigin(0.5, 0.5);
+        this.startText = this.add.text(centerX, centerY + 3*textSpacer, 'Press ENTER to start', menuConfig).setOrigin(0.5, 0.5);
 
         this.input.keyboard.on('keydown-UP', function () {
             chaserConfig.health = 10;
@@ -41,18 +45,25 @@ class Menu extends Phaser.Scene {
             shooterConfig.health = 5;
             scene.difficultyText.setText('Press DOWN ARROW for [EASY], Press UP ARROW for NORMAL')
         });
+
+        this.cameras.main.fadeIn(2000, 0, 0, 0);
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyInstructions) && isPaused) {
-            this.scene.setVisible(false, 'menuScene');
+        if (Phaser.Input.Keyboard.JustDown(keyInstructions)) {
             this.scene.run('instructionsScene');
+            this.scene.bringToTop('instructionsScene');
+        }
+
+        if(isPaused) {
+            this.startText.setText("Press ENTER to unpause");
+        } else {
+            this.startText.setText("Press ENTER to start");
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
             this.scene.setVisible(false, 'menuScene');
             if(isGameOver) {
-                this.scene.stop('instructionsScene');
                 this.scene.run('playScene');
                 this.scene.run('hudScene');
                 isGameOver = false;
@@ -62,10 +73,10 @@ class Menu extends Phaser.Scene {
                 usingCorruption = false;
             } else if(isPaused) {
                 isPaused = false;
-                this.scene.stop('instructionsScene');
                 this.scene.run('playScene');
                 this.scene.run('hudScene');
-                this.scene.setVisible(true, 'playScene');
+                this.scene.swapPosition('menuScene', 'playScene');
+                // this.scene.setVisible(true, 'playScene');
                 this.scene.setVisible(true, 'hudScene');
             }
         }

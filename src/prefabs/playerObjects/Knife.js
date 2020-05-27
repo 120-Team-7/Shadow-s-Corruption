@@ -107,7 +107,7 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                 this.scene.cameras.main.shake(500, corruptionScreenShake);
                 this.scene.sound.play('corruptionExpire');
             }
-            this.knifeAngle = Phaser.Math.Angle.Between(player.x, player.y, this.targetX, this.targetY);
+            this.knifeAngle = Phaser.Math.Angle.Between(this.x, this.y, this.targetX, this.targetY);
 
             this.setRotation(this.knifeAngle);
             this.scene.physics.moveTo(this, this.targetX, this.targetY, this.knifeSpeed);

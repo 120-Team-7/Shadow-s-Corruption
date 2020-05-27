@@ -117,7 +117,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
     update() {
-        // console.log(this.scene.shiftCircle);
         this.scene.shiftCircle.setPosition(this.x, this.y);
         if(!isGameOver){
             // Player movement
@@ -341,13 +340,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 isGameOver = true;
                 this.setImmovable(true);
                 this.setAlpha(0);
-                this.gameOverTimer = this.scene.time.delayedCall(pDeathDelay, function () {
-                    player.particleTrail.remove();
-                    this.scene.stop('playScene');
-                    this.scene.stop('hudScene');
-                    this.scene.stop('menuScene');
-                    this.scene.start('gameOverScene');
-                }, this, this.scene);
+                this.gameOverTimer = this.scene.time.delayedCall(deathFadeDelay, function () {
+                    this.hudScene.cameras.main.fadeOut(deathFadeDuration, 0, 0, 0);
+                    this.gameOverTimer = this.scene.time.delayedCall(deathFadeDuration, function () {
+                        player.particleTrail.remove();
+                        this.scene.scene.stop('playScene');
+                        this.scene.scene.stop('hudScene');
+                        this.scene.scene.stop('menuScene');
+                        this.scene.scene.start('gameOverScene');
+                    }, this, this);
+                }, this, this);
             // Player hit, but not dead
             } else {
                 // Effects

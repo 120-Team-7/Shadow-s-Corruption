@@ -179,10 +179,8 @@ class Shooter extends Enemy {
             this.targetLaser.setTo(this.x, this.y, this.x + this.targetVector.x, this.y + this.targetVector.y);
             if(this.state == 0) {
                 this.targetLaser.strokeColor = playerRed;
-                // this.targetLaser.setAlpha(1);
             } else {
                 this.targetLaser.strokeColor = playerBlue;
-                // this.targetLaser.setAlpha(0.5);
             }
         }
     }
