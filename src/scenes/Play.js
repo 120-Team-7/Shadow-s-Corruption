@@ -32,7 +32,7 @@ class Play extends Phaser.Scene {
             }
         }
         corruptionParticles = this.add.particles('corruptionParticle');
-
+        corruptionParticles.setDepth(500);
 
         this.map = this.make.tilemap({key: "level"});
 
