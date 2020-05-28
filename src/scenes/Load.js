@@ -45,6 +45,12 @@ class Load extends Phaser.Scene {
         this.load.audio('playerHurt2', './assets/sounds/hurt2.mp3');
         this.load.audio('corruptionExpire', './assets/sounds/corruptionExpire.mp3');
 
+        //tile maps
+        this.load.path = "./assets/images/";
+        this.load.tilemapTiledJSON("level","temp6.json")
+        //tile sheet
+        this.load.image("tiles", "fornow.png");
+
     }
 
     create() {

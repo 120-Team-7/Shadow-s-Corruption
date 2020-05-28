@@ -10,6 +10,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         var hudScene = game.scene.keys.hudScene;
 
+        this.currentRoom = 1;
+        this.previousRoom = null;
+        this.roomChange = false;
+        this.canMove = true;
+
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.setCollideWorldBounds(true);
@@ -388,4 +393,37 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         
     }
+
+    getRoom() {
+
+        // place holder for current room.
+        let roomNumber;
+
+        // loop through rooms in this level.
+        for (let room in this.scene.rooms) {
+            let roomLeft   = this.scene.rooms[room].x;
+            let roomRight  = this.scene.rooms[room].x + this.scene.rooms[room].width;
+            let roomTop    = this.scene.rooms[room].y;
+            let roomBottom = this.scene.rooms[room].y + this.scene.rooms[room].height;
+
+            // console.log(roomLeft + " " + roomRight + " " + roomTop + " " + roomBottom);
+
+            // Player is within the boundaries of this room.
+            if (this.x > roomLeft && this.x < roomRight &&
+                this.y > roomTop  && this.y < roomBottom) {
+
+                roomNumber = room;
+            }
+        }
+
+        // Update player room variables.
+        if (roomNumber != this.currentRoom) {
+            this.previousRoom = this.currentRoom;
+            this.currentRoom = roomNumber;
+            this.roomChange = true;
+        } else {
+            this.roomChange = false;
+        }
+    }
+
 }
