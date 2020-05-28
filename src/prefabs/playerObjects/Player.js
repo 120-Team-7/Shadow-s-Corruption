@@ -227,11 +227,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             this.emitCircle.setPosition(this.x, this.y);
 
-            // Calculate angle to set on idleWeapon sprite (toward pointer)
-            this.weaponAngle =  Phaser.Math.RadToDeg(Phaser.Math.Angle.Between(player.x, player.y, pointer.x, pointer.y));
-            // Calculate x, y idleWeapon position relative to player
-            this.idleWeaponVector = scaleVectorMagnitude(idleWeaponDistance, player.x, player.y, pointer.x, pointer.y);
+            this.playerX = player.x - this.scene.cameras.main.worldView.x;
+            this.playerY = player.y - this.scene.cameras.main.worldView.y;
 
+
+            // Calculate angle to set on idleWeapon sprite (toward pointer)
+            this.weaponAngle =  Phaser.Math.RadToDeg(Phaser.Math.Angle.Between(this.playerX, this.playerY, pointer.worldX, pointer.worldY));
+            // Calculate x, y idleWeapon position relative to player
+            this.idleWeaponVector = scaleVectorMagnitude(idleWeaponDistance, this.playerX, this.playerY, pointer.worldX, pointer.worldY);
             idleWeaponX = player.x + this.idleWeaponVector.x;
             idleWeaponY = player.y + this.idleWeaponVector.y;
 
