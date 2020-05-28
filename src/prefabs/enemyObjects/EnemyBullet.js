@@ -40,7 +40,7 @@ class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
 
     update(){
         // Remove if goes off screen
-        if(this.x < 0 || this.x > screenWidth || this.y < 0 || this.y > screenHeight) {
+        if(this.x < 0 || this.x > this.scene.map.widthInPixels || this.y < 0 || this.y > this.scene.map.heightInPixels) {
             this.group.remove(this, true, true);
         }
     }

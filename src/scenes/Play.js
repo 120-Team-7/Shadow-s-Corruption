@@ -35,7 +35,6 @@ class Play extends Phaser.Scene {
 
 
         this.map = this.make.tilemap({key: "level"});
-
         // Define tiles used in map.
         const tileset = this.map.addTilesetImage("fornow",  "tiles", 32, 32,);
 
@@ -228,18 +227,18 @@ class Play extends Phaser.Scene {
         //         this.scene.redEnemyGroup.clear(true, true);
         //         this.scene.blueEnemyGroup.clear(true, true);
 
-        //         this.scene.spawnEnemies();
-        //         this.scene.infiniteEnemySpawner = this.scene.time.addEvent({
-        //             delay: infiniteSpawnerDelay,
-        //             callback: () => {
-        //                 this.scene.spawnEnemies();
-        //             },
-        //             callbackContext: this.scene,
-        //             loop: true,
-        //         });
+                this.randSpawnEnemies();
+                this.infiniteEnemySpawner = this.time.addEvent({
+                    delay: infiniteSpawnerDelay,
+                    callback: () => {
+                        this.randSpawnEnemies();
+                    },
+                    callbackContext: this,
+                    loop: true,
+                });
         //     }
         // });
-        
+        console.log(this.cameras.main)
     }
 
     update() {
@@ -258,6 +257,7 @@ class Play extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(keyStart) || Phaser.Input.Keyboard.JustDown(keyPause)) {
             if(!isGameOver) {
+                this.map
                 isPaused = true;
                 this.scene.pause('playScene');
                 this.scene.pause('hudScene');
@@ -269,8 +269,8 @@ class Play extends Phaser.Scene {
             }
         }
         if (player.roomChange) {
-        this.spawnEnemies2();
-        this.cameras.main.fadeOut(250, 0, 0, 0, function(camera, progress) {
+            this.spawnEnemies2();
+            this.cameras.main.fadeOut(250, 0, 0, 0, function(camera, progress) {
             player.canMove = false;
             if (progress === 1) {
                 // Change camera boundaries when fade out complete.
@@ -335,68 +335,74 @@ spawnEnemies2() {
         }
     
     }, this);
-}
+}   
 
+    randSpawnEnemies() {
+        let screenBuffer = 50;
+        let randNum1 = Phaser.Math.Between(0, 1);
+        let randNum2 = Phaser.Math.Between(0, 1);
+        let randNum3 = Phaser.Math.Between(0, 1);
+        let randNum4 = Phaser.Math.Between(0, 1);
+        let randChange1 = Phaser.Math.Between(1, 3)
+        let randChange2 = Phaser.Math.Between(1, 3);
+        let randChange3 = Phaser.Math.Between(1, 3);
+        let lX = 440;
+        let rX = 1600;
+        let tY = 1080;
+        let bY = 1670;
+        let cenY = 1080 + (1670 - 1080)/2
+        if(randNum1 == 0) {
+            this.rSpawnX = rX;
+            this.bSpawnX = lX;
+        } else {
+            this.rSpawnX = lX;
+            this.bSpawnX = rX;
+        }
+        if(randNum2 == 0) {
+            this.rSpawnY = bY;
+            this.bSpawnY = tY;
+        } else {
+            this.rSpawnY = tY;
+            this.bSpawnY = bY;
+        }
+        if(randNum3 == 0){
+            this.randSpawnX = rX;
+        } else {
+            this.randSpawnX = lX;
+        }
 
-    // spawnEnemies(){
-    //     let screenBuffer = 50;
-    //     let randNum1 = Phaser.Math.Between(0, 1);
-    //     let randNum2 = Phaser.Math.Between(0, 1);
-    //     let randNum3 = Phaser.Math.Between(0, 1);
-    //     let randNum4 = Phaser.Math.Between(0, 1);
-    //     let randChange1 = Phaser.Math.Between(1, 3)
-    //     let randChange2 = Phaser.Math.Between(1, 3);
-    //     let randChange3 = Phaser.Math.Between(1, 3);
-    //     if(randNum1 == 0) {
-    //         this.rSpawnX = screenWidth - screenBuffer;
-    //         this.bSpawnX = screenBuffer;
-    //     } else {
-    //         this.rSpawnX = screenBuffer;
-    //         this.bSpawnX = screenWidth - screenBuffer;
-    //     }
-    //     if(randNum2 == 0) {
-    //         this.rSpawnY = screenHeight - screenBuffer;
-    //         this.bSpawnY = screenBuffer;
-    //     } else {
-    //         this.rSpawnY = screenBuffer;
-    //         this.bSpawnY = screenHeight - screenBuffer;
-    //     }
-    //     if(randNum3 == 0){
-    //         this.randSpawnX = screenWidth - screenBuffer;
-    //     } else {
-    //         this.randSpawnX = screenBuffer;
-    //     }
-    //     if(randNum4 == 0){
-    //         if(randChange1 == 1) {
-    //             // EnemyColorGroup.addShooter(spawnX, spawnY, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
-    //             this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-    //         } else if(randChange1 == 2){
-    //             this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-    //         } else if(randChange1 == 3) { 
-    //             this.redEnemyGroup.addShooter(this.randSpawnX, centerY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-    //         }
-    //     } else {
-    //         if(randChange1 == 1) {
-    //             this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-    //         } else if(randChange1 == 2){
-    //             this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-    //         } else if(randChange1 == 3) { 
-    //             this.blueEnemyGroup.addShooter(this.randSpawnX, centerY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-    //         }
-    //     }
-    //     if(randChange2 == 1) {
-    //         // EnemyColorGroup.addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
-    //         this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-    //     } else if(randChange2 == 2) {
-    //         this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
-    //     } else if(randChange2 == 3) {
-    //         this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
-    //     }
-    //     if(randChange3 == 1) {
-    //         this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-    //     } else if(randChange3 == 2) {
-    //         this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
-    //     } else if(randChange3 == 3) {
-    //         this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
-    //     }
+        if(randNum4 == 0){
+            if(randChange1 == 1) {
+                // EnemyColorGroup.addShooter(spawnX, spawnY, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
+                this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            } else if(randChange1 == 2){
+                this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            } else if(randChange1 == 3) { 
+                this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+        } else {
+            if(randChange1 == 1) {
+                this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            } else if(randChange1 == 2){
+                this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            } else if(randChange1 == 3) { 
+                this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+        }
+        if(randChange2 == 1) {
+            // EnemyColorGroup.addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
+            this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+        } else if(randChange2 == 2) {
+            this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
+        } else if(randChange2 == 3) {
+            this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+        }
+        if(randChange3 == 1) {
+            this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+        } else if(randChange3 == 2) {
+            this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
+        } else if(randChange3 == 3) {
+            this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+        }
+    }
 }

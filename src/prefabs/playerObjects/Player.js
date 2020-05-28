@@ -260,7 +260,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.damageText.y = this.body.y - 40;
 
             // Player flip sprite when mouse on left/right of player character
-            if(pointer.x < player.x){
+            if(pointer.worldX < player.x - this.scene.cameras.main.worldView.x){
                 this.setFlipX(true);
             } else {
                 this.setFlipX(false);

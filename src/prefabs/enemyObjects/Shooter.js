@@ -129,9 +129,12 @@ class Shooter extends Enemy {
             this.targetTimer.destroy();
             this.targetLaser.destroy();
         }
-        this.enemyDistance = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+        this.playerX = player.x - this.scene.cameras.main.worldView.x;
+        this.playerY = player.y - this.scene.cameras.main.worldView.y;
+        this.shooterX = this.x - this.scene.cameras.main.worldView.x;
+        this.shooterY = this.y - this.scene.cameras.main.worldView.y;
 
-
+        this.enemyDistance = Phaser.Math.Distance.Between(this.shooterX, this.shooterY, this.playerX, this.playerY);
 
         // If player is close enough, target player directly
         if(this.enemyDistance < shooterConfig.closeTargetDist) {
@@ -154,25 +157,24 @@ class Shooter extends Enemy {
 
             // If predition is in opposite direction from player, target player directly
             if(this.targetX < this.x && player.x > this.x) { 
-                this.targetY = player.x;
+                this.targetX = player.x;
                 this.targetY = player.y;
             }
             if(this.targetX > this.x && player.x < this.x) { 
-                this.targetY = player.x;
+                this.targetX = player.x;
                 this.targetY = player.y;
             }
             if(this.targetY < this.y && player.y > this.y) { 
-                this.targetY = player.x;
+                this.targetX = player.x;
                 this.targetY = player.y;
             }
             if(this.targetY > this.y && player.y < this.y) { 
-                this.targetY = player.x;
+                this.targetX = player.x;
                 this.targetY = player.y;
             }
     
         }
 
-        
 
         if(this.health > 0) {
             this.targetVector = scaleVectorMagnitude(shooterConfig.targetLaserLength, this.x, this.y, this.targetX, this.targetY)
@@ -187,6 +189,7 @@ class Shooter extends Enemy {
 
     shoot() {
         // EnemyBulletGroup.addBullet(state, spawnX, spawnY, targetX, targetY)
+        // console.log(this.x)
         if(this.state == 0) {
             this.redBulletGroup.addBullet(this.state, this.x, this.y, this.targetX, this.targetY);
         }

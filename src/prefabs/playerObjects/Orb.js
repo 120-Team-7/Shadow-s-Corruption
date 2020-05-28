@@ -96,9 +96,8 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
         }
         if(this.shooting) {
             this.emitCircle.setPosition(this.x, this.y);
-
             // Remove if goes off screen
-            if(this.x < 0 || this.x > screenWidth || this.y < 0 || this.y > screenHeight) {
+            if(this.x < 0 || this.x > this.scene.map.widthInPixels || this.y < 0 || this.y > this.scene.map.heightInPixels) {
                 this.shooting = false;
                 if(this.corrupted) {
                     this.particleTrail.stop();

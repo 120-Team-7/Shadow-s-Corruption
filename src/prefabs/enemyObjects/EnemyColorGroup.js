@@ -29,6 +29,8 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
               return true;
           }
         }, scene);
+
+        scene.physics.add.collider(this,  scene.wallsLayer);
     }
 
     update() {

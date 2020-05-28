@@ -138,12 +138,17 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     // Stop updating idleWeapon, store the current idleWeapon, remove its reference
                     idleWeaponExists = false;
                     this.knife = player.idleWeapon;
+                    
                     // Target x Player distance to check if clicking too close to player 
                     // (prevent backwards shooting of knife)
-                    this.pxtDist = Phaser.Math.Distance.Between(player.x, player.y, pointer.x, pointer.y);
+                    this.playerX = player.x - this.scene.cameras.main.worldView.x;
+                    this.playerY = player.y - this.scene.cameras.main.worldView.y;
+                    this.pointerX = pointer.worldX- this.scene.cameras.main.worldView.x;
+                    this.pointerY = pointer.worldY - this.scene.cameras.main.worldView.y;
+                    this.pxtDist = Phaser.Math.Distance.Between(this.playerX, this.playerY, this.pointerX, this.pointerY);
                     if(this.pxtDist > minPXTDist) {
-                        this.knife.targetX = pointer.x;
-                        this.knife.targetY = pointer.y;
+                        this.knife.targetX = pointer.worldX;
+                        this.knife.targetY = pointer.worldY;
                     } else {
                         this.forwardShootVector = scaleVectorMagnitude(1, player.x, player.y, this.knife.x, this.knife.y);
                         this.knife.targetX = this.knife.x + this.forwardShootVector.x;

@@ -178,6 +178,7 @@ class HUD extends Phaser.Scene {
             });
         }
 
-        // this.testText.setText('orbBulletBlock: ' + pStats.orbBulletBlock);
+        // this.testText.setText('x: ' + Math.round(player.scene.cameras.main.worldView.x) + " y: " + Math.round(player.scene.cameras.main.worldView.y));
+        // this.testText.setText('x: ' + Math.round(player.x - player.scene.cameras.main.worldView.x) + " y: " + Math.round(player.y - player.scene.cameras.main.worldView.y));
     }
 }

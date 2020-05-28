@@ -34,6 +34,7 @@ var isPaused = false;
 var resetAudio = true;
 var inTutorial = false;
 var hudScene = game.scene.keys.hudScene;
+var map;
 
 // Game measurements & text placement
 var screenWidth = game.config.width;
@@ -228,7 +229,7 @@ var shooterConfig = {
     damage: 1,
     bulletSpeed: 400,
     rof: 2000,
-    shotPredictMult: 0.8,
+    shotPredictMult: 1,
     targetLaserLength: 200,
 }
 

@@ -104,10 +104,14 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     
                     // Target x Player distance to check if clicking too close to player 
                     // (prevent backwards shooting of orb)
-                    this.oxtDist = Phaser.Math.Distance.Between(player.x, player.y, pointer.x, pointer.y);
+                    this.playerX = player.x - this.scene.cameras.main.worldView.x;
+                    this.playerY = player.y - this.scene.cameras.main.worldView.y;
+                    this.pointerX = pointer.worldX- this.scene.cameras.main.worldView.x;
+                    this.pointerY = pointer.worldY - this.scene.cameras.main.worldView.y;
+                    this.oxtDist = Phaser.Math.Distance.Between(this.playerX, this.playerY, this.pointerX, this.pointerY);
                     if(this.pxtDist > minPXTDist) {
-                        this.orb.targetX = pointer.x;
-                        this.orb.targetY = pointer.y;
+                        this.orb.targetX = pointer.worldX;
+                        this.orb.targetY = pointer.worldY;
                     } else {
                         this.forwardShootVector = scaleVectorMagnitude(1, player.x, player.y, this.orb.x, this.orb.y);
                         this.orb.targetX = this.orb.x + this.forwardShootVector.x;
