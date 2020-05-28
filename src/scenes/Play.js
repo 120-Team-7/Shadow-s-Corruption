@@ -35,15 +35,16 @@ class Play extends Phaser.Scene {
 
 
         this.map = this.make.tilemap({key: "level"});
+
         // Define tiles used in map.
         const tileset = this.map.addTilesetImage("fornow",  "tiles", 32, 32,);
 
         // The map layers.
         
         this.floorLayer = this.map.createStaticLayer("Background",        tileset);
-        this.sceneryLayer = this.map.createStaticLayer("Scenery",        tileset)
+        this.sceneryLayer = this.map.createStaticLayer("Scenery",        tileset);
         this.wallsLayer = this.map.createStaticLayer("Walls",        tileset);
-        ;
+
         //this.sceneryLayer = this.map.createStaticLayer("Scenery",        tileset);
 
         // this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -238,7 +239,7 @@ class Play extends Phaser.Scene {
                 });
         //     }
         // });
-        console.log(this.cameras.main)
+
     }
 
     update() {

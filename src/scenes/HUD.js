@@ -24,6 +24,7 @@ class HUD extends Phaser.Scene {
         // HUD ---------------------------------------------------------------------------------
 
         this.borderBox1 = this.add.rectangle(0, screenHeight - 72, 140, 72, black).setOrigin(0, 0).setAlpha(0.8);
+        this.borderBox2 = this.add.rectangle(screenWidth, screenHeight - 48, 320, 48, black).setOrigin(1, 0).setAlpha(0.6);
 
         this.corruptionCooldownBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(0.5);
         this.corruptionBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(0.3);
@@ -37,10 +38,7 @@ class HUD extends Phaser.Scene {
         this.switchCooldownBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(cooldownAlpha);
         this.switchBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(boxAlpha);
 
-       
-        // hudConfig.color = playerRed;
-
-        this.healthText = this.add.text(screenWidth - 10, screenHeight - 45, '', hudConfig).setOrigin(1, 0);
+        this.healthText = this.add.text(screenWidth - 5, screenHeight - 45, '', hudConfig).setOrigin(1, 0);
 
         hudConfig.fontSize = '30px';
         this.knifeCooldownText = this.add.text(weaponCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
@@ -174,7 +172,7 @@ class HUD extends Phaser.Scene {
             });
         } else {
             this.healthText.setStyle({
-                color: '#000000'
+                color: '#DA70D6'
             });
         }
 
