@@ -1,6 +1,10 @@
 /*
     Shadow's Realm Corruption by Evan Li, Hoang Huynh, Henry Nguyen.
 
+    Credits: 
+    http://www.geekwagon.net/index.php/2019/room-changing-phaser3-titled/ for tile 
+    map room changing code in Player.js, Play.js
+
 */
 
 var gravityY = 600;
@@ -130,7 +134,7 @@ var switchEffectsDuration = 500;
 var switchScreenShake = 0.002;
 
 var isInvuln = false; // invulnerability state after taking damage
-var invulnDuration = 1000;
+var invulnDuration = 2000;
 
 var pMaxHealth = 5;
 var pCurrHealth = pMaxHealth;

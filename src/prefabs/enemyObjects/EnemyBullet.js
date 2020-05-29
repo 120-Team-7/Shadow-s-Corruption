@@ -27,15 +27,15 @@ class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
         this.setRotation(Phaser.Math.Angle.Between(this.spawnX, this.spawnY, this.targetX, this.targetY));
         this.scene.physics.moveTo(this, this.targetX, this.targetY, shooterConfig.bulletSpeed);
 
-        // this.slimeBleed = slimeParticles.createEmitter({
-        //     emitZone: { source: this.emitCircle },
-        //     alpha: { start: 1, end: 0 },
-        //     scale: { start: 0.5, end: 0 },
-        //     lifespan: { min: 1000, max: 1500 },
-        //     speedX: { min: -enemyExplodeVel, max: enemyExplodeVel },
-        //     speedY: { min: -enemyExplodeVel, max: enemyExplodeVel },
-        // });
-        // this.corruptionBleed.stop();
+        this.corruptionBleed = corruptionParticles.createEmitter({
+            follow: this,
+            alpha: { start: 1, end: 0 },
+            scale: { start: 0.5, end: 0 },
+            lifespan: { min: 1000, max: 1500 },
+            speedX: { min: -enemyExplodeVel/2, max: enemyExplodeVel/2 },
+            speedY: { min: -enemyExplodeVel/2, max: enemyExplodeVel/2 },
+        });
+        this.corruptionBleed.stop();
     }
 
     update(){

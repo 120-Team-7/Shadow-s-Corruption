@@ -36,6 +36,7 @@ class EnemyBulletGroup extends Phaser.GameObjects.Group {
         if(idleWeaponExists) {
             this.scene.physics.overlap(this, player.idleWeapon, 
                 (bullet) => {
+                    bullet.corruptionBleed.explode(8);
                     bullet.destroy();
                     if(player.idleWeapon.state == 0) {
                         pStats.knifeBulletBlock++;
@@ -69,6 +70,7 @@ class EnemyBulletGroup extends Phaser.GameObjects.Group {
         if(player.weaponMineExists) {
             this.scene.physics.overlap(this, player.weaponMine, 
                 (bullet) => {
+                    bullet.corruptionBleed.explode(8);
                     bullet.destroy();
                     if(player.weaponMine.state == 0) {
                         pStats.knifeBulletBlock++;
