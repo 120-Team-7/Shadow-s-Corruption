@@ -88,7 +88,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             emitZone: { source: this.emitCircle },
             alpha: { start: 1, end: 0 },
             scale: { start: 1, end: 0 },
-            lifespan: { min: 1000, max: 1500 },
+            lifespan: { min: 1500, max: 2000 },
             speedX: { min: -playerExplodeVel, max: playerExplodeVel },
             speedY: { min: -playerExplodeVel, max: playerExplodeVel },
         });
@@ -343,8 +343,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 // Effects
                 this.particleTrail.stop();
                 this.corruptionBleed.explode(20 + 2*damage);
-                this.scene.cameras.main.flash(1000, 218, 112, 214);
-                this.scene.cameras.main.shake(1000, 0.01);
+                this.scene.cameras.main.flash(500, 218, 112, 214);
+                this.scene.cameras.main.shake(500, 0.01);
                 this.scene.sound.play('playerDeath');
 
                 isGameOver = true;

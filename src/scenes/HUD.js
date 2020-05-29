@@ -24,10 +24,9 @@ class HUD extends Phaser.Scene {
         // HUD ---------------------------------------------------------------------------------
 
         this.borderBox1 = this.add.rectangle(0, screenHeight - 72, 140, 72, black).setOrigin(0, 0).setAlpha(0.8);
-        this.borderBox2 = this.add.rectangle(screenWidth, screenHeight - 48, 320, 48, black).setOrigin(1, 0).setAlpha(0.6);
 
-        this.corruptionCooldownBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(0.5);
-        this.corruptionBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(0.3);
+        this.corruptionCooldownBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(1);
+        this.corruptionBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(0.2);
 
         this.knifeCooldownBox = this.add.rectangle(weaponCooldownX, weaponCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(cooldownAlpha);
         this.knifeBox = this.add.rectangle(weaponCooldownX, weaponCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(boxAlpha);
@@ -51,6 +50,18 @@ class HUD extends Phaser.Scene {
         this.knifeCDImage = this.add.sprite(weaponCooldownX + 5, weaponCooldownY + 10, 'knife').setOrigin(0, 0);
         this.switchCDImage = this.add.sprite(switchCooldownX + 2, cooldownTextY - 18, 'switchCD').setOrigin(0, 0);
 
+        this.hearts = this.add.group();
+        this.heart1 = this.add.sprite(0, 0, 'heart').setOrigin(0.5, 0.5);
+        this.heart2 = this.add.sprite(0, 0, 'heart').setOrigin(0.5, 0.5);
+        this.heart3 = this.add.sprite(0, 0, 'heart').setOrigin(0.5, 0.5);
+        this.heart4 = this.add.sprite(0, 0, 'heart').setOrigin(0.5, 0.5);
+        this.heart5 = this.add.sprite(0, 0, 'heart').setOrigin(0.5, 0.5);
+
+        this.hearts.addMultiple([this.heart1, this.heart2, this.heart3, this.heart4, this.heart5]);
+
+        let heartPlacementLine = new Phaser.Geom.Line(screenWidth - 330, screenHeight - 30, screenWidth + 20, screenHeight - 30);
+        Phaser.Actions.PlaceOnLine(this.hearts.getChildren(), heartPlacementLine);
+
         this.corruptionLevels = this.add.group();
         this.corruption1 = this.add.sprite(0, 0, 'essCorruptionDim').setOrigin(0.5, 0.5);
         this.corruption2 = this.add.sprite(0, 0, 'essCorruptionDim').setOrigin(0.5, 0.5);
@@ -60,12 +71,95 @@ class HUD extends Phaser.Scene {
 
         this.corruptionLevels.addMultiple([this.corruption1, this.corruption2, this.corruption3, this.corruption4, this.corruption5]);
 
-        let levelPlacementLine = new Phaser.Geom.Line(centerX - 180, screenHeight - 40, centerX + 270, screenHeight - 50);
+        let levelPlacementLine = new Phaser.Geom.Line(centerX - 180, screenHeight - 40, centerX + 270, screenHeight - 40);
         Phaser.Actions.PlaceOnLine(this.corruptionLevels.getChildren(), levelPlacementLine);
 
         this.testText = this.add.text(centerX, 100, '', hudConfig).setOrigin(0.5, 0);
 
         this.cameras.main.fadeIn(1000, 0, 0, 0);
+
+        this.activeFlash = false;
+        this.corruptionActiveFlash = this.time.addEvent({
+            delay: 100,
+            callback: () => {
+                if(usingCorruption) {
+                    if(this.activeFlash) {
+                        this.activeFlash = false;
+                        this.corruptionCooldownBox.setAlpha(1)
+                    } else {
+                        this.activeFlash = true;
+                        this.corruptionCooldownBox.setAlpha(healthFlashAlpha)
+                    }
+                }
+                
+            },
+            callbackContext: this,
+            loop: true,
+        });
+        this.healthFlash = false;
+        this.invulnFlashing = this.time.addEvent({
+            delay: 100,
+            callback: () => {
+                if(this.healthFlash) {
+                    this.healthFlash = false;
+                    if(pCurrHealth >= 1) {
+                        this.heart1.setAlpha(1)
+                    } else {
+                        this.heart1.setAlpha(healthMissingAlpha)
+                    } 
+                    if(pCurrHealth >= 2) {
+                        this.heart2.setAlpha(1)
+                    } else {
+                        this.heart2.setAlpha(healthMissingAlpha)
+                    } 
+                    if(pCurrHealth >= 3) {
+                        this.heart3.setAlpha(1)
+                    } else {
+                        this.heart3.setAlpha(healthMissingAlpha)
+                    } 
+                    if(pCurrHealth >= 4) {
+                        this.heart4.setAlpha(1)
+                    } else {
+                        this.heart4.setAlpha(healthMissingAlpha)
+                    } 
+                    if(pCurrHealth >= 5) {
+                        this.heart5.setAlpha(1)
+                    } else {
+                        this.heart5.setAlpha(healthMissingAlpha)
+                    } 
+                } else {
+                    this.healthFlash = true;
+                    if(pCurrHealth >= 1) {
+                        this.heart1.setAlpha(healthFlashAlpha)
+                    } else {
+                        this.heart1.setAlpha(healthMissingAlpha)
+                    } 
+                    if(pCurrHealth >= 2) {
+                        this.heart2.setAlpha(healthFlashAlpha)
+                    } else {
+                        this.heart2.setAlpha(healthMissingAlpha)
+                    } 
+                    if(pCurrHealth >= 3) {
+                        this.heart3.setAlpha(healthFlashAlpha)
+                    } else {
+                        this.heart3.setAlpha(healthMissingAlpha)
+                    } 
+                    if(pCurrHealth >= 4) {
+                        this.heart4.setAlpha(healthFlashAlpha)
+                    } else {
+                        this.heart4.setAlpha(healthMissingAlpha)
+                    } 
+                    if(pCurrHealth >= 5) {
+                        this.heart5.setAlpha(healthFlashAlpha)
+                    } else {
+                        this.heart5.setAlpha(healthMissingAlpha)
+                    } 
+                }
+            },
+            callbackContext: this,
+            loop: true,
+        });
+        this.invulnFlashing.paused = true;
     }
 
     update() {
@@ -142,10 +236,56 @@ class HUD extends Phaser.Scene {
                 this.corruption5.setTexture('essCorruptionGlow');
             }
         }
-        
-        
-        this.healthText.setText('Health: ' + pCurrHealth + "/" + pMaxHealth);
 
+        if(isInvuln) {
+            this.invulnFlashing.paused = false;
+        } else {
+            this.healthFlash = false;
+            this.invulnFlashing.paused = true;
+            if(pCurrHealth == 0) {
+                this.heart1.setAlpha(healthMissingAlpha);
+                this.heart2.setAlpha(healthMissingAlpha);
+                this.heart3.setAlpha(healthMissingAlpha);
+                this.heart4.setAlpha(healthMissingAlpha);
+                this.heart5.setAlpha(healthMissingAlpha);
+            }
+            if(pCurrHealth == 1) {
+                this.heart1.setAlpha(1);
+                this.heart2.setAlpha(healthMissingAlpha);
+                this.heart3.setAlpha(healthMissingAlpha);
+                this.heart4.setAlpha(healthMissingAlpha);
+                this.heart5.setAlpha(healthMissingAlpha);
+            }
+            if(pCurrHealth == 2) {
+                this.heart1.setAlpha(1);
+                this.heart2.setAlpha(1);
+                this.heart3.setAlpha(healthMissingAlpha);
+                this.heart4.setAlpha(healthMissingAlpha);
+                this.heart5.setAlpha(healthMissingAlpha);
+            }
+            if(pCurrHealth == 3) {
+                this.heart1.setAlpha(1);
+                this.heart2.setAlpha(1);
+                this.heart3.setAlpha(1);
+                this.heart4.setAlpha(healthMissingAlpha);
+                this.heart5.setAlpha(healthMissingAlpha);
+            }
+            if(pCurrHealth == 4) {
+                this.heart1.setAlpha(1);
+                this.heart2.setAlpha(1);
+                this.heart3.setAlpha(1);
+                this.heart4.setAlpha(1);
+                this.heart5.setAlpha(healthMissingAlpha);
+            }
+            if(pCurrHealth == 5) {
+                this.heart1.setAlpha(1);
+                this.heart2.setAlpha(1);
+                this.heart3.setAlpha(1);
+                this.heart4.setAlpha(1);
+                this.heart5.setAlpha(1);
+            }
+        }
+        
         if(playerState == 0) {
             this.orbCooldownText.setAlpha(0);
             this.orbCooldownBox.setAlpha(0);
@@ -164,16 +304,6 @@ class HUD extends Phaser.Scene {
             this.orbCooldownBox.setAlpha(cooldownAlpha);
             this.orbBox.setAlpha(boxAlpha);
             this.orbCDImage.setAlpha(1);
-        }
-
-        if(isInvuln) {
-            this.healthText.setStyle({
-                color: '#FF00FF'
-            });
-        } else {
-            this.healthText.setStyle({
-                color: '#DA70D6'
-            });
         }
 
         // this.testText.setText('x: ' + Math.round(player.scene.cameras.main.worldView.x) + " y: " + Math.round(player.scene.cameras.main.worldView.y));

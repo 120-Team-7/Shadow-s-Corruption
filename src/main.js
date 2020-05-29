@@ -34,7 +34,6 @@ var isPaused = false;
 var resetAudio = true;
 var inTutorial = false;
 var hudScene = game.scene.keys.hudScene;
-var map;
 
 // Game measurements & text placement
 var screenWidth = game.config.width;
@@ -64,6 +63,10 @@ var corruptionExpireX = centerX;
 var corruptionExpireY = screenHeight - 8;
 var expireBoxWidth = 400;
 var expireBoxHeight = 16;
+
+var pauseAlpha = 0.5;
+var healthFlashAlpha = 0.5;
+var healthMissingAlpha = 0.3;
 
 // Colors
 var black = 0x000000;
@@ -129,7 +132,7 @@ var switchScreenShake = 0.002;
 var isInvuln = false; // invulnerability state after taking damage
 var invulnDuration = 1000;
 
-var pMaxHealth = 10;
+var pMaxHealth = 5;
 var pCurrHealth = pMaxHealth;
 
 // Player corruption
@@ -185,7 +188,7 @@ var orbKnockbackVelocity = 250;     // Velocity magnitude of block knockback
 
 var orbMineDuration = 500;
 // Enemies ----------------------------------------------------------------------------------------------------
-var infiniteSpawnerDelay = 14000;
+var infiniteSpawnerDelay = 13000;
 var enemySwitchPause = 500;
 var enemyDrag = 500;
 
@@ -222,7 +225,7 @@ var shooterConfig = {
     slowdownDelay: 1000,
     closeDistance: 500,
     farDistance: 550,
-    closeTargetDist: 300,
+    closeTargetDist: 150,
     farTargetDist: 600,
     bounce: 0.1,
     health: 10,

@@ -29,7 +29,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                 knife.scene.sound.play('knifeHitmarker');
 
                 // Stop corruption trail if knife is corrupted
-                if(knife.corrupted && knife.shooting) {
+                if(knife.particlesActive && knife.shooting) {
                     knife.particleTrail.stop();
                     knife.scene.time.delayedCall(particleDestroy, function () {
                         knife.particleTrail.active = false;
@@ -59,6 +59,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                 if(enemy.health <= 0) {
                     pStats.knifeKilled++;
                 }
+
                 // If it is a melee hit
                 if(!group.isOnCooldown && !knife.shooting){
                     pStats.knifeStabbed++;
@@ -66,6 +67,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     if(knife.corrupted) {
                         knife.damage += corruption;
                         pStats.knifeCorruptedDamage += knife.damage;
+                        enemy.scene.cameras.main.shake(500, corruptionScreenShake);
                     }
                     enemy.takeDamage(knife.damage);
                     increaseCorruption(knife.damage);
@@ -87,13 +89,11 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                             enemy.stunned = false;
                         }, null, this.scene);
                     }
-                    
-                    if(usingCorruption) {
-                        enemy.scene.cameras.main.shake(500, corruptionScreenShake);
-                    }
 
                     // If enemy killed set no cooldown, increase corruption to max, don't reset corruption
-                    if(enemy.health <= 0) {
+                    if(knife == player.weaponMine) {
+                        group.isOnCooldown = false;
+                    } else if(enemy.health <= 0) {
                         increaseCorruption(maxCorruption);
                         group.isOnCooldown = false;
                     // Start longer melee cooldown if didn't kill
@@ -103,7 +103,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                             usingCorruption = false;
                             enemy.scene.corruptionDecayTimer.paused = false;
                             player.corruptionExpireTimer.destroy();
-                            enemy.scene.sound.play('corruptionExpire');
+                            // enemy.scene.sound.play('corruptionExpire');
                         }
                         group.knifeCooldown = group.scene.time.delayedCall(knifeMeleeROF, function () {
                             group.isOnCooldown = false;

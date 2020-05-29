@@ -263,7 +263,7 @@ class Play extends Phaser.Scene {
                 this.scene.pause('playScene');
                 this.scene.pause('hudScene');
                 this.scene.swapPosition('menuScene', 'playScene');
-                this.shadowBackground.setAlpha(0.8);
+                this.shadowBackground.setAlpha(pauseAlpha);
                 this.scene.setVisible(false, 'hudScene');
                 this.scene.run('menuScene');
                 this.scene.setVisible(true, 'menuScene');

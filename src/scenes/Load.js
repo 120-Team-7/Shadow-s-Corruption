@@ -12,6 +12,7 @@ class Load extends Phaser.Scene {
         }).setOrigin(0.5, 0.5);
         // Load image assets
         this.load.image('shadowBackground', './assets/images/ShadowBackground.png');
+        this.load.image('heart', './assets/images/heart.png');
         this.load.image('redPlayer', './assets/images/redPlayer.png');
         this.load.image('bluePlayer', './assets/images/bluePlayer.png');
         this.load.image('redObstacle', './assets/images/RedObstacle.png');

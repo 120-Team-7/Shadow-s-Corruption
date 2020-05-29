@@ -28,8 +28,10 @@ class Menu extends Phaser.Scene {
 
         let scene = this;
 
+        this.shadowBackground = this.add.sprite(0, 0, 'shadowBackground').setOrigin(0, 0).setAlpha(0).setDepth(10000);
+
         // Add menu screen text
-        this.add.text(centerX, 200, "Shadow's Realm Corruption", menuConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, 200, "Shadow's Corruption", menuConfig).setOrigin(0.5, 0.5);
         menuConfig.fontSize = '35px';
         this.add.text(centerX, centerY + textSpacer, 'Press I for controls', menuConfig).setOrigin(0.5, 0.5);
         this.difficultyText = this.add.text(centerX, centerY + 2*textSpacer, 'Press DOWN ARROW for EASY, Press UP ARROW for NORMAL', menuConfig).setOrigin(0.5, 0.5);
@@ -56,8 +58,10 @@ class Menu extends Phaser.Scene {
         }
 
         if(isPaused) {
+            this.shadowBackground.setAlpha(pauseAlpha);
             this.startText.setText("Press ENTER to unpause");
         } else {
+            this.shadowBackground.setAlpha(0);
             this.startText.setText("Press ENTER to start");
         }
 
