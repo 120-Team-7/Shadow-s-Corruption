@@ -314,7 +314,7 @@ class HUD extends Phaser.Scene {
 
         // this.testText.setText('x: ' + Math.round(player.scene.cameras.main.worldView.x) + " y: " + Math.round(player.scene.cameras.main.worldView.y));
         // this.testText1.setText('x: ' + Math.round(pointer.worldX) + " y: " + Math.round(pointer.worldY));
-        this.testText2.setText('pHealth: ' + pCurrHealth);
+        // this.testText2.setText('pHealth: ' + pCurrHealth);
 
     }
 
