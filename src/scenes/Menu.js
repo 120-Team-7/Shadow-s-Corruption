@@ -95,6 +95,7 @@ class Menu extends Phaser.Scene {
                 corruption = 0;
                 isInvuln = false;
                 usingCorruption = false;
+                inTutorial = false;
                 player = null;
                 pointer = null;
 

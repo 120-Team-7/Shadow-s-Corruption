@@ -356,7 +356,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.hudScene.cameras.main.fadeOut(deathFadeDuration, 0, 0, 0);
                     this.gameOverTimer = this.scene.time.delayedCall(deathFadeDuration, function () {
                         player.particleTrail.remove();
-                        this.scene.scene.stop('playScene');
+                        this.scene.scene.stop(currScene);
                         this.scene.scene.stop('hudScene');
                         this.scene.scene.stop('menuScene');
                         this.scene.scene.start('gameOverScene');

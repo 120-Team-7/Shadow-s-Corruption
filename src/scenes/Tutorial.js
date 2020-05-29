@@ -10,6 +10,7 @@ class Tutorial extends Phaser.Scene {
 
         this.sceneKey = 'tutorialScene';
         currScene = this.sceneKey;
+        this.spawnedEnemies = false;
 
         this.physics.world.debugGraphic.setAlpha(0);
 
@@ -122,6 +123,7 @@ class Tutorial extends Phaser.Scene {
 
         this.tutorialText = this.add.text(centerX, 0, 'Press Y to continue with the tutorial or N to skip it and start infinite enemy spawner', playConfig).setOrigin(0.5, 0);
         this.tutorialNum = 0;
+        inTutorial = true;
 
         this.input.keyboard.on('keydown-Y', function () {
             if(!this.scene.spawnedEnemies) {
@@ -200,9 +202,8 @@ class Tutorial extends Phaser.Scene {
         });
 
         // Remove tutorial items and start infinite enemy spawner
-        this.input.keyboard.on('keydown-N', function () {
+        this.startSpawning = this.input.keyboard.on('keydown-N', function () {
             if(!this.scene.spawnedEnemies) {
-                inTutorial = false;
                 this.scene.spawnedEnemies = true;
                 this.scene.tutorialText.destroy();
                 this.scene.redGroup.clear(true, true);
