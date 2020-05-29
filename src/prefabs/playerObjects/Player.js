@@ -122,6 +122,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
     update() {
+        this.getRoom();
         this.scene.shiftCircle.setPosition(this.x, this.y);
         if(!isGameOver){
             // Player movement

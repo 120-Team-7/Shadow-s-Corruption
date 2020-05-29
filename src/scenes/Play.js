@@ -123,17 +123,15 @@ class Play extends Phaser.Scene {
 
         // Add play objects ----------------------------------------------------------------------------------------------------
         
-        this.shadowBackground = this.add.sprite(0, 0, 'shadowBackground').setOrigin(0, 0).setAlpha(0).setDepth(10000);
-
         // Add obstacles
-        this.redGroup.addObstacle(centerX, centerY + 200);
-        this.redGroup.addObstacle(centerX + 200, centerY);
-        this.redGroup.addObstacle(centerX - 200, centerY - 200);
-        this.redGroup.addObstacle(centerX, centerY - 200);
-        this.redGroup.addObstacle(centerX - 200, centerY);
-        this.redGroup.addObstacle(centerX + 200, centerY + 200);
-        this.redGroup.addObstacle(centerX - 200, centerY + 200);
-        this.redGroup.addObstacle(centerX + 200, centerY - 200);
+        // this.redGroup.addObstacle(centerX, centerY + 200);
+        // this.redGroup.addObstacle(centerX + 200, centerY);
+        // this.redGroup.addObstacle(centerX - 200, centerY - 200);
+        // this.redGroup.addObstacle(centerX, centerY - 200);
+        // this.redGroup.addObstacle(centerX - 200, centerY);
+        // this.redGroup.addObstacle(centerX + 200, centerY + 200);
+        // this.redGroup.addObstacle(centerX - 200, centerY + 200);
+        // this.redGroup.addObstacle(centerX + 200, centerY - 200);
 
         // Tutorial text
 
@@ -252,10 +250,6 @@ class Play extends Phaser.Scene {
         this.redEnemyBulletGroup.update();
         this.blueEnemyBulletGroup.update();
 
-        if(!isPaused) {
-            this.shadowBackground.setAlpha(0);
-        }
-
         if (Phaser.Input.Keyboard.JustDown(keyStart) || Phaser.Input.Keyboard.JustDown(keyPause)) {
             if(!isGameOver) {
                 this.map
@@ -263,7 +257,6 @@ class Play extends Phaser.Scene {
                 this.scene.pause('playScene');
                 this.scene.pause('hudScene');
                 this.scene.swapPosition('menuScene', 'playScene');
-                this.shadowBackground.setAlpha(pauseAlpha);
                 this.scene.setVisible(false, 'hudScene');
                 this.scene.run('menuScene');
                 this.scene.setVisible(true, 'menuScene');
