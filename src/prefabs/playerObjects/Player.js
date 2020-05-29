@@ -384,6 +384,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    playerHeal(healNum) {
+        if(pCurrHealth + healNum <= pMaxHealth) {
+            pCurrHealth += healNum;
+        } else {
+            pCurrHealth = pMaxHealth;
+        }
+    }
+
     displayCorruptionExpire() {
         if(corruption == 0) {
             this.corruptionExpiring = false;

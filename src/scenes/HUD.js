@@ -28,6 +28,9 @@ class HUD extends Phaser.Scene {
         this.corruptionCooldownBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(1);
         this.corruptionBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(0.2);
 
+        this.healProgress = this.add.rectangle(screenWidth - 25, screenHeight, healWidth, healHeight, darkMagenta).setOrigin(1, 1).setAlpha(1);
+        this.healBox = this.add.rectangle(screenWidth - 25, screenHeight, healWidth, healHeight, playerPurple).setOrigin(1, 1).setAlpha(0.2);
+
         this.knifeCooldownBox = this.add.rectangle(weaponCooldownX, weaponCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(cooldownAlpha);
         this.knifeBox = this.add.rectangle(weaponCooldownX, weaponCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(boxAlpha);
 
@@ -59,7 +62,7 @@ class HUD extends Phaser.Scene {
 
         this.hearts.addMultiple([this.heart1, this.heart2, this.heart3, this.heart4, this.heart5]);
 
-        let heartPlacementLine = new Phaser.Geom.Line(screenWidth - 330, screenHeight - 30, screenWidth + 20, screenHeight - 30);
+        let heartPlacementLine = new Phaser.Geom.Line(screenWidth - 330, screenHeight - 40, screenWidth + 20, screenHeight - 40);
         Phaser.Actions.PlaceOnLine(this.hearts.getChildren(), heartPlacementLine);
 
         this.corruptionLevels = this.add.group();
@@ -105,56 +108,56 @@ class HUD extends Phaser.Scene {
                 if(this.healthFlash) {
                     this.healthFlash = false;
                     if(pCurrHealth >= 1) {
-                        this.heart1.setAlpha(1)
+                        this.heart1.setAlpha(1);
                     } else {
-                        this.heart1.setAlpha(healthMissingAlpha)
+                        this.heart1.setAlpha(healthMissingAlpha);
                     } 
                     if(pCurrHealth >= 2) {
                         this.heart2.setAlpha(1)
                     } else {
-                        this.heart2.setAlpha(healthMissingAlpha)
+                        this.heart2.setAlpha(healthMissingAlpha);
                     } 
                     if(pCurrHealth >= 3) {
-                        this.heart3.setAlpha(1)
+                        this.heart3.setAlpha(1);
                     } else {
-                        this.heart3.setAlpha(healthMissingAlpha)
+                        this.heart3.setAlpha(healthMissingAlpha);
                     } 
                     if(pCurrHealth >= 4) {
-                        this.heart4.setAlpha(1)
+                        this.heart4.setAlpha(1);
                     } else {
-                        this.heart4.setAlpha(healthMissingAlpha)
+                        this.heart4.setAlpha(healthMissingAlpha);
                     } 
                     if(pCurrHealth >= 5) {
-                        this.heart5.setAlpha(1)
+                        this.heart5.setAlpha(1);
                     } else {
-                        this.heart5.setAlpha(healthMissingAlpha)
+                        this.heart5.setAlpha(healthMissingAlpha);
                     } 
                 } else {
                     this.healthFlash = true;
                     if(pCurrHealth >= 1) {
-                        this.heart1.setAlpha(healthFlashAlpha)
+                        this.heart1.setAlpha(healthFlashAlpha);
                     } else {
-                        this.heart1.setAlpha(healthMissingAlpha)
+                        this.heart1.setAlpha(healthMissingAlpha);
                     } 
                     if(pCurrHealth >= 2) {
-                        this.heart2.setAlpha(healthFlashAlpha)
+                        this.heart2.setAlpha(healthFlashAlpha);
                     } else {
-                        this.heart2.setAlpha(healthMissingAlpha)
+                        this.heart2.setAlpha(healthMissingAlpha);
                     } 
                     if(pCurrHealth >= 3) {
-                        this.heart3.setAlpha(healthFlashAlpha)
+                        this.heart3.setAlpha(healthFlashAlpha);
                     } else {
-                        this.heart3.setAlpha(healthMissingAlpha)
+                        this.heart3.setAlpha(healthMissingAlpha);
                     } 
                     if(pCurrHealth >= 4) {
-                        this.heart4.setAlpha(healthFlashAlpha)
+                        this.heart4.setAlpha(healthFlashAlpha);
                     } else {
-                        this.heart4.setAlpha(healthMissingAlpha)
+                        this.heart4.setAlpha(healthMissingAlpha);
                     } 
                     if(pCurrHealth >= 5) {
-                        this.heart5.setAlpha(healthFlashAlpha)
+                        this.heart5.setAlpha(healthFlashAlpha);
                     } else {
-                        this.heart5.setAlpha(healthMissingAlpha)
+                        this.heart5.setAlpha(healthMissingAlpha);
                     } 
                 }
             },
@@ -165,6 +168,7 @@ class HUD extends Phaser.Scene {
     }
 
     update() {
+        this.displayHealProgress();
         if(corruption == 0) {
             this.corruption1.setAlpha(corruptionLevelAlpha);
             this.corruption2.setAlpha(corruptionLevelAlpha);
@@ -310,7 +314,39 @@ class HUD extends Phaser.Scene {
 
         // this.testText.setText('x: ' + Math.round(player.scene.cameras.main.worldView.x) + " y: " + Math.round(player.scene.cameras.main.worldView.y));
         // this.testText1.setText('x: ' + Math.round(pointer.worldX) + " y: " + Math.round(pointer.worldY));
-        // this.testText2.setText('x: ' + Math.round(player.x) + " y: " + Math.round(player.x));
+        this.testText2.setText('pHealth: ' + pCurrHealth);
 
+    }
+
+    displayHealProgress() {
+        this.currHealProgress = pStats.damageDealt % healBenchmark;
+        this.cooldownBoxIncrease = healWidth*(this.currHealProgress / healBenchmark);
+        this.healProgress.setSize(this.cooldownBoxIncrease, healWidth);
+    }
+
+    checkHealProgress(damage) {
+        this.lastHealProgress = pStats.damageDealt % healBenchmark;
+        if(this.lastHealProgress + damage > healBenchmark) {
+            player.playerHeal(1);
+            if(pCurrHealth == 2) {
+                this.heart2.setScale(healedHeartScale, healedHeartScale);
+            }
+            if(pCurrHealth == 3) {
+                this.heart3.setScale(healedHeartScale, healedHeartScale);
+            }
+            if(pCurrHealth == 4) {
+                this.heart4.setScale(healedHeartScale, healedHeartScale);
+            }
+            if(pCurrHealth == 5) {
+                this.heart5.setScale(healedHeartScale, healedHeartScale);
+            }
+            this.healthGainVisual = this.time.delayedCall(1000, function () {
+                this.heart1.setScale(1, 1);
+                this.heart2.setScale(1, 1);
+                this.heart3.setScale(1, 1);
+                this.heart4.setScale(1, 1);
+                this.heart5.setScale(1, 1);
+            }, null, this);
+        }
     }
 }

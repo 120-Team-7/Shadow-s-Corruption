@@ -33,6 +33,7 @@ class Play extends Phaser.Scene {
                 useAdvancedWrap: true,
             }
         }
+        
         corruptionParticles = this.add.particles('corruptionParticle');
         corruptionParticles.setDepth(500);
 

@@ -88,7 +88,7 @@ class Menu extends Phaser.Scene {
             this.startText.setText("Press ENTER to start");
         }
 
-        if (Phaser.Input.Keyboard.JustDown(this.keyStart)) {
+        if (Phaser.Input.Keyboard.JustDown(this.keyStart) && nextScene != "next") {
             if(isGameOver && currScene != nextScene) {
                 isGameOver = false;
                 pCurrHealth = pMaxHealth;

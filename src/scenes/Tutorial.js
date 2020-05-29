@@ -201,28 +201,76 @@ class Tutorial extends Phaser.Scene {
             }
         });
 
+
+
         // Remove tutorial items and start infinite enemy spawner
         this.startSpawning = this.input.keyboard.on('keydown-N', function () {
             if(!this.scene.spawnedEnemies) {
-                this.scene.spawnedEnemies = true;
-                this.scene.tutorialText.destroy();
-                this.scene.redGroup.clear(true, true);
-                this.scene.blueGroup.clear(true, true);
-                this.scene.redEnemyGroup.clear(true, true);
-                this.scene.blueEnemyGroup.clear(true, true);
+                inTutorial = false;
+                this.spawnedEnemies = true;
+                this.tutorialText.destroy();
+                this.redGroup.clear(true, true);
+                this.blueGroup.clear(true, true);
+                this.redEnemyGroup.clear(true, true);
+                this.blueEnemyGroup.clear(true, true);
 
-                this.scene.randSpawnEnemies();
-                this.scene.infiniteEnemySpawner = this.scene.time.addEvent({
+                this.randSpawnEnemies();
+
+                let lX = 440;
+                let rX = 1600;
+                let tY = 1080;
+                let bY = 1670;
+                let cenY = 1080 + (1670 - 1080)/2
+                this.portalLT = this.add.ellipse(lX, tY, 64, 64);
+                this.portalLT.setFillStyle(black);
+                this.portalRT = this.add.ellipse(rX, tY, 64, 64);
+                this.portalRT.setFillStyle(black);
+                this.portalLB = this.add.ellipse(lX, bY, 64, 64);
+                this.portalLB.setFillStyle(black);
+                this.portalRB = this.add.ellipse(rX, bY, 64, 64);
+                this.portalRB.setFillStyle(black);
+
+                this.portalLM = this.add.ellipse(lX, cenY, 64, 64);
+                this.portalLM.setFillStyle(black);
+                this.portalRM = this.add.ellipse(rX, cenY, 64, 64);
+                this.portalRM.setFillStyle(black);
+        
+                this.portalSpawn = this.tweens.add({
+                    targets: [ this.portalLT, this.portalRT, this.portalLB, this.portalRB , this.portalLM, this.portalRM ],
+                    alpha: { from: 0.5, to: 1},
+                    scale: { from: 1, to: 2},
+                    ease: 'Quart.easeIn',
+                    duration: 500,
+                    yoyo: true,
+                });
+                this.portalWarp = this.tweens.add({
+                    targets: [ this.portalLT, this.portalRT, this.portalLB, this.portalRB , this.portalLM, this.portalRM ],
+                    scale: { from: 1, to: 0.75 },
+                    ease: 'Quart.easeIn',
+                    duration: 250,
+                    yoyo: true,
+                });
+                this.portalWarping = this.time.addEvent({
+                    delay: 250,
+                    callback: () => {
+                        if(!this.portalSpawn.isPlaying()) {
+                            this.portalWarp.play();
+                        }
+                    },
+                    callbackContext: this,
+                    loop: true,
+                });
+                this.infiniteEnemySpawner = this.time.addEvent({
                     delay: infiniteSpawnerDelay,
                     callback: () => {
-                        this.scene.randSpawnEnemies();
+                        this.portalSpawn.play();
+                        this.randSpawnEnemies();
                     },
                     callbackContext: this,
                     loop: true,
                 });
             }
-        });
-
+        }, this);
     }
 
     update() {

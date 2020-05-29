@@ -41,7 +41,6 @@ var hudScene = game.scene.keys.hudScene;
 var currScene = null;
 var nextScene = "next";
 
-
 // Game measurements & text placement
 var screenWidth = game.config.width;
 var screenHeight = game.config.height;
@@ -70,6 +69,9 @@ var corruptionExpireX = centerX;
 var corruptionExpireY = screenHeight - 8;
 var expireBoxWidth = 400;
 var expireBoxHeight = 16;
+
+var healWidth = 325;
+var healHeight = 16;
 
 var pauseAlpha = 0.5;
 var healthFlashAlpha = 0.5;
@@ -142,6 +144,8 @@ var invulnDuration = 2000;
 
 var pMaxHealth = 5;
 var pCurrHealth = pMaxHealth;
+var healBenchmark = 10;
+var healedHeartScale = 1.5;
 
 // Player corruption
 var usingCorruption = false;
@@ -213,7 +217,7 @@ var enemyDestroyDelay = 1000;
 var chaserConfig = {
     spawnPause: 0,
     accel: 600,
-    maxVel: 300,
+    maxVel: 290,
     moveDelay: 100,
     slowdownDelay: 1000,
     turnAroundMult: 1.5,
