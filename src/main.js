@@ -26,7 +26,7 @@ let config = {
             debug: true,
         }
     },
-    scene: [ Load, Menu, Instructions, Play, HUD, GameOver ]
+    scene: [ Load, Menu, Instructions, Tutorial, Play, HUD, GameOver ]
 }
 
 // Define game
@@ -38,13 +38,16 @@ var isPaused = false;
 var resetAudio = true;
 var inTutorial = false;
 var hudScene = game.scene.keys.hudScene;
+var currScene = null;
+var nextScene = "next";
+
 
 // Game measurements & text placement
 var screenWidth = game.config.width;
 var screenHeight = game.config.height;
 var centerX = game.config.width/2;
 var centerY = game.config.height/2;
-var textSpacer = 100;
+var textSpacer = 80;
 var smallTextSpacer = 32;
 
 // Text & GUI settings
@@ -79,6 +82,7 @@ var playerBlue = 0x0000FF;
 var playerPurple = 0xFF00FF;
 var orchid = 0xDA70D6;
 var darkMagenta = 0x8B008B;
+var gray = 0x808080;
 
 // Audio
 var globalVolume = 1;

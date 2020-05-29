@@ -74,7 +74,9 @@ class HUD extends Phaser.Scene {
         let levelPlacementLine = new Phaser.Geom.Line(centerX - 180, screenHeight - 40, centerX + 270, screenHeight - 40);
         Phaser.Actions.PlaceOnLine(this.corruptionLevels.getChildren(), levelPlacementLine);
 
-        this.testText = this.add.text(centerX, 100, '', hudConfig).setOrigin(0.5, 0);
+        this.testText1 = this.add.text(centerX, 50, '', hudConfig).setOrigin(0.5, 0);
+        this.testText2 = this.add.text(centerX, 100, '', hudConfig).setOrigin(0.5, 0);
+
 
         this.cameras.main.fadeIn(1000, 0, 0, 0);
 
@@ -307,6 +309,8 @@ class HUD extends Phaser.Scene {
         }
 
         // this.testText.setText('x: ' + Math.round(player.scene.cameras.main.worldView.x) + " y: " + Math.round(player.scene.cameras.main.worldView.y));
-        // this.testText.setText('x: ' + Math.round(player.x - player.scene.cameras.main.worldView.x) + " y: " + Math.round(player.y - player.scene.cameras.main.worldView.y));
+        // this.testText1.setText('x: ' + Math.round(pointer.worldX) + " y: " + Math.round(pointer.worldY));
+        // this.testText2.setText('x: ' + Math.round(player.x) + " y: " + Math.round(player.x));
+
     }
 }

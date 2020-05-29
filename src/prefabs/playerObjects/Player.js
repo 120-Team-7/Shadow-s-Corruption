@@ -17,6 +17,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        scene.physics.add.collider(player,  scene.wallsLayer);
         this.setCollideWorldBounds(true);
         this.setDepth(999);
 
@@ -228,8 +229,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             this.emitCircle.setPosition(this.x, this.y);
 
-            this.playerX = player.x - this.scene.cameras.main.worldView.x;
-            this.playerY = player.y - this.scene.cameras.main.worldView.y;
+            this.playerX = player.x
+            this.playerY = player.y
 
 
             // Calculate angle to set on idleWeapon sprite (toward pointer)
@@ -261,7 +262,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.damageText.y = this.body.y - 40;
 
             // Player flip sprite when mouse on left/right of player character
-            if(pointer.worldX < player.x - this.scene.cameras.main.worldView.x){
+            if(pointer.worldX < player.x){
                 this.setFlipX(true);
             } else {
                 this.setFlipX(false);

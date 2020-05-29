@@ -4,13 +4,14 @@ class Load extends Phaser.Scene {
     }
 
     preload() {
-        this.loadingText = this.add.text(centerX, centerY, 'LOADING...', {
+        this.loadingText = this.add.text(screenWidth, screenHeight, 'LOADING...', {
             fontFamily: 'Courier',
-            fontSize: '50px',
-            color: '#FFFFFF',
+            fontSize: '40px',
+            color: '#8B008B',
             align: 'center',
-        }).setOrigin(0.5, 0.5);
+        }).setOrigin(1, 1);
         // Load image assets
+        this.load.image('titleSplash', './assets/images/titleSplash.png');
         this.load.image('shadowBackground', './assets/images/ShadowBackground.png');
         this.load.image('heart', './assets/images/heart.png');
         this.load.image('redPlayer', './assets/images/redPlayer.png');
@@ -55,6 +56,7 @@ class Load extends Phaser.Scene {
     }
 
     create() {
+        this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0);
         keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
         // knifeThrowSound = game.sound.add('knifeThrow', { 
@@ -72,12 +74,12 @@ class Load extends Phaser.Scene {
         // });
 
         this.loadingText.destroy();
-        this.add.text(centerX, centerY, 'Press ENTER to start', {
+        this.add.text(screenWidth, screenHeight, 'Press ENTER to start', {
             fontFamily: 'Courier',
-            fontSize: '50px',
-            color: '#FFFFFF',
+            fontSize: '40px',
+            color: '#8B008B',
             align: 'center',
-        }).setOrigin(0.5, 0.5);
+        }).setOrigin(1, 1);
 
     }
     update() {

@@ -5,9 +5,11 @@ class Play extends Phaser.Scene {
 
 
     create() {
-        keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-        keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        this.keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
+        this.sceneKey = 'playScene';
+        currScene = this.sceneKey;
 
         this.spawnedEnemies = false;
 
@@ -45,9 +47,6 @@ class Play extends Phaser.Scene {
         this.sceneryLayer = this.map.createStaticLayer("Scenery",        tileset);
         this.wallsLayer = this.map.createStaticLayer("Walls",        tileset);
 
-        //this.sceneryLayer = this.map.createStaticLayer("Scenery",        tileset);
-
-        // this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.physics.world.bounds.setTo(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.wallsLayer.setCollisionByProperty({collides: true});
 
@@ -73,14 +72,7 @@ class Play extends Phaser.Scene {
             }
         
         }, this);
-        //this.blueEnemy = this.add.sprite(screenWidth - 50, imagesY, 'blueSlimeball').setOrigin(0.5, 0.5).setScale(0.5).setAlpha(0.6);
-        this.physics.add.collider(player,  this.wallsLayer);
-        //this.physics.add.collider(this.redEnemyGroup.addChaser,  this.wallsLayer);
 
-
-
-        //this.cameras.main.setZoom(1.3);
-        //this.cameras.main.startFollow(player);
         this.cameras.main.setBounds(this.rooms[player.currentRoom].x,
             this.rooms[player.currentRoom].y,
             this.rooms[player.currentRoom].width,
@@ -91,11 +83,6 @@ class Play extends Phaser.Scene {
 
         // Pointer
         pointer = this.input.activePointer;
-
-        // slimeParticles = this.add.particles('corruptionParticle');
-        
-        // Player(scene, pSpawnX, pSpawnY, redObjGroup, blueObjGroup)
-        // player = new Player(this, game.scene.keys.hudScene, centerX, centerY);
 
         // ColorGroup(scene, state)
         this.redGroup = new ObsColorGroup(this, 0);
@@ -122,121 +109,6 @@ class Play extends Phaser.Scene {
         this.orbGroup = new OrbGroup(this, game.scene.keys.hudScene, 1, this.blueEnemyGroup);
 
         // Add play objects ----------------------------------------------------------------------------------------------------
-        
-        // Add obstacles
-        // this.redGroup.addObstacle(centerX, centerY + 200);
-        // this.redGroup.addObstacle(centerX + 200, centerY);
-        // this.redGroup.addObstacle(centerX - 200, centerY - 200);
-        // this.redGroup.addObstacle(centerX, centerY - 200);
-        // this.redGroup.addObstacle(centerX - 200, centerY);
-        // this.redGroup.addObstacle(centerX + 200, centerY + 200);
-        // this.redGroup.addObstacle(centerX - 200, centerY + 200);
-        // this.redGroup.addObstacle(centerX + 200, centerY - 200);
-
-        // Tutorial text
-
-        // this.tutorialText = this.add.text(centerX, 0, 'Press Y to continue with the tutorial or N to skip it and start infinite enemy spawner', playConfig).setOrigin(0.5, 0);
-        // this.tutorialNum = 0;
-
-        // this.input.keyboard.on('keydown-Y', function () {
-        //     if(!this.scene.spawnedEnemies) {
-        //         inTutorial = true;
-        //         this.scene.tutorialNum++; 
-        //         if(this.scene.tutorialNum == 1) {
-        //             this.scene.tutorialText.setText("You are trapped by RED obstacles. Because you are RED, RED objects collide with you. Press WASD to move. (Y)");
-        //         }
-        //         if(this.scene.tutorialNum == 2) {
-        //             this.scene.tutorialText.setText("Press SHIFT to change your color state between RED and BLUE. (Y)");
-        //         }
-        //         if(this.scene.tutorialNum == 3) {
-        //             this.scene.tutorialText.setText("When you are BLUE, RED objects cannot collide with you, but BLUE objects can collide with you. Try moving through the RED obstacles. (Y)");
-        //         }
-        //         if(this.scene.tutorialNum == 4) {
-        //             this.scene.tutorialText.setText("RED collides with RED, BLUE collides with BLUE, and OPPOSITES pass through. Try freely moving through the obstacles by SHIFTING at the right time. Notice that SHIFTING has a cooldown. (Y)");
-        //             this.scene.redGroup.clear(true, true);
-        //             this.scene.blueGroup.clear(true, true);
-        //             this.scene.redGroup.addObstacle(centerX, centerY - 100);
-        //             this.scene.redGroup.addObstacle(centerX - 400, centerY - 100);
-        //             this.scene.redGroup.addObstacle(centerX + 400, centerY - 100);
-        //             this.scene.redGroup.addObstacle(centerX - 200, centerY + 100);
-        //             this.scene.redGroup.addObstacle(centerX + 200, centerY + 100);
-
-        //             this.scene.blueGroup.addObstacle(centerX, centerY + 100);
-        //             this.scene.blueGroup.addObstacle(centerX - 200, centerY - 100);
-        //             this.scene.blueGroup.addObstacle(centerX + 200, centerY - 100);
-        //             this.scene.blueGroup.addObstacle(centerX - 400, centerY + 100);
-        //             this.scene.blueGroup.addObstacle(centerX + 400, centerY + 100);
-        //         }
-        //         if(this.scene.tutorialNum == 5) {
-        //             this.scene.tutorialText.setText("While your body is RED, you have the RED KNIFE equppied. Use the MOUSE to aim and press the LEFT MOUSE BUTTON to rapidly shoot them. (Y)");
-        //             this.scene.redGroup.clear(true, true);
-        //             this.scene.blueGroup.clear(true, true);
-        //             // EnemyColorGroup.addDummy(spawnX, spawnY, redGroup, blueGroup, redBulletGroup, blueBulletGroup, isShooter, shotX, shotY)
-        //             this.scene.rDummy1 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY + 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
-        //             this.scene.rDummy2 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY - 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
-        //         }
-        //         if(this.scene.tutorialNum == 6) {
-        //             this.scene.tutorialText.setText("While you are not shooting, your weapon is in IDLE form. The IDLE KNIFE stuns and deals extra damage, but has longer cooldown than shooting it. (Y)");
-        //         }
-        //         if(this.scene.tutorialNum == 7) {
-        //             this.scene.tutorialText.setText("While your body is BLUE, you have the BLUE ORB equppied. After shooting, it moves slowly, accelerates, pierces enemies, and starts a long cooldown. (Y)");
-        //             this.scene.bDummy1 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY + 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
-        //             this.scene.bDummy2 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY - 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
-        //         }
-        //         if(this.scene.tutorialNum == 8) {
-        //             this.scene.tutorialText.setText("The IDLE ORB knocksback, stuns, and has no cooldown. (Y)");
-        //         }
-        //         if(this.scene.tutorialNum == 9) {
-        //             this.scene.tutorialText.setText("Each IDLE weapon can also block and destroy enemy projectiles of the same color. (Y)");
-        //             // Replace dummies with shooting dummies
-        //             this.scene.rDummy3 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, -1, 0);
-        //             this.scene.bDummy3 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, 1, 0);
-        //         }
-        //         if(this.scene.tutorialNum == 10) {
-        //             this.scene.tutorialText.setText("The RED KNIFE is good at offense and against single enemies. The BLUE ORB is good at defense and against multiple enemies. (Y)");
-        //         }
-        //         if(this.scene.tutorialNum == 11) {
-        //             this.scene.tutorialText.setText("CORRUPTION can greatly increase your offensive power enabling you to quickly deal massive damage. Notice the CORRUPTION counter on the bottom of the screen. (Y)");
-        //         }
-        //         if(this.scene.tutorialNum == 12) {
-        //             this.scene.tutorialText.setText("Gain CORRUPTION by dealing damage with the RED KNIFE, blocking enemies with the BLUE ORB, or blocking projectiles with an IDLE weapon. (Y)");
-        //         }
-        //         if(this.scene.tutorialNum == 13) {
-        //             this.scene.tutorialText.setText("Once you have some CORRUPTION, SHIFT to ACTIVATE it and empower your NEXT ATTACK with additional damage based on your CORRUPTION. (Y)");
-        //         }
-        //         if(this.scene.tutorialNum == 14) {
-        //             this.scene.tutorialText.setText("CORRUPTION decreases by 1 every second while not ACTIVATED. While ACTIVATED, use the empowered weapon before it EXPIRES. Upon using the CORRUPTION SHOT or when it EXPIRES corruption is set to 0. (Y)");
-        //         }
-        //         if(this.scene.tutorialNum == 15) {
-        //             this.scene.tutorialText.setText("Remember that SHIFTING greatly changes your defensive and offensive capabilities. Kill enemies before they SHIFT their own color state and overwhelm you! Press (N) to spawn enemies.");
-        //         }
-
-        //     }
-        // });
-
-        // Remove tutorial items and start infinite enemy spawner
-        // this.input.keyboard.on('keydown-N', function () {
-        //     if(!this.scene.spawnedEnemies) {
-        //         inTutorial = false;
-
-        //         this.scene.spawnedEnemies = true;
-        //         this.scene.tutorialText.destroy();
-        //         this.scene.redGroup.clear(true, true);
-        //         this.scene.blueGroup.clear(true, true);
-        //         this.scene.redEnemyGroup.clear(true, true);
-        //         this.scene.blueEnemyGroup.clear(true, true);
-
-                this.randSpawnEnemies();
-                this.infiniteEnemySpawner = this.time.addEvent({
-                    delay: infiniteSpawnerDelay,
-                    callback: () => {
-                        this.randSpawnEnemies();
-                    },
-                    callbackContext: this,
-                    loop: true,
-                });
-        //     }
-        // });
 
     }
 
@@ -250,13 +122,13 @@ class Play extends Phaser.Scene {
         this.redEnemyBulletGroup.update();
         this.blueEnemyBulletGroup.update();
 
-        if (Phaser.Input.Keyboard.JustDown(keyStart) || Phaser.Input.Keyboard.JustDown(keyPause)) {
+        if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
             if(!isGameOver) {
-                this.map
+                console.log("pause play: " + currScene);
                 isPaused = true;
-                this.scene.pause('playScene');
+                this.scene.pause(currScene);
                 this.scene.pause('hudScene');
-                this.scene.swapPosition('menuScene', 'playScene');
+                this.scene.swapPosition('menuScene', currScene);
                 this.scene.setVisible(false, 'hudScene');
                 this.scene.run('menuScene');
                 this.scene.setVisible(true, 'menuScene');
