@@ -13,7 +13,7 @@ class Instructions extends Phaser.Scene {
             fontSize: '40px',
             color: '#8B008B',
             stroke: '#000000',
-            strokeThickness: 10,
+            strokeThickness: strokeThickness,
             align: 'center',
             padding: {
                 top: 15,

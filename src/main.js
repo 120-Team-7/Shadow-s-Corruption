@@ -73,18 +73,22 @@ var expireBoxHeight = 16;
 var healWidth = 325;
 var healHeight = 16;
 
-var pauseAlpha = 0.5;
+var pauseAlpha = 0.4;
 var healthFlashAlpha = 0.5;
 var healthMissingAlpha = 0.3;
 
 // Colors
 var black = 0x000000;
-var playerRed = 0xFF0000;
-var playerBlue = 0x0000FF;
+var playerRed = 0xDC143C;
+var playerBlue = 0x4169E1;
 var playerPurple = 0xFF00FF;
 var orchid = 0xDA70D6;
 var darkMagenta = 0x8B008B;
 var gray = 0x808080;
+
+// Text settings
+var strokeThickness = 6;
+var enemyStrokeThickness = 3;
 
 // Audio
 var globalVolume = 1;

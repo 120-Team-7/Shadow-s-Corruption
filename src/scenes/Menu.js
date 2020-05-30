@@ -13,7 +13,7 @@ class Menu extends Phaser.Scene {
             fontSize: '100px',
             color: '#8B008B',
             stroke: '#000000',
-            strokeThickness: 10,
+            strokeThickness: strokeThickness,
             align: 'center',
             padding: {
                 top: 10,
@@ -32,7 +32,7 @@ class Menu extends Phaser.Scene {
         currScene = null;
         nextScene = "next";
 
-        this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.5);
+        this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.8);
         this.title = this.add.sprite(centerX, 20, 'title').setOrigin(0.5, 0);
         this.shadowBackground = this.add.sprite(0, 0, 'shadowBackground').setOrigin(0, 0).setAlpha(0).setDepth(10000);
 

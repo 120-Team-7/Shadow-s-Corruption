@@ -46,6 +46,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.originalKROF = knifeThrowROF;
         this.originalOROF = orbShootROF;
         this.originalSCD = switchCooldown;
+        this.originalMMV = maxMoveVelocity;
 
         scene.corruptionDecayTimer = scene.time.addEvent({
             delay: corruptionDecayDelay,
@@ -299,16 +300,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(Phaser.Input.Keyboard.JustDown(keyGodmode)) {
                 if(!isGodmode) {
                     isGodmode = true;
-                    pCurrHealth += 100;
+                    isInvuln = true;
+                    this.playerHeal(pMaxHealth);
                     knifeThrowROF = 1;
                     orbShootROF = 1;
                     switchCooldown = 1;
+                    maxMoveVelocity = 1000
                 } else {
+                    isInvuln = false;
                     isGodmode = false;
                     pCurrHealth = pMaxHealth;
                     knifeThrowROF = this.originalKROF;
                     orbShootROF = this.originalOROF;
                     switchCooldown = this.originalSCD;
+                    maxMoveVelocity = this.originalMMV;
+
                 }
             }
         }

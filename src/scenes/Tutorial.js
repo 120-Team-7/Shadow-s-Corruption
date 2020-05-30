@@ -10,7 +10,11 @@ class Tutorial extends Phaser.Scene {
 
         this.sceneKey = 'tutorialScene';
         currScene = this.sceneKey;
-        this.spawnedEnemies = false;
+
+        this.room2Spawned = false;
+        this.room3Spawned = false;
+        this.room4Spawned = false;
+        this.room5Spawned = false;
 
         this.physics.world.debugGraphic.setAlpha(0);
 
@@ -70,6 +74,10 @@ class Tutorial extends Phaser.Scene {
 
         
         this.map.findObject('MainObjects', function(object) {
+            // rooms
+            if (object.type === 'Room') {
+                this.rooms.push(object);
+            }
             if (object.name === 'Player') {
                 player = new Player(this, game.scene.keys.hudScene, object.x, object.y);
             }
@@ -106,6 +114,8 @@ class Tutorial extends Phaser.Scene {
                 return true;
             }
         }, this);
+        this.physics.add.collider(this.redEnemyGroup,  this.wallsLayer);
+        this.physics.add.collider(this.blueEnemyGroup,  this.wallsLayer);
 
         // EnemyBulletGroup(scene, state)
         this.redEnemyBulletGroup = new EnemyBulletGroup(this, 0);
@@ -183,74 +193,6 @@ class Tutorial extends Phaser.Scene {
 
             }
         });
-
-        // Remove tutorial items and start infinite enemy spawner
-        this.startSpawning = this.input.keyboard.on('keydown-N', function () {
-            if(!this.spawnedEnemies) {
-                inTutorial = false;
-                this.spawnedEnemies = true;
-                this.tutorialText.destroy();
-                this.damageTextTimer = this.time.delayedCall(500, () => {
-                    this.redEnemyGroup.clear(true, true);
-                    this.blueEnemyGroup.clear(true, true);
-                    this.randSpawnEnemies();
-                }, null, this);
-
-                let lX = 0 + 50;
-                let rX = screenWidth - 50;
-                let tY = 100;
-                let bY = screenHeight - 100;
-                let cenY = centerY;
-                this.portalLT = this.add.ellipse(lX, tY, 64, 64);
-                this.portalLT.setFillStyle(black);
-                this.portalRT = this.add.ellipse(rX, tY, 64, 64);
-                this.portalRT.setFillStyle(black);
-                this.portalLB = this.add.ellipse(lX, bY, 64, 64);
-                this.portalLB.setFillStyle(black);
-                this.portalRB = this.add.ellipse(rX, bY, 64, 64);
-                this.portalRB.setFillStyle(black);
-
-                this.portalLM = this.add.ellipse(lX, cenY, 64, 64);
-                this.portalLM.setFillStyle(black);
-                this.portalRM = this.add.ellipse(rX, cenY, 64, 64);
-                this.portalRM.setFillStyle(black);
-        
-                this.portalSpawn = this.tweens.add({
-                    targets: [ this.portalLT, this.portalRT, this.portalLB, this.portalRB , this.portalLM, this.portalRM ],
-                    alpha: { from: 0.5, to: 1},
-                    scale: { from: 1, to: 2},
-                    ease: 'Quart.easeIn',
-                    duration: 500,
-                    yoyo: true,
-                });
-                this.portalWarp = this.tweens.add({
-                    targets: [ this.portalLT, this.portalRT, this.portalLB, this.portalRB , this.portalLM, this.portalRM ],
-                    scale: { from: 1, to: 0.75 },
-                    ease: 'Quart.easeIn',
-                    duration: 250,
-                    yoyo: true,
-                });
-                this.portalWarping = this.time.addEvent({
-                    delay: 250,
-                    callback: () => {
-                        if(!this.portalSpawn.isPlaying()) {
-                            this.portalWarp.play();
-                        }
-                    },
-                    callbackContext: this,
-                    loop: true,
-                });
-                this.infiniteEnemySpawner = this.time.addEvent({
-                    delay: infiniteSpawnerDelay,
-                    callback: () => {
-                        this.portalSpawn.play();
-                        this.randSpawnEnemies();
-                    },
-                    callbackContext: this,
-                    loop: true,
-                });
-            }
-        }, this);
     }
 
     update() {
@@ -263,20 +205,6 @@ class Tutorial extends Phaser.Scene {
         this.redEnemyBulletGroup.update();
         this.blueEnemyBulletGroup.update();
 
-        // if(playerState == 0) {
-        //     this.wallsLayer.destroy(true);
-        //     this.wallsLayer = this.map.createStaticLayer("Walls", this.tileset);
-        //     this.wallsLayer.setCollisionByProperty({collides: true});
-        //     console.log("true");
-
-        // } else {
-        //     this.wallsLayer.destroy(true);
-        //     this.wallsLayer = this.map.createStaticLayer("Walls", this.tileset);
-        //     this.wallsLayer.setCollisionByProperty({collides: false});
-        //     console.log("false");
-
-        // }
-
         if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
             if(!isGameOver) {
                 isPaused = true;
@@ -288,74 +216,135 @@ class Tutorial extends Phaser.Scene {
                 this.scene.setVisible(true, 'menuScene');
             }
         }
+
+        if (player.roomChange) {
+            this.cameras.main.fadeOut(250, 0, 0, 0, function(camera, progress) {
+                player.canMove = false;
+                if (progress === 1) {
+                    if(!this.room2Spawned && player.currentRoom == 1) {
+                        this.spawnEnemies2();
+                    }
+                    if(!this.room3Spawned && player.currentRoom == 2) {
+                        this.spawnEnemies3();
+                    }
+                    if(!this.room4Spawned && player.currentRoom == 3) {
+                        this.spawnEnemies4();
+                    }
+                    if(!this.room5Spawned && player.currentRoom == 4) {
+                        this.spawnEnemies5();
+                    }
+                    // Change camera boundaries when fade out complete.
+                    this.cameras.main.setBounds(this.rooms[player.currentRoom].x,
+                                                this.rooms[player.currentRoom].y,
+                                                this.rooms[player.currentRoom].width,
+                                                this.rooms[player.currentRoom].height,
+                                                true);
+                    // Fade back in with new boundaries.
+                    this.cameras.main.fadeIn(500, 0, 0, 0, function(camera, progress) {
+                        if (progress === 1) {
+                            player.canMove = true;
+
+                        }
+                    }, this);
+                }
+            }, this);
+        }
     }
 
-    randSpawnEnemies() {
-        let screenBuffer = 50;
-        let randNum1 = Phaser.Math.Between(0, 1);
-        let randNum2 = Phaser.Math.Between(0, 1);
-        let randNum3 = Phaser.Math.Between(0, 1);
-        let randNum4 = Phaser.Math.Between(0, 1);
-        let randChange1 = Phaser.Math.Between(1, 3)
-        let randChange2 = Phaser.Math.Between(1, 3);
-        let randChange3 = Phaser.Math.Between(1, 3);
-        let lX = 0 + 50;
-        let rX = screenWidth - 50;
-        let tY = 100;
-        let bY = screenHeight - 100;
-        let cenY = centerY;
-        if(randNum1 == 0) {
-            this.rSpawnX = rX;
-            this.bSpawnX = lX;
-        } else {
-            this.rSpawnX = lX;
-            this.bSpawnX = rX;
-        }
-        if(randNum2 == 0) {
-            this.rSpawnY = bY;
-            this.bSpawnY = tY;
-        } else {
-            this.rSpawnY = tY;
-            this.bSpawnY = bY;
-        }
-        if(randNum3 == 0){
-            this.randSpawnX = rX;
-        } else {
-            this.randSpawnX = lX;
-        }
-
-        if(randNum4 == 0){
-            if(randChange1 == 1) {
-                // EnemyColorGroup.addShooter(spawnX, spawnY, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
-                this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-            } else if(randChange1 == 2){
-                this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-            } else if(randChange1 == 3) { 
-                this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+    spawnEnemies2() {
+        this.room2Spawned = true;
+        this.map.findObject('Spawns2', function(object) {
+            if (object.name === 'Slime2_1') {
+                //addDummy(spawnX, spawnY, redGroup, blueGroup, redBulletGroup, blueBulletGroup, flip, isShooter, shotX, shotY)
+                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
             }
-        } else {
-            if(randChange1 == 1) {
-                this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-            } else if(randChange1 == 2){
-                this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-            } else if(randChange1 == 3) { 
-                this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            if (object.name === 'Slime2_2') {
+                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
             }
-        }
-        if(randChange2 == 1) {
-            // EnemyColorGroup.addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
-            this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange2 == 2) {
-            this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange2 == 3) {
-            this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
-        }
-        if(randChange3 == 1) {
-            this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange3 == 2) {
-            this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange3 == 3) {
-            this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
-        }
+            if (object.name === 'Slime2_3') {
+                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
+            }
+            if (object.name === 'Slime2_4') {
+                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, true, false);
+            }
+            if (object.name === 'Slime2_5') {
+                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, true, false);
+            }
+            if (object.name === 'Slime2_6') {
+                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, true, false);
+            }
+        }, this);
+    }
+    spawnEnemies3() {
+        this.room3Spawned = true;
+        this.map.findObject('Spawns3', function(object) {
+            if (object.name === 'Slime3_1') {
+                //addDummy(spawnX, spawnY, redGroup, blueGroup, redBulletGroup, blueBulletGroup, flip, isShooter, shotX, shotY)
+                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, 1);
+            }
+            if (object.name === 'Slime3_2') {
+                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, -1);
+            }
+            if (object.name === 'Slime3_3') {
+                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, 1);
+            }
+            if (object.name === 'Slime3_4') {
+                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, -1);
+            }
+            if (object.name === 'Slime3_5') {
+                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, 1);
+            }
+        }, this);
+    }
+    spawnEnemies4() {
+        this.room4Spawned = true;
+        this.map.findObject('Spawns4', function(object) {
+            if (object.name === 'Slime4_1') {
+                //addDummy(spawnX, spawnY, redGroup, blueGroup, redBulletGroup, blueBulletGroup, flip, isShooter, shotX, shotY)
+                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
+            }
+            if (object.name === 'Slime4_2') {
+                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
+            }
+            if (object.name === 'Slime4_3') {
+                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
+            }
+            if (object.name === 'Slime4_4') {
+                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, -1);
+            }
+            if (object.name === 'Slime4_5') {
+                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
+            }
+            if (object.name === 'Slime4_6') {
+                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, true, false);
+            }
+            if (object.name === 'Slime4_7') {
+                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, 1);
+            }
+            if (object.name === 'Slime4_8') {
+                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
+            }
+            if (object.name === 'Slime4_9') {
+                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
+            }
+            if (object.name === 'Slime4_10') {
+                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
+            }
+        }, this);
+    }
+    spawnEnemies5() {
+        this.room5Spawned = true;
+        this.map.findObject('Spawns5', function(object) {
+            if (object.name === 'Slime5_1') {
+                //addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
+                this.blueEnemyGroup.addChaser(object.x, object.y, "timed", this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime5_2') {
+                this.redEnemyGroup.addChaser(object.x, object.y, "damaged", this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime5_3') {
+                this.blueEnemyGroup.addChaser(object.x, object.y, "mirror", this.redEnemyGroup, this.blueEnemyGroup);        
+            }
+        }, this);
     }
 }

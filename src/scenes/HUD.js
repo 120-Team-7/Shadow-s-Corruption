@@ -243,7 +243,7 @@ class HUD extends Phaser.Scene {
             }
         }
 
-        if(isInvuln) {
+        if(isInvuln && !isGodmode) {
             this.invulnFlashing.paused = false;
         } else {
             this.healthFlash = false;

@@ -12,7 +12,7 @@ class GameOver extends Phaser.Scene {
             fontFamily: 'Courier',
             fontSize: '40px',
             color: '#8B008B',
-            strokeThickness: 10,
+            strokeThickness: strokeThickness,
             stroke: '#000000',
             align: 'center',
             padding: {

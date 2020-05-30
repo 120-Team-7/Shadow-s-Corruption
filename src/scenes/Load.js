@@ -10,7 +10,7 @@ class Load extends Phaser.Scene {
             color: '#8B008B',
             align: 'center',
             stroke: '#000000',
-            strokeThickness: 10,
+            strokeThickness: strokeThickness,
         }).setOrigin(1, 1);
         // Load image assets
         this.load.image('titleSplash', './assets/images/titleSplash.png');
@@ -99,7 +99,7 @@ class Load extends Phaser.Scene {
             color: '#8B008B',
             align: 'center',
             stroke: '#000000',
-            strokeThickness: 10,
+            strokeThickness: strokeThickness,
         }).setOrigin(1, 1);
         this.title = this.add.sprite(centerX, 20, 'title').setOrigin(0.5, 0);
         this.titleENTERbutton = this.add.sprite(screenWidth - 210, screenHeight, 'titleENTERbutton').setOrigin(1, 1).setScale(0.5, 0.5);

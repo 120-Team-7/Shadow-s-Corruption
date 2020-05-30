@@ -14,7 +14,7 @@ class ObsColorGroup extends Phaser.Physics.Arcade.Group {
         this.state = state;
 
         this.collider = scene.physics.add.collider(this, player, null, function() {
-            if(group.state == playerState){
+            if(group.state == playerState && !isGodmode){
                 return true;
             } else {
                 return false;

@@ -50,8 +50,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
         this.healthTextConfig = {
             fontFamily: 'Courier',
-            fontSize: '18px',
-            color: '#000000',
+            fontSize: '22px',
+            stroke: '#000000',
+            strokeThickness: enemyStrokeThickness,
             align: 'center',
             padding: {
                 top: 10,
@@ -61,10 +62,18 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             },
             fixedWidth: 0
         }
+        if(this.state == 0) {
+            this.healthTextConfig.color = '#DC143C';
+        } else {
+            this.healthTextConfig.color = '#4169E1';
+        }
         this.damageTextConfig = {
             fontFamily: 'Courier',
-            fontSize: '25px',
-            color: '#000000',
+            fontSize: '32px',
+            color: '#FF00FF',
+            align: 'center',
+            stroke: '#8B008B',
+            strokeThickness: enemyStrokeThickness,
             align: 'center',
             padding: {
                 top: 10,
@@ -119,6 +128,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         if(this.changeCondition == 'mirror') { 
             this.mirrorSwitch();
         }
+
         this.healthText.x = this.body.x + 35;
         this.healthText.y = this.body.y - 10;
         this.damageText.x = this.body.x + 35;
@@ -147,7 +157,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         }, null, this.scene);
         this.damageText.setText(damage);
         this.damageTextDisappearing = true;
-        this.damageTextTimer = this.scene.time.delayedCall(500, () => {
+        this.damageTextTimer = this.scene.time.delayedCall(1000, () => {
             this.damageTextDisappearing = false;
             this.damageText.setAlpha(0);
         }, null, this.scene);
@@ -294,9 +304,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                     newGroup.add(this);
                     this.clearTint();
                     if(this.state == 0){
+                        this.healthText.setColor('#DC143C');
                         this.setTexture(this.redTexture);
-                        
                     } else {
+                        this.healthText.setColor('#4169E1');
                         this.setTexture(this.blueTexture);
                     }
                     if(this.x < player.x) {

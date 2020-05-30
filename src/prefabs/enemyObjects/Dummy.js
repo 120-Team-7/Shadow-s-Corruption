@@ -56,8 +56,9 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         // console.log(this.body);
         this.healthTextConfig = {
             fontFamily: 'Courier',
-            fontSize: '18px',
-            color: '#000000',
+            fontSize: '22px',
+            stroke: '#000000',
+            strokeThickness: enemyStrokeThickness,
             align: 'center',
             padding: {
                 top: 10,
@@ -67,10 +68,18 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             },
             fixedWidth: 0
         }
+        if(this.state == 0) {
+            this.healthTextConfig.color = '#DC143C';
+        } else {
+            this.healthTextConfig.color = '#4169E1';
+        }
         this.damageTextConfig = {
             fontFamily: 'Courier',
-            fontSize: '25px',
-            color: '#000000',
+            fontSize: '32px',
+            color: '#FF00FF',
+            align: 'center',
+            stroke: '#8B008B',
+            strokeThickness: enemyStrokeThickness,
             align: 'center',
             padding: {
                 top: 10,
@@ -222,7 +231,7 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         }, null, this.scene);
         this.damageText.setText(damage);
         this.damageTextDisappearing = true;
-        this.damageTextTimer = this.scene.time.delayedCall(500, () => {
+        this.damageTextTimer = this.scene.time.delayedCall(1000, () => {
             this.damageTextDisappearing = false;
             this.damageText.setAlpha(0);
         }, null, this.scene);    
