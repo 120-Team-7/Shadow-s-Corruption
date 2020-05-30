@@ -6,9 +6,11 @@ class Load extends Phaser.Scene {
     preload() {
         this.loadingText = this.add.text(screenWidth, screenHeight, 'LOADING...', {
             fontFamily: 'Courier',
-            fontSize: '40px',
+            fontSize: '30px',
             color: '#8B008B',
             align: 'center',
+            stroke: '#000000',
+            strokeThickness: 10,
         }).setOrigin(1, 1);
         // Load image assets
         this.load.image('titleSplash', './assets/images/titleSplash.png');
@@ -52,8 +54,7 @@ class Load extends Phaser.Scene {
         this.load.tilemapTiledJSON("level","./assets/tilemap/temp6.json")
         this.load.tilemapTiledJSON("arenaTilemap", "./assets/tilemap/arenaTileMap.json")
         //tile sheet
-        this.load.image("tiles", "./assets/tilemap/fornow.png");
-        this.load.image("tilesRB", "./assets/tilemap/fornow5.png");
+        this.load.image("tiles", "./assets/tilemap/fornow5.png");
 
     }
 
@@ -76,11 +77,13 @@ class Load extends Phaser.Scene {
         // });
 
         this.loadingText.destroy();
-        this.add.text(screenWidth, screenHeight, 'Press ENTER to start', {
+        this.add.text(screenWidth, screenHeight, 'Press ENTER to continue', {
             fontFamily: 'Courier',
-            fontSize: '40px',
+            fontSize: '30px',
             color: '#8B008B',
             align: 'center',
+            stroke: '#000000',
+            strokeThickness: 10,
         }).setOrigin(1, 1);
 
     }

@@ -40,7 +40,7 @@ class Play extends Phaser.Scene {
         this.map = this.make.tilemap({key: "level"});
 
         // Define tiles used in map.
-        const tileset = this.map.addTilesetImage("fornow",  "tilesRB", 32, 32,);
+        const tileset = this.map.addTilesetImage("fornow",  "tiles", 32, 32,);
 
         // The map layers.
         
@@ -125,7 +125,6 @@ class Play extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
             if(!isGameOver) {
-                console.log("pause play: " + currScene);
                 isPaused = true;
                 this.scene.pause(currScene);
                 this.scene.pause('hudScene');

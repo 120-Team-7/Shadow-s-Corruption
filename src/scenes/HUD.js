@@ -319,13 +319,13 @@ class HUD extends Phaser.Scene {
     }
 
     displayHealProgress() {
-        this.currHealProgress = pStats.damageDealt % healBenchmark;
+        this.currHealProgress = (pStats.knifeCorruptedDamage + pStats.orbCorruptedDamage) % healBenchmark;
         this.cooldownBoxIncrease = healWidth*(this.currHealProgress / healBenchmark);
         this.healProgress.setSize(this.cooldownBoxIncrease, healWidth);
     }
 
     checkHealProgress(damage) {
-        this.lastHealProgress = pStats.damageDealt % healBenchmark;
+        this.lastHealProgress = (pStats.knifeCorruptedDamage + pStats.orbCorruptedDamage) % healBenchmark;
         if(this.lastHealProgress + damage > healBenchmark) {
             player.playerHeal(1);
             if(pCurrHealth == 2) {

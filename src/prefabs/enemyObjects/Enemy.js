@@ -113,7 +113,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     takeDamage(damage) {
         this.health -= damage;
-        game.scene.keys.hudScene.checkHealProgress(damage);
         pStats.damageDealt += damage;
         this.healthText.setText(this.health + "/" + this.maxHealth);
 

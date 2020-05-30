@@ -12,6 +12,8 @@ class Menu extends Phaser.Scene {
             fontFamily: 'Courier',
             fontSize: '100px',
             color: '#C0C0C0',
+            stroke: '#000000',
+            strokeThickness: 10,
             align: 'center',
             padding: {
                 top: 10,
@@ -99,7 +101,6 @@ class Menu extends Phaser.Scene {
                 player = null;
                 pointer = null;
 
-                console.log("gameover run: " + nextScene);
                 this.scene.run(nextScene);
                 this.scene.run('hudScene');
                 this.scene.setVisible(true, 'hudScene');
@@ -107,7 +108,6 @@ class Menu extends Phaser.Scene {
                 this.scene.setVisible(false, 'menuScene');
 
             } else if(isPaused) {
-                console.log("unpause run: " + currScene);
                 isPaused = false;
                 this.scene.run(currScene);
                 this.scene.run('hudScene');
