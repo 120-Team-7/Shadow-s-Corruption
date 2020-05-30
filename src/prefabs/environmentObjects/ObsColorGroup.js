@@ -30,7 +30,7 @@ class ObsColorGroup extends Phaser.Physics.Arcade.Group {
     }
 
     addObstacle(spawnX, spawnY){
-        // Obstacle(scene, group, oSpawnX, oSpawnY, state, health)
-        this.add(new Obstacle(this.scene, this, spawnX, spawnY, this.state, obsHealth))
+        // Obstacle(scene, group, oSpawnX, oSpawnY, state)
+        this.add(new Obstacle(this.scene, this, spawnX, spawnY, this.state))
     }
 }

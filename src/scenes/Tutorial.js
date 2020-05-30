@@ -38,13 +38,22 @@ class Tutorial extends Phaser.Scene {
         this.map = this.make.tilemap({key: "arenaTilemap", tileWidth: 32, tileHeight: 32 });
 
         // Define tiles used in map.
-        const tileset = this.map.addTilesetImage("fornow5",  "tiles", 32, 32,);
+        this.tileset = this.map.addTilesetImage("fornow5",  "tiles", 32, 32,);
 
         // The map layers.
         
-        this.floorLayer = this.map.createStaticLayer("Background", tileset);
-        this.sceneryLayer = this.map.createStaticLayer("Scenery", tileset);
-        this.wallsLayer = this.map.createStaticLayer("Walls", tileset);
+        this.floorLayer = this.map.createStaticLayer("Background", this.tileset);
+        this.sceneryBottomLayer = this.map.createStaticLayer("SceneryBottom", this.tileset);
+        this.sceneryTopLayer = this.map.createStaticLayer("SceneryTop", this.tileset);
+        this.wallsLayer = this.map.createStaticLayer("Walls", this.tileset);
+        this.redWallLayer = this.map.createStaticLayer("RedWall", this.tileset)
+        this.blueWallLayer = this.map.createStaticLayer("BlueWall", this.tileset)
+
+        this.wallsLayer.setCollisionByProperty({collides: true});
+
+
+        // this.wallsLayer.destroy(false);
+        // this.wallsLayer = this.map.createStaticLayer("Walls", this.tileset);
 
         // this.floorLayer.setPipeline('Light2D')
         // this.sceneryLayer.setPipeline('Light2D')
@@ -54,43 +63,50 @@ class Tutorial extends Phaser.Scene {
         // this.lights.addLight(centerX, centerY, 500).setColor(0xFFFFFF)
 
         this.physics.world.bounds.setTo(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        this.wallsLayer.setCollisionByProperty({collides: true});
+        // this.wallsLayer.active = false;
+        
+        // this.redWallLayer.setCollisionByProperty({collides: true});
+
+
+
+        // this.redWallLayer.active = false;
+        // console.log(this.redWallLayer.state);
 
         this.rooms = [];
         //this.currentRoom = 1;
-        
-        this.map.findObject('Objects', function(object) {
 
-            // rooms
-            if (object.type === 'Room') {
-                this.rooms.push(object);
-            }
-            // spawn points
-            if (object.type === 'Spawn') {
-                if (object.name === 'Player') {
-                    player = new Player(this, game.scene.keys.hudScene, object.x, object.y);
-                }
-            }
-            if (object.type === 'Spawn') {
-                if (object.name === 'Slime') {
-                    //this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-                }
-            }
+
         
+        this.map.findObject('Spawns', function(object) {
+            if (object.name === 'Player') {
+                player = new Player(this, game.scene.keys.hudScene, object.x, object.y);
+            }
         }, this);
+
+        // ColorGroup(scene, state)
+        this.redGroup = new ObsColorGroup(this, 0);
+        this.blueGroup = new ObsColorGroup(this, 1);
+
+        this.map.findObject('ColorWalls', function(object) {
+                if (object.name === 'Red') {
+                    this.redGroup.addObstacle(object.x, object.y);
+                }
+                if (object.name === 'Blue') {
+                    this.blueGroup.addObstacle(object.x, object.y);
+                }
+        }, this);
+
 
         // Initialize play objects ----------------------------------------------------------------------------------------------------
 
         // Pointer
         pointer = this.input.activePointer;
 
-        // ColorGroup(scene, state)
-        this.redGroup = new ObsColorGroup(this, 0);
-        this.blueGroup = new ObsColorGroup(this, 1);
 
-        // EnemyColorGroup(scene, state)
-        this.redEnemyGroup = new EnemyColorGroup(this, 0);
-        this.blueEnemyGroup = new EnemyColorGroup(this, 1);
+
+        // EnemyColorGroup(scene, state, obstacleGroup)
+        this.redEnemyGroup = new EnemyColorGroup(this, 0, this.redGroup);
+        this.blueEnemyGroup = new EnemyColorGroup(this, 1, this.blueGroup);
         this.collideEnemyGroups = this.physics.add.collider(this.redEnemyGroup, this.blueEnemyGroup, null, function(red, blue) {
             if(red.stunned || blue.stunned) {
                 return false;
@@ -124,57 +140,38 @@ class Tutorial extends Phaser.Scene {
                     this.scene.tutorialText.setText("Press SHIFT to change your color state between RED and BLUE. (Y)");
                 }
                 if(this.scene.tutorialNum == 2) {
-                    this.scene.redGroup.clear(true, true);
-                    this.scene.blueGroup.clear(true, true);
-                    this.scene.redGroup.addObstacle(centerX, centerY - 100);
-                    this.scene.redGroup.addObstacle(centerX - 400, centerY - 100);
-                    this.scene.redGroup.addObstacle(centerX + 400, centerY - 100);
-                    this.scene.redGroup.addObstacle(centerX - 200, centerY + 100);
-                    this.scene.redGroup.addObstacle(centerX + 200, centerY + 100);
-
-                    this.scene.blueGroup.addObstacle(centerX, centerY + 100);
-                    this.scene.blueGroup.addObstacle(centerX - 200, centerY - 100);
-                    this.scene.blueGroup.addObstacle(centerX + 200, centerY - 100);
-                    this.scene.blueGroup.addObstacle(centerX - 400, centerY + 100);
-                    this.scene.blueGroup.addObstacle(centerX + 400, centerY + 100);
-
-            
                     this.scene.tutorialText.setText("When you are BLUE, RED objects cannot collide with you, but BLUE objects can collide with you.(Y)");
                 }
                 if(this.scene.tutorialNum == 3) {
                     this.scene.tutorialText.setText("RED collides with RED, BLUE collides with BLUE, and OPPOSITES pass through. Notice that SHIFTING has a cooldown. (Y)");
-
                 }
                 if(this.scene.tutorialNum == 4) {
                     this.scene.tutorialText.setText("While your body is RED, you have the RED KNIFE equppied. Use the MOUSE to aim and press the LEFT MOUSE BUTTON to rapidly shoot them. (Y)");
-                    this.scene.redGroup.clear(true, true);
-                    this.scene.blueGroup.clear(true, true);
-                    // EnemyColorGroup.addDummy(spawnX, spawnY, redGroup, blueGroup, redBulletGroup, blueBulletGroup, isShooter, shotX, shotY)
-                    this.scene.rDummy1 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY + 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
-                    this.scene.rDummy2 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY - 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
                 }
                 if(this.scene.tutorialNum == 5) {
                     this.scene.tutorialText.setText("While you are not shooting, your weapon is in IDLE form. The IDLE KNIFE stuns and deals extra damage. (Y)");
+                    this.scene.rDummy1 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY + 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, false, 0, 0);
+                    this.scene.rDummy2 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY - 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, false, 0, 0);
                 }
                 if(this.scene.tutorialNum == 6) {
                     this.scene.tutorialText.setText("While your body is BLUE, you have the BLUE ORB equppied. After shooting, it accelerates and pierces enemies. (Y)");
-                    this.scene.bDummy1 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY + 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
-                    this.scene.bDummy2 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY - 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, 0, 0);
                 }
                 if(this.scene.tutorialNum == 7) {
                     this.scene.tutorialText.setText("The IDLE ORB knocksback and stuns enemies. (Y)");
+                    this.scene.bDummy1 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY + 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, false, 0, 0);
+                    this.scene.bDummy2 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY - 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, false, 0, 0);
                 }
                 if(this.scene.tutorialNum == 8) {
                     this.scene.tutorialText.setText("Each IDLE weapon can also block and destroy enemy projectiles of the same color. (Y)");
                     // Replace dummies with shooting dummies
-                    this.scene.rDummy3 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, -1, 0);
-                    this.scene.bDummy3 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, 1, 0);
+                    this.scene.rDummy3 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, true, -1, 0);
+                    this.scene.bDummy3 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, true, 1, 0);
                 }
                 if(this.scene.tutorialNum == 9) {
                     this.scene.tutorialText.setText("The RED KNIFE is good at offense and against single enemies. The BLUE ORB is good at defense and against multiple enemies. (Y)");
                 }
                 if(this.scene.tutorialNum == 10) {
-                    this.scene.tutorialText.setText("CORRUPTION enables you to quickly and frequently deal massive damage. Notice the CORRUPTION counter on the bottom of the screen. (Y)");
+                    this.scene.tutorialText.setText("CORRUPTION enables you to quickly and frequently deal massive damage. The ESSENCES OF CORRUPTION indicate your corruption level. (Y)");
                 }
                 if(this.scene.tutorialNum == 11) {
                     this.scene.tutorialText.setText("Gain CORRUPTION by dealing damage with the RED KNIFE, blocking enemies with the BLUE ORB, or blocking projectiles with an IDLE weapon. (Y)");
@@ -186,27 +183,26 @@ class Tutorial extends Phaser.Scene {
                     this.scene.tutorialText.setText("CORRUPTION decays while not ACTIVATED. While ACTIVATED, use the CORRUPT weapon before it EXPIRES. (Y)");
                 }
                 if(this.scene.tutorialNum == 14) {
-                    this.scene.tutorialText.setText("Enemies can also SHIFT their own color state so kill them quickly with powerful CORRUPTION attacks! Press (N) to spawn enemies.");
+                    this.scene.tutorialText.setText("Enemies can also SHIFT their own color state so kill them quickly with powerful CORRUPTION attacks! (Y)");
+                }
+                if(this.scene.tutorialNum == 15) {
+                    this.scene.tutorialText.setText("To end the tutorial and start infinite enemy spawners, press (N)");
                 }
 
             }
         });
 
-
-
         // Remove tutorial items and start infinite enemy spawner
         this.startSpawning = this.input.keyboard.on('keydown-N', function () {
-            console.log(this.spawnedEnemies);
             if(!this.spawnedEnemies) {
                 inTutorial = false;
                 this.spawnedEnemies = true;
                 this.tutorialText.destroy();
-                this.redGroup.clear(true, true);
-                this.blueGroup.clear(true, true);
-                this.redEnemyGroup.clear(true, true);
-                this.blueEnemyGroup.clear(true, true);
-
-                this.randSpawnEnemies();
+                this.damageTextTimer = this.time.delayedCall(500, () => {
+                    this.redEnemyGroup.clear(true, true);
+                    this.blueEnemyGroup.clear(true, true);
+                    this.randSpawnEnemies();
+                }, null, this);
 
                 let lX = 0 + 50;
                 let rX = screenWidth - 50;
@@ -263,6 +259,7 @@ class Tutorial extends Phaser.Scene {
                 });
             }
         }, this);
+
     }
 
     update() {
@@ -274,6 +271,20 @@ class Tutorial extends Phaser.Scene {
         this.blueEnemyGroup.update();
         this.redEnemyBulletGroup.update();
         this.blueEnemyBulletGroup.update();
+
+        // if(playerState == 0) {
+        //     this.wallsLayer.destroy(true);
+        //     this.wallsLayer = this.map.createStaticLayer("Walls", this.tileset);
+        //     this.wallsLayer.setCollisionByProperty({collides: true});
+        //     console.log("true");
+
+        // } else {
+        //     this.wallsLayer.destroy(true);
+        //     this.wallsLayer = this.map.createStaticLayer("Walls", this.tileset);
+        //     this.wallsLayer.setCollisionByProperty({collides: false});
+        //     console.log("false");
+
+        // }
 
         if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
             if(!isGameOver) {

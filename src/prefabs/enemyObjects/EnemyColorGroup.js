@@ -1,5 +1,5 @@
 class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
-    constructor(scene, state) {
+    constructor(scene, state, obstacleGroup) {
         let groupConfig = {
             runChildUpdate: true,
             collideWorldBounds: true,
@@ -9,6 +9,7 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
         let group = this;
         this.scene = scene;
         this.state = state;
+        this.obstacleGroup = obstacleGroup;
 
         this.playerCollider = scene.physics.add.collider(group, player, function(player, enemy) {
             if(!enemy.isDummy && !enemy.stunned) {
@@ -20,7 +21,15 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
             } else {
                 return false;
             }
-        }, scene)
+        }, scene);
+
+        this.obstacleCollider = scene.physics.add.collider(this, this.obstacleGroup, null, function() {
+            if(group.state == group.obstacleGroup.state){
+                return true;
+            } else {
+                return false;
+            }
+        }, scene);
 
         this.selfCollider = scene.physics.add.collider(this, this, null, function(first, second) {
           if(first.stunned || second.stunned) {
@@ -39,9 +48,9 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
     }
 
 
-    addDummy(spawnX, spawnY, redGroup, blueGroup, redBulletGroup, blueBulletGroup, isShooter, shotX, shotY) {
-        // Dummy(scene, oSpawnX, oSpawnY, state, redGroup, blueGroup, redBulletGroup, blueBulletGroup, isShooter, shotX, shotY)
-        this.add(new Dummy(this.scene, spawnX, spawnY, this.state, redGroup, blueGroup, redBulletGroup, blueBulletGroup, isShooter, shotX, shotY));
+    addDummy(spawnX, spawnY, redGroup, blueGroup, redBulletGroup, blueBulletGroup, flip, isShooter, shotX, shotY) {
+        // Dummy(scene, oSpawnX, oSpawnY, state, redGroup, blueGroup, redBulletGroup, blueBulletGroup, flip, isShooter, shotX, shotY) {
+        this.add(new Dummy(this.scene, spawnX, spawnY, this.state, redGroup, blueGroup, redBulletGroup, blueBulletGroup, flip, isShooter, shotX, shotY));
     }
 
     addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup) {

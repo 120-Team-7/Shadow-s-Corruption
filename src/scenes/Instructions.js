@@ -55,7 +55,7 @@ class Instructions extends Phaser.Scene {
         instructionsConfig.color = '#0000FF';
         this.add.text(screenWidth - 300, 60, 'Blue State', instructionsConfig).setOrigin(0.5, 0.5);
         // White bottom
-        instructionsConfig.color = '#000000';
+        instructionsConfig.color = '#8B008B';
         instructionsConfig.fontSize = '40px';
         this.add.text(centerX, screenHeight - 80, 'Press I to return to menu, ESC or ENTER to pause during play, M to toggle mute, K to reset', instructionsConfig).setOrigin(0.5, 0.5);
 

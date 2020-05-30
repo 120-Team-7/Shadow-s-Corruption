@@ -193,7 +193,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         corruption = 0;
                         usingCorruption = false;
                         player.scene.corruptionDecayTimer.paused = false;
-                        player.idleWeapon.corrupted = false;
+                        if(idleWeaponExists) {
+                            player.idleWeapon.corrupted = false;
+                        }
                         // Change to regular orb if corruption time expires
                         if(playerState == 1 && idleWeaponExists && !usingCorruption){
                             player.idleWeapon.setTexture('orb');

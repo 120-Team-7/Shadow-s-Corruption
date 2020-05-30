@@ -22,6 +22,8 @@ class Load extends Phaser.Scene {
         this.load.image('heart', './assets/images/heart.png');
         this.load.image('redPlayer', './assets/images/redPlayer.png');
         this.load.image('bluePlayer', './assets/images/bluePlayer.png');
+        this.load.image('invisibleRed', './assets/images/invisibleRed.png');
+        this.load.image('invisibleBlue', './assets/images/invisibleBlue.png');
         this.load.image('redObstacle', './assets/images/RedObstacle.png');
         this.load.image('blueObstacle', './assets/images/BlueObstacle.png');
         this.load.image('knife', './assets/images/knife.png');

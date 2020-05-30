@@ -327,7 +327,6 @@ class HUD extends Phaser.Scene {
 
     checkHealProgress(damage) {
         this.lastHealProgress = (pStats.knifeCorruptedDamage + pStats.orbCorruptedDamage) % healBenchmark;
-        console.log(this.lastHealProgress + damage);
         if(this.lastHealProgress + damage >= healBenchmark) {
             player.playerHeal(1);
             this.gainedHeart = pCurrHealth;

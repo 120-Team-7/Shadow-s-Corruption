@@ -1,12 +1,14 @@
 class Dummy extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, oSpawnX, oSpawnY, state, redGroup, blueGroup, redBulletGroup, blueBulletGroup, isShooter, shotX, shotY) {
+    constructor(scene, oSpawnX, oSpawnY, state, redGroup, blueGroup, redBulletGroup, blueBulletGroup, flip, isShooter, shotX, shotY) {
         if(state == 0){
-            super(scene, oSpawnX, oSpawnY, 'redObstacle');
+            super(scene, oSpawnX, oSpawnY, 'redChaser');
         } else {
-            super(scene, oSpawnX, oSpawnY, 'blueObstacle');
+            super(scene, oSpawnX, oSpawnY, 'blueChaser');
         }
 
-        this.setOrigin(0.5, 0.5).setScale(0.25);
+        this.setFlipX(flip);
+
+        this.setOrigin(0.5, 0.5);
 
         // Scope parameters to this instance
         let enemy = this;
@@ -139,7 +141,7 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         if(!inTutorial){
-            this.damageTextTimer.destroy();
+            // this.damageTextTimer.destroy();
             this.healthText.destroy();
             this.damageText.destroy();
             this.corruptionBleed.remove();
@@ -153,12 +155,12 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             this.destroy();
         }
 
-        if(this.x < this.oSpawnX + 30 && this.x > this.oSpawnX - 30 &&
+        if(inTutorial && this.x < this.oSpawnX + 30 && this.x > this.oSpawnX - 30 &&
             this.y < this.oSpawnY + 30 && this.y > this.oSpawnY - 30 && !this.stunned) {
             this.body.stop();
         }
         // Pause shooting if switching or stunned
-        if(this.isShooting) {
+        if(inTutorial && this.isShooting) {
             if (!this.switching && !this.stunned) {
                 this.shootTimer.paused = false;
             } else {
@@ -167,10 +169,12 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Update text positions
-        this.healthText.x = this.body.x + 25;
-        this.healthText.y = this.body.y + 25;
-        this.damageText.x = this.body.x + 25;
-        this.damageText.y = this.body.y - 20;
+        if(inTutorial) {
+            this.healthText.x = this.body.x + 35;
+            this.healthText.y = this.body.y - 10;
+            this.damageText.x = this.body.x + 35;
+            this.damageText.y = this.body.y - 35;
+        }
     }
 
     takeDamage(damage){
