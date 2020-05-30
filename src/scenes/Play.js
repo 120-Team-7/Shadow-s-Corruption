@@ -40,7 +40,7 @@ class Play extends Phaser.Scene {
         this.map = this.make.tilemap({key: "level"});
 
         // Define tiles used in map.
-        const tileset = this.map.addTilesetImage("fornow",  "tiles", 32, 32,);
+        const tileset = this.map.addTilesetImage("fornow",  "tilesRB", 32, 32,);
 
         // The map layers.
         

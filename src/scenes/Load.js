@@ -48,10 +48,12 @@ class Load extends Phaser.Scene {
         this.load.audio('corruptionExpire', './assets/sounds/corruptionExpire.mp3');
 
         //tile maps
-        this.load.path = "./assets/images/";
-        this.load.tilemapTiledJSON("level","temp6.json")
+        // this.load.path = "./assets/tilemap/";
+        this.load.tilemapTiledJSON("level","./assets/tilemap/temp6.json")
+        this.load.tilemapTiledJSON("arenaTilemap", "./assets/tilemap/arenaTileMap.json")
         //tile sheet
-        this.load.image("tiles", "fornow.png");
+        this.load.image("tiles", "./assets/tilemap/fornow.png");
+        this.load.image("tilesRB", "./assets/tilemap/fornow5.png");
 
     }
 

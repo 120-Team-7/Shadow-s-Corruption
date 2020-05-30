@@ -35,10 +35,10 @@ class Tutorial extends Phaser.Scene {
         corruptionParticles = this.add.particles('corruptionParticle');
         corruptionParticles.setDepth(500);
 
-        this.map = this.make.tilemap({key: "level"});
+        this.map = this.make.tilemap({key: "arenaTilemap"});
 
         // Define tiles used in map.
-        const tileset = this.map.addTilesetImage("fornow",  "tiles", 32, 32,);
+        const tileset = this.map.addTilesetImage("fornow5",  "tiles", 32, 32,);
 
         // The map layers.
         

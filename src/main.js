@@ -144,7 +144,7 @@ var invulnDuration = 2000;
 
 var pMaxHealth = 5;
 var pCurrHealth = pMaxHealth;
-var healBenchmark = 10;
+var healBenchmark = 60;
 var healedHeartScale = 1.5;
 
 // Player corruption
