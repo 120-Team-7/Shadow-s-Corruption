@@ -101,6 +101,7 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             this.shooting = true;
             if(this.corrupted) {
                 this.particlesActive = true;
+                this.particleTrail.active = true;
                 this.damage = knifeThrowDamage + corruption;
                 this.knifeSpeed = corruptKnifeSpeed;
                 corruption = 0;
@@ -109,7 +110,6 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                 if(player.corruptionExpiring) {
                     player.corruptionExpireTimer.destroy();
                 }
-                this.particleTrail.active = true;
                 this.scene.cameras.main.shake(500, corruptionScreenShake);
                 // this.scene.sound.play('corruptionExpire');
             }

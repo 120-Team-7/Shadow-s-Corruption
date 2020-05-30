@@ -30,7 +30,7 @@ class Menu extends Phaser.Scene {
 
         let scene = this;
 
-        this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.3);
+        this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.5);
         this.title = this.add.sprite(centerX, 20, 'title').setOrigin(0.5, 0);
         this.shadowBackground = this.add.sprite(0, 0, 'shadowBackground').setOrigin(0, 0).setAlpha(0).setDepth(10000);
 

@@ -91,15 +91,30 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         });
         this.corruptionBleed.stop();
 
+        this.stun1 = scene.add.sprite(12, 0, 'stunParticle').setOrigin(0.5, 0.5).setScale(0.25);
+        this.stun2 = scene.add.sprite(0, 12, 'stunParticle').setOrigin(0.5, 0.5).setScale(0.25);
+        this.stun3 = scene.add.sprite(-12, 0, 'stunParticle').setOrigin(0.5, 0.5).setScale(0.25);
+        this.stun4 = scene.add.sprite(0, -12, 'stunParticle').setOrigin(0.5, 0.5).setScale(0.25);
+        this.stunStars = scene.add.container(0, 0, [ this.stun1, this.stun2, this.stun3, this.stun4 ]);
+        this.stunStars.setSize(16, 16);
     }
 
     update() {
         if(!this.stunned) {
+            this.stun1.setAlpha(0);
+            this.stun2.setAlpha(0);
+            this.stun3.setAlpha(0);
+            this.stun4.setAlpha(0);
             if(this.body.velocity.x > 0) {
                 this.setFlipX(true);
             } else if(this.body.velocity.x < 0){
                 this.setFlipX(false);
             }
+        } else {
+            this.stun1.setAlpha(1);
+            this.stun2.setAlpha(1);
+            this.stun3.setAlpha(1);
+            this.stun4.setAlpha(1);
         }
         if(this.changeCondition == 'mirror') { 
             this.mirrorSwitch();
@@ -108,7 +123,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.healthText.y = this.body.y - 10;
         this.damageText.x = this.body.x + 35;
         this.damageText.y = this.body.y - 35;
-        
+
+        this.stunStars.rotation += 0.1;
+        this.stunStars.x = this.body.x + 35;
+        this.stunStars.y = this.body.y + 5;
+
     }
 
     takeDamage(damage) {
@@ -174,6 +193,12 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 this.mirrorTimer.destroy();
                 this.mirrorCD.destroy();
             }
+            this.stunStars.destroy();
+            this.stun1.destroy();
+            this.stun2.destroy();
+            this.stun3.destroy();
+            this.stun4.destroy();
+
             // Remove physics interactability
             this.body.destroy();
             this.setAlpha(0);

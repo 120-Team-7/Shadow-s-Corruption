@@ -200,7 +200,7 @@ var orbKnockbackVelocity = 250;     // Velocity magnitude of block knockback
 
 var orbMineDuration = 500;
 // Enemies ----------------------------------------------------------------------------------------------------
-var infiniteSpawnerDelay = 13000;
+var infiniteSpawnerDelay = 15000;
 var enemySwitchPause = 500;
 var enemyDrag = 500;
 

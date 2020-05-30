@@ -46,8 +46,8 @@ class Tutorial extends Phaser.Scene {
         this.sceneryBottomLayer = this.map.createStaticLayer("SceneryBottom", this.tileset);
         this.sceneryTopLayer = this.map.createStaticLayer("SceneryTop", this.tileset);
         this.wallsLayer = this.map.createStaticLayer("Walls", this.tileset);
-        this.redWallLayer = this.map.createStaticLayer("RedWall", this.tileset)
-        this.blueWallLayer = this.map.createStaticLayer("BlueWall", this.tileset)
+        this.redWallsLayer = this.map.createStaticLayer("RedWalls", this.tileset)
+        this.blueWallsLayer = this.map.createStaticLayer("BlueWalls", this.tileset)
 
         this.wallsLayer.setCollisionByProperty({collides: true});
 
@@ -146,7 +146,7 @@ class Tutorial extends Phaser.Scene {
                     this.scene.tutorialText.setText("RED collides with RED, BLUE collides with BLUE, and OPPOSITES pass through. Notice that SHIFTING has a cooldown. (Y)");
                 }
                 if(this.scene.tutorialNum == 4) {
-                    this.scene.tutorialText.setText("While your body is RED, you have the RED KNIFE equppied. Use the MOUSE to aim and press the LEFT MOUSE BUTTON to rapidly shoot them. (Y)");
+                    this.scene.tutorialText.setText("While your body is RED, you have the RED KNIFE equppied. Use the MOUSE to aim and use LEFT MOUSE BUTTON to rapidly shoot them. (Y)");
                 }
                 if(this.scene.tutorialNum == 5) {
                     this.scene.tutorialText.setText("While you are not shooting, your weapon is in IDLE form. The IDLE KNIFE stuns and deals extra damage. (Y)");
@@ -259,7 +259,6 @@ class Tutorial extends Phaser.Scene {
                 });
             }
         }, this);
-
     }
 
     update() {

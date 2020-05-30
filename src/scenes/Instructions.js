@@ -43,17 +43,17 @@ class Instructions extends Phaser.Scene {
 
         // Text
         this.instructionText = this.add.text(centerX, centerY - 2*textSpacer, 'WASD to move', instructionsConfig).setOrigin(0.5, 0.5);
-        this.instructionText = this.add.text(centerX, centerY - textSpacer, 'SHIFT to change color state & equipped weapon', instructionsConfig).setOrigin(0.5, 0.5);
+        this.instructionText = this.add.text(centerX, centerY - textSpacer, 'SHIFT to phase between realms', instructionsConfig).setOrigin(0.5, 0.5);
         this.instructionText = this.add.text(centerX, centerY, 'MOUSE to aim, LEFT MOUSE BUTTON to shoot', instructionsConfig).setOrigin(0.5, 0.5);
 
         // Phaser.GameObjects.Text.advancedWordWrap(this.instructionText, this, screenWidth - 20);
         // Red
         instructionsConfig.color = '#FF0000';
-        instructionsConfig.fontSize = '70px';
-        this.add.text(300, 60, 'Red State', instructionsConfig).setOrigin(0.5, 0.5);
+        instructionsConfig.fontSize = '60px';
+        this.add.text(300, 60, 'Physical Realm', instructionsConfig).setOrigin(0.5, 0.5);
         // Blue
         instructionsConfig.color = '#0000FF';
-        this.add.text(screenWidth - 300, 60, 'Blue State', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(screenWidth - 300, 60, 'Spirit Realm', instructionsConfig).setOrigin(0.5, 0.5);
         // White bottom
         instructionsConfig.color = '#8B008B';
         instructionsConfig.fontSize = '40px';

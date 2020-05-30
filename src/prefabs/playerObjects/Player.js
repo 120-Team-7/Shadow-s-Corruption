@@ -172,9 +172,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     delete this.idleWeapon;
                     this.weaponMine.exists = false;
                     this.weaponMine.disapate.resume();
-                    // if(this.weaponMine.corrupted) {
-                    //     this.weaponMine.particleTrail.remove();
-                    // }
                     idleWeaponExists = false;                    
                 }
                 // Start corruption shot window
