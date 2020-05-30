@@ -6,6 +6,7 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             super(scene, oSpawnX, oSpawnY, 'blueChaser');
         }
 
+        this.setTint(0x555555);
         this.setFlipX(flip);
 
         this.setOrigin(0.5, 0.5);

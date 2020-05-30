@@ -60,6 +60,7 @@ class Load extends Phaser.Scene {
         // this.load.path = "./assets/tilemap/";
         this.load.tilemapTiledJSON("level","./assets/tilemap/temp6.json")
         this.load.tilemapTiledJSON("arenaTilemap", "./assets/tilemap/arenaTileMap.json")
+        this.load.tilemapTiledJSON("tutorialTilemap", "./assets/tilemap/linearTutorial.json")
         //tile sheet
         this.load.image("tiles", "./assets/tilemap/fornow5.png");
 

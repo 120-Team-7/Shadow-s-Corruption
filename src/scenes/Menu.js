@@ -29,6 +29,8 @@ class Menu extends Phaser.Scene {
         }
 
         let scene = this;
+        currScene = null;
+        nextScene = "next";
 
         this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.5);
         this.title = this.add.sprite(centerX, 20, 'title').setOrigin(0.5, 0);
@@ -41,7 +43,8 @@ class Menu extends Phaser.Scene {
         this.difficultyText = this.add.text(centerX, centerY + textSpacer, 'Press DOWN ARROW for EASY, Press UP ARROW for NORMAL', menuConfig).setOrigin(0.5, 0.5);
         this.tutorialSelect = this.add.text(centerX, centerY + 2*textSpacer, 'Tutorial: press 1', menuConfig).setOrigin(0.5, 0.5);
         this.playSelect = this.add.text(centerX, centerY + 3*textSpacer, 'Play: press 2', menuConfig).setOrigin(0.5, 0.5);
-        this.startText = this.add.text(centerX, centerY + 4*textSpacer, 'Press ENTER to start selected', menuConfig).setOrigin(0.5, 0.5);
+        this.arenaSelect = this.add.text(centerX, centerY + 4*textSpacer, 'Arena: press 3', menuConfig).setOrigin(0.5, 0.5);
+        this.startText = this.add.text(centerX, centerY + 5*textSpacer, 'Press ENTER to start selected', menuConfig).setOrigin(0.5, 0.5);
 
         this.input.keyboard.on('keydown-UP', function () {
             chaserConfig.health = 10;
@@ -61,6 +64,7 @@ class Menu extends Phaser.Scene {
                 }
                 this.tutorialSelect.setText('[Tutorial]: press 1');
                 this.playSelect.setText('Play: press 2');
+                this.arenaSelect.setText('Arena: press 3');
             }
         }, this);
 
@@ -71,6 +75,18 @@ class Menu extends Phaser.Scene {
                 }
                 this.tutorialSelect.setText('Tutorial: press 1');
                 this.playSelect.setText('[Play]: press 2');
+                this.arenaSelect.setText('Arena: press 3');
+            }
+        }, this);
+
+        this.input.keyboard.on('keydown-THREE', function () {
+            if(isGameOver || isPaused) {
+                if(currScene != 'arenaScene') {
+                    nextScene = 'arenaScene';
+                }
+                this.tutorialSelect.setText('Tutorial: press 1');
+                this.playSelect.setText('Play: press 2');
+                this.arenaSelect.setText('[Arena]: press 3');
             }
         }, this);
 

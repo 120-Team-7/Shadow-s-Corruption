@@ -51,7 +51,7 @@ class GameOver extends Phaser.Scene {
         this.add.text(leftTextX, centerY + 2* spacer, "Orb corrupt damage: ", gameOverConfig).setOrigin(0, 0);
         this.add.text(leftNumX, centerY + 2* spacer, pStats.orbCorruptedDamage, gameOverConfig).setOrigin(0, 0);
         this.add.text(leftTextX, centerY + 3*spacer, "Knife corrupt damage: ", gameOverConfig).setOrigin(0, 0);
-        this.add.text(leftNumX, centerY + 3*spacer, pStats.knifeCorruptedDamage + 100, gameOverConfig).setOrigin(0, 0);
+        this.add.text(leftNumX, centerY + 3*spacer, pStats.knifeCorruptedDamage, gameOverConfig).setOrigin(0, 0);
 
         this.add.text(rightTextX, centerY - 3*spacer, "Times shifted: ", gameOverConfig).setOrigin(0, 0);
         this.add.text(rightNumX, centerY - 3*spacer, pStats.switchNum, gameOverConfig).setOrigin(0, 0);
@@ -66,7 +66,7 @@ class GameOver extends Phaser.Scene {
         this.add.text(rightTextX, centerY + 2*spacer, "Idle orb hits: ", gameOverConfig).setOrigin(0, 0);
         this.add.text(rightNumX, centerY + 2*spacer, pStats.orbEnemyBlock, gameOverConfig).setOrigin(0, 0);
         this.add.text(rightTextX, centerY + 3*spacer, "Blue bullets blocked: ", gameOverConfig).setOrigin(0, 0);
-        this.add.text(rightNumX, centerY + 3*spacer, pStats.orbBulletBlock + 100, gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightNumX, centerY + 3*spacer, pStats.orbBulletBlock, gameOverConfig).setOrigin(0, 0);
 
         gameOverConfig.align = 'center';
         this.add.text(centerX, screenHeight - 50, 'Press ENTER to return to menu', gameOverConfig).setOrigin(0.5, 0.5);

@@ -342,7 +342,7 @@ class HUD extends Phaser.Scene {
             if(this.gainedHeart == 5) {
                 this.heart5.setScale(healedHeartScale, healedHeartScale);
             }
-            this.healthGainVisual = this.time.delayedCall(3000, function () {
+            this.healthGainVisual = this.time.delayedCall(2000, function () {
                 this.heart1.setScale(1, 1);
                 this.heart2.setScale(1, 1);
                 this.heart3.setScale(1, 1);

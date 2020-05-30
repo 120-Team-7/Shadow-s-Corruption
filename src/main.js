@@ -26,7 +26,7 @@ let config = {
             debug: true,
         }
     },
-    scene: [ Load, Menu, Instructions, Tutorial, Play, HUD, GameOver ]
+    scene: [ Load, Menu, Instructions, Tutorial, Play, Arena, HUD, GameOver ]
 }
 
 // Define game
@@ -46,7 +46,7 @@ var screenWidth = game.config.width;
 var screenHeight = game.config.height;
 var centerX = game.config.width/2;
 var centerY = game.config.height/2;
-var textSpacer = 80;
+var textSpacer = 64;
 var smallTextSpacer = 32;
 
 // Text & GUI settings

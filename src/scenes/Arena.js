@@ -1,6 +1,6 @@
-class Tutorial extends Phaser.Scene {
+class Arena extends Phaser.Scene {
     constructor() {
-        super('tutorialScene');
+        super('arenaScene');
     }
 
 
@@ -8,7 +8,7 @@ class Tutorial extends Phaser.Scene {
         this.keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
-        this.sceneKey = 'tutorialScene';
+        this.sceneKey = 'arenaScene';
         currScene = this.sceneKey;
         this.spawnedEnemies = false;
 
@@ -35,7 +35,7 @@ class Tutorial extends Phaser.Scene {
         corruptionParticles = this.add.particles('corruptionParticle');
         corruptionParticles.setDepth(500);
 
-        this.map = this.make.tilemap({key: "tutorialTilemap", tileWidth: 32, tileHeight: 32 });
+        this.map = this.make.tilemap({key: "arenaTilemap", tileWidth: 32, tileHeight: 32 });
 
         // Define tiles used in map.
         this.tileset = this.map.addTilesetImage("fornow5",  "tiles", 32, 32,);
@@ -63,13 +63,21 @@ class Tutorial extends Phaser.Scene {
         // this.lights.addLight(centerX, centerY, 500).setColor(0xFFFFFF)
 
         this.physics.world.bounds.setTo(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+        // this.wallsLayer.active = false;
         
+        // this.redWallLayer.setCollisionByProperty({collides: true});
+
+
+
+        // this.redWallLayer.active = false;
+        // console.log(this.redWallLayer.state);
+
         this.rooms = [];
         //this.currentRoom = 1;
 
 
         
-        this.map.findObject('MainObjects', function(object) {
+        this.map.findObject('Spawns', function(object) {
             if (object.name === 'Player') {
                 player = new Player(this, game.scene.keys.hudScene, object.x, object.y);
             }
