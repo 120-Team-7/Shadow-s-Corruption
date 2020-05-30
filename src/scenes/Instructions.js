@@ -6,12 +6,14 @@ class Instructions extends Phaser.Scene {
     create() {
         keyInstructions = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
 
-        this.cameras.main.setBackgroundColor('#696969');
+        this.cameras.main.setBackgroundColor('#000000');
 
         let instructionsConfig = {
             fontFamily: 'Courier',
             fontSize: '40px',
-            color: '#FFFFFF',
+            color: '#8B008B',
+            stroke: '#000000',
+            strokeThickness: 10,
             align: 'center',
             padding: {
                 top: 15,
@@ -27,16 +29,17 @@ class Instructions extends Phaser.Scene {
         }
 
         // Images
+        // this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.3);
         // Red
         this.redPlayerImage = this.add.sprite(centerX - 50, imagesY, 'redPlayer').setOrigin(0.5, 0.5).setFlipX(true);
         this.knifeImage = this.add.sprite(centerX - (50 + idleWeaponDistance), imagesY, 'knife').setOrigin(0.5, 0.5).setFlipX(true);
         this.corruptKnifeImage = this.add.sprite(screenWidth/4 - 20, imagesY, 'corruptKnife').setOrigin(0.5, 0.5).setFlipX(true);
-        this.redEnemy = this.add.sprite(50, imagesY, 'redObstacle').setOrigin(0.5, 0.5).setScale(0.25);
+        this.redEnemy = this.add.sprite(50, imagesY, 'redChaser').setOrigin(0.5, 0.5).setFlipX(true);
         // Blue
         this.bluePlayerImage = this.add.sprite(centerX + 50, imagesY, 'bluePlayer').setOrigin(0.5, 0.5);
         this.orbImage = this.add.sprite(centerX + (50 + idleWeaponDistance), imagesY, 'orb').setOrigin(0.5, 0.5);
         this.corruptOrbImage = this.add.sprite(3*screenWidth/4 + 20, imagesY, 'corruptOrb').setOrigin(0.5, 0.5);
-        this.blueEnemy = this.add.sprite(screenWidth - 50, imagesY, 'blueObstacle').setOrigin(0.5, 0.5).setScale(0.25);
+        this.blueEnemy = this.add.sprite(screenWidth - 50, imagesY, 'blueChaser').setOrigin(0.5, 0.5);
 
         // Text
         this.instructionText = this.add.text(centerX, centerY - 2*textSpacer, 'WASD to move', instructionsConfig).setOrigin(0.5, 0.5);
@@ -52,7 +55,7 @@ class Instructions extends Phaser.Scene {
         instructionsConfig.color = '#0000FF';
         this.add.text(screenWidth - 300, 60, 'Blue State', instructionsConfig).setOrigin(0.5, 0.5);
         // White bottom
-        instructionsConfig.color = '#FFFFFF';
+        instructionsConfig.color = '#000000';
         instructionsConfig.fontSize = '40px';
         this.add.text(centerX, screenHeight - 80, 'Press I to return to menu, ESC or ENTER to pause during play, M to toggle mute, K to reset', instructionsConfig).setOrigin(0.5, 0.5);
 
@@ -61,6 +64,7 @@ class Instructions extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyInstructions)) {
             this.scene.stop('instructionsScene');
+            this.scene.run('menuScene');
         }
     }
 }

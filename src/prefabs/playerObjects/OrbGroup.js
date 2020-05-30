@@ -21,8 +21,8 @@ class OrbGroup extends Phaser.GameObjects.Group {
                 if(orb.shooting){
                     enemy.orbDamageInvuln = true;
                     if(orb.corrupted) {
-                        pStats.orbCorruptedDamage += orb.damage;
                         game.scene.keys.hudScene.checkHealProgress(orb.damage);
+                        pStats.orbCorruptedDamage += orb.damage;
                     }
                     enemy.takeDamage(orb.damage);
                     if(enemy.health <= 0) {

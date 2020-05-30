@@ -140,11 +140,11 @@ var switchEffectsDuration = 500;
 var switchScreenShake = 0.002;
 
 var isInvuln = false; // invulnerability state after taking damage
-var invulnDuration = 2000;
+var invulnDuration = 1000;
 
 var pMaxHealth = 5;
 var pCurrHealth = pMaxHealth;
-var healBenchmark = 40;
+var healBenchmark = 50;
 var healedHeartScale = 1.5;
 
 // Player corruption

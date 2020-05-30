@@ -35,16 +35,23 @@ class Tutorial extends Phaser.Scene {
         corruptionParticles = this.add.particles('corruptionParticle');
         corruptionParticles.setDepth(500);
 
-        this.map = this.make.tilemap({key: "arenaTilemap"});
+        this.map = this.make.tilemap({key: "arenaTilemap", tileWidth: 32, tileHeight: 32 });
 
         // Define tiles used in map.
         const tileset = this.map.addTilesetImage("fornow5",  "tiles", 32, 32,);
 
         // The map layers.
         
-        this.floorLayer = this.map.createStaticLayer("Background",        tileset);
-        this.sceneryLayer = this.map.createStaticLayer("Scenery",        tileset);
-        this.wallsLayer = this.map.createStaticLayer("Walls",        tileset);
+        this.floorLayer = this.map.createStaticLayer("Background", tileset);
+        this.sceneryLayer = this.map.createStaticLayer("Scenery", tileset);
+        this.wallsLayer = this.map.createStaticLayer("Walls", tileset);
+
+        // this.floorLayer.setPipeline('Light2D')
+        // this.sceneryLayer.setPipeline('Light2D')
+        // this.wallsLayer.setPipeline('Light2D')
+        // this.light = this.lights.addLight(centerX, centerY, 200)
+        // this.lights.enable().setAmbientColor(0x888888);
+        // this.lights.addLight(centerX, centerY, 500).setColor(0xFFFFFF)
 
         this.physics.world.bounds.setTo(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.wallsLayer.setCollisionByProperty({collides: true});
@@ -189,7 +196,8 @@ class Tutorial extends Phaser.Scene {
 
         // Remove tutorial items and start infinite enemy spawner
         this.startSpawning = this.input.keyboard.on('keydown-N', function () {
-            if(!this.scene.spawnedEnemies) {
+            console.log(this.spawnedEnemies);
+            if(!this.spawnedEnemies) {
                 inTutorial = false;
                 this.spawnedEnemies = true;
                 this.tutorialText.destroy();

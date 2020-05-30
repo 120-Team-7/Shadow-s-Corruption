@@ -314,30 +314,33 @@ class HUD extends Phaser.Scene {
 
         // this.testText.setText('x: ' + Math.round(player.scene.cameras.main.worldView.x) + " y: " + Math.round(player.scene.cameras.main.worldView.y));
         // this.testText1.setText('x: ' + Math.round(pointer.worldX) + " y: " + Math.round(pointer.worldY));
-        // this.testText2.setText('pHealth: ' + pCurrHealth);
+        // this.testText2.setText('knife: ' + pStats.knifeCorruptedDamage + ' orb: ' + pStats.orbCorruptedDamage);
 
     }
 
     displayHealProgress() {
         this.currHealProgress = (pStats.knifeCorruptedDamage + pStats.orbCorruptedDamage) % healBenchmark;
+        
         this.cooldownBoxIncrease = healWidth*(this.currHealProgress / healBenchmark);
-        this.healProgress.setSize(this.cooldownBoxIncrease, healWidth);
+        this.healProgress.setSize(this.cooldownBoxIncrease, healHeight);
     }
 
     checkHealProgress(damage) {
         this.lastHealProgress = (pStats.knifeCorruptedDamage + pStats.orbCorruptedDamage) % healBenchmark;
-        if(this.lastHealProgress + damage > healBenchmark) {
+        console.log(this.lastHealProgress + damage);
+        if(this.lastHealProgress + damage >= healBenchmark) {
             player.playerHeal(1);
-            if(pCurrHealth == 2) {
+            this.gainedHeart = pCurrHealth;
+            if(this.gainedHeart == 2) {
                 this.heart2.setScale(healedHeartScale, healedHeartScale);
             }
-            if(pCurrHealth == 3) {
+            if(this.gainedHeart == 3) {
                 this.heart3.setScale(healedHeartScale, healedHeartScale);
             }
-            if(pCurrHealth == 4) {
+            if(this.gainedHeart == 4) {
                 this.heart4.setScale(healedHeartScale, healedHeartScale);
             }
-            if(pCurrHealth == 5) {
+            if(this.gainedHeart == 5) {
                 this.heart5.setScale(healedHeartScale, healedHeartScale);
             }
             this.healthGainVisual = this.time.delayedCall(1000, function () {

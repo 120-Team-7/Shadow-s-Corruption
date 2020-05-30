@@ -38,8 +38,8 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                 }
                 if(knife.shooting) {
                     if(knife.corrupted) {
-                        pStats.knifeCorruptedDamage += knife.damage;
                         game.scene.keys.hudScene.checkHealProgress(knife.damage);
+                        pStats.knifeCorruptedDamage += knife.damage;
                     } else {
                         knife.damage = knifeThrowDamage;
                     }

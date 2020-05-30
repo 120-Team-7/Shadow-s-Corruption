@@ -11,7 +11,7 @@ class Menu extends Phaser.Scene {
         let menuConfig = {
             fontFamily: 'Courier',
             fontSize: '100px',
-            color: '#C0C0C0',
+            color: '#8B008B',
             stroke: '#000000',
             strokeThickness: 10,
             align: 'center',
@@ -31,6 +31,7 @@ class Menu extends Phaser.Scene {
         let scene = this;
 
         this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.3);
+        this.title = this.add.sprite(centerX, 20, 'title').setOrigin(0.5, 0);
         this.shadowBackground = this.add.sprite(0, 0, 'shadowBackground').setOrigin(0, 0).setAlpha(0).setDepth(10000);
 
         // Add menu screen text
@@ -38,8 +39,8 @@ class Menu extends Phaser.Scene {
         menuConfig.fontSize = '35px';
         this.add.text(centerX, centerY, 'Press I for controls', menuConfig).setOrigin(0.5, 0.5);
         this.difficultyText = this.add.text(centerX, centerY + textSpacer, 'Press DOWN ARROW for EASY, Press UP ARROW for NORMAL', menuConfig).setOrigin(0.5, 0.5);
-        this.tutorialSelect = this.add.text(centerX, centerY + 2*textSpacer, 'Press 1 for tutorial', menuConfig).setOrigin(0.5, 0.5);
-        this.playSelect = this.add.text(centerX, centerY + 3*textSpacer, 'Press 2 for test', menuConfig).setOrigin(0.5, 0.5);
+        this.tutorialSelect = this.add.text(centerX, centerY + 2*textSpacer, 'Tutorial: press 1', menuConfig).setOrigin(0.5, 0.5);
+        this.playSelect = this.add.text(centerX, centerY + 3*textSpacer, 'Play: press 2', menuConfig).setOrigin(0.5, 0.5);
         this.startText = this.add.text(centerX, centerY + 4*textSpacer, 'Press ENTER to start selected', menuConfig).setOrigin(0.5, 0.5);
 
         this.input.keyboard.on('keydown-UP', function () {
@@ -58,8 +59,8 @@ class Menu extends Phaser.Scene {
                 if(currScene != 'tutorialScene') {
                     nextScene = 'tutorialScene';
                 }
-                this.tutorialSelect.setText('Press 1 for [tutorial]');
-                this.playSelect.setText('Press 2 for test');
+                this.tutorialSelect.setText('[Tutorial]: press 1');
+                this.playSelect.setText('Play: press 2');
             }
         }, this);
 
@@ -68,8 +69,8 @@ class Menu extends Phaser.Scene {
                 if(currScene != 'playScene') {
                     nextScene = 'playScene';
                 }
-                this.tutorialSelect.setText('Press 1 for tutorial');
-                this.playSelect.setText('Press 2 for [test]');
+                this.tutorialSelect.setText('Tutorial: press 1');
+                this.playSelect.setText('[Play]: press 2');
             }
         }, this);
 
@@ -79,6 +80,7 @@ class Menu extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.keyInstructions)) {
             this.scene.run('instructionsScene');
+            this.scene.pause('menuScene');
             this.scene.bringToTop('instructionsScene');
         }
 

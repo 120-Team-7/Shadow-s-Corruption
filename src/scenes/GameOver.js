@@ -11,9 +11,9 @@ class GameOver extends Phaser.Scene {
         let gameOverConfig = {
             fontFamily: 'Courier',
             fontSize: '40px',
-            color: '#FFFFFF',
-            // strokeThickness: 5,
-            // stroke: '#4682B4',
+            color: '#8B008B',
+            strokeThickness: 10,
+            stroke: '#000000',
             align: 'center',
             padding: {
                 top: 10,
