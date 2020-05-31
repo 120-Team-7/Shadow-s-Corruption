@@ -22,7 +22,7 @@ class HUD extends Phaser.Scene {
         this.corruptionSize = '40px';
 
         // HUD ---------------------------------------------------------------------------------
-
+        this.highlightBox = this.add.rectangle(0, 0, 0, 0, orchid).setOrigin(0, 0).setAlpha(0);
         this.borderBox1 = this.add.rectangle(0, screenHeight - 72, 140, 72, black).setOrigin(0, 0).setAlpha(0.8);
 
         this.corruptionCooldownBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(1);
@@ -81,6 +81,7 @@ class HUD extends Phaser.Scene {
         this.testText1 = this.add.text(centerX, 50, '', hudConfig).setOrigin(0.5, 0);
         this.testText2 = this.add.text(centerX, 100, '', hudConfig).setOrigin(0.5, 0);
 
+        this.highlightBox = this.add.rectangle(screenWidth, screenHeight, 0, 0, orchid).setOrigin(0.5, 0.5).setAlpha(0);
 
         this.cameras.main.fadeIn(1000, 0, 0, 0);
 
@@ -351,5 +352,26 @@ class HUD extends Phaser.Scene {
                 this.heart5.setScale(1, 1);
             }, null, this);
         }
+    }
+
+    highlightHudElement(elementX, elementY, elementWidth, elementHeight, holdDuration) {
+        this.highlightBox.setActive(true);
+        this.elementHiglight = this.tweens.add({
+            targets: this.highlightBox,
+            x: { from: 0, to: elementX},
+            y: { from: 0, to: elementY},
+            width: { from: screenWidth, to: elementWidth},
+            height: { from: screenHeight, to: elementHeight},
+            alpha: { from: 0, to: 0.25},
+            ease: 'Quart.easeOut',
+            duration: 2000,
+            hold: holdDuration,
+            yoyo: true,
+            onComplete: function() {
+                this.highlightBox.setActive(false);
+                this.highlightBox.setAlpha(0);
+            },
+            onCompleteScope: this
+        });
     }
 }

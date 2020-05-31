@@ -40,7 +40,7 @@ class Menu extends Phaser.Scene {
         // this.add.text(centerX, 50, "Shadow's Corruption", menuConfig).setOrigin(0.5, 0.5);
         menuConfig.fontSize = '35px';
         this.add.text(centerX, centerY, 'Press I for controls', menuConfig).setOrigin(0.5, 0.5);
-        this.difficultyText = this.add.text(centerX, centerY + textSpacer, 'Press DOWN ARROW for EASY, Press UP ARROW for NORMAL', menuConfig).setOrigin(0.5, 0.5);
+        this.difficultyText = this.add.text(centerX, centerY + textSpacer, 'Press E for EASY, Press N for NORMAL', menuConfig).setOrigin(0.5, 0.5);
         this.tutorialSelect = this.add.text(centerX, centerY + 2*textSpacer, 'Tutorial: press 1', menuConfig).setOrigin(0.5, 0.5);
         this.playSelect = this.add.text(centerX, centerY + 3*textSpacer, 'Play: press 2', menuConfig).setOrigin(0.5, 0.5);
         this.arenaSelect = this.add.text(centerX, centerY + 4*textSpacer, 'Arena: press 3', menuConfig).setOrigin(0.5, 0.5);

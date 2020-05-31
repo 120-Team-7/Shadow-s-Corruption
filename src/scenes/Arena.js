@@ -167,7 +167,8 @@ class Arena extends Phaser.Scene {
                     this.scene.bDummy3 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, true, 1, 0);
                 }
                 if(this.scene.tutorialNum == 8) {
-                    this.scene.tutorialText.setText("CORRUPTION enables you to quickly and frequently deal massive damage. The bottom middle HUD element shows your corruption level. (Y)");
+                    game.scene.keys.hudScene.highlightHudElement(centerX - 220, screenHeight - 80, 440, 200, 5000);
+                    this.scene.tutorialText.setText("CORRUPTION enables you to quickly and frequently deal massive damage. (Y)");
                 }
                 if(this.scene.tutorialNum == 9) {
                     this.scene.tutorialText.setText("Gain CORRUPTION by damaging with the RED KNIFE, blocking with the BLUE ORB, or blocking projectiles with an IDLE weapon. (Y)");
@@ -176,10 +177,10 @@ class Arena extends Phaser.Scene {
                     this.scene.tutorialText.setText("Once you have some CORRUPTION, press SHIFT to ACTIVATE it and empower your NEXT ATTACK. (Y)");
                 }
                 if(this.scene.tutorialNum == 13) {
-                    this.scene.tutorialText.setText("CORRUPTION decays while not ACTIVATED. While ACTIVATED, use the CORRUPT weapon before it EXPIRES. (Y)");
+                    this.scene.tutorialText.setText("CORRUPTION decays while not ACTIVATED. Gain a speed boost while ACTIVATED and attack before your CORRUPTION EXPIRES. (Y)");
                 }
                 if(this.scene.tutorialNum == 14) {
-                    this.scene.tutorialText.setText("Enemies can also SHIFT their own color state so kill them quickly with powerful CORRUPTION attacks! (Y)");
+                    this.scene.tutorialText.setText("Enemies can also SHIFT their own color state so kill them quickly with well-placed CORRUPTION attacks! (Y)");
                 }
                 if(this.scene.tutorialNum == 15) {
                     this.scene.tutorialText.setText("To end the tutorial and start infinite enemy spawners, press (N)");

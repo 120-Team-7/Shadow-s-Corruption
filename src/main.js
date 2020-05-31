@@ -141,7 +141,7 @@ var playerState = 0; // 0 = red, 1 = blue
 var switchOnCooldown = false;
 var switchCooldown = 800;
 var switchEffectsDuration = 500;
-var switchScreenShake = 0.002;
+var switchScreenShake = 0.003;
 
 var isInvuln = false; // invulnerability state after taking damage
 var invulnDuration = 1000;
@@ -161,7 +161,7 @@ var maxCorruption = 5;
 var corruptionDecayDelay = 1000;
 var corruptionExpireDelay = 3000;
 var blockCorruptionGain = 3;
-var corruptionScreenShake = 0.002;
+var corruptionScreenShake = 0.003;
 
 var deathFadeDuration = 1000;
 var deathFadeDelay = 2000;
