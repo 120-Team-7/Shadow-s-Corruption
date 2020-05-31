@@ -70,7 +70,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.damageTextConfig = {
             fontFamily: 'Courier',
             fontSize: '32px',
-            // color: '#000000',
             align: 'center',
             stroke: '#8B008B',
             strokeThickness: enemyStrokeThickness,

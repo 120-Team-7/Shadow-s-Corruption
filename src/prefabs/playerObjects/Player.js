@@ -10,6 +10,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         var hudScene = game.scene.keys.hudScene;
 
+        this.canUseCorruption = true;
+
         this.currentRoom = 1;
         this.previousRoom = null;
         this.roomChange = false;
@@ -267,7 +269,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     idleWeaponExists = false;                    
                 }
                 // Start corruption shot window
-                if(corruption != 0 && !usingCorruption) {
+                if(this.canUseCorruption && corruption != 0 && !usingCorruption) {
                     // Increase player speed 
                     this.body.setMaxVelocity(playerCorruptMaxVelocity, playerCorruptMaxVelocity);
                     this.playerAccel = playerCorruptAccel;

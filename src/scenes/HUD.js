@@ -40,7 +40,7 @@ class HUD extends Phaser.Scene {
         this.switchCooldownBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(cooldownAlpha);
         this.switchBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(boxAlpha);
 
-        this.healthText = this.add.text(screenWidth - 5, screenHeight - 45, '', hudConfig).setOrigin(1, 0);
+        // this.healthText = this.add.text(screenWidth - 5, screenHeight - 45, '', hudConfig).setOrigin(1, 0);
 
         hudConfig.fontSize = '30px';
         this.knifeCooldownText = this.add.text(weaponCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
@@ -81,7 +81,7 @@ class HUD extends Phaser.Scene {
         this.testText1 = this.add.text(centerX, 50, '', hudConfig).setOrigin(0.5, 0);
         this.testText2 = this.add.text(centerX, 100, '', hudConfig).setOrigin(0.5, 0);
 
-        this.highlightBox = this.add.rectangle(screenWidth, screenHeight, 0, 0, orchid).setOrigin(0.5, 0.5).setAlpha(0);
+        this.highlightBox = this.add.rectangle(screenWidth, screenHeight, 0, 0, orange).setOrigin(0.5, 0.5).setAlpha(0);
 
         this.cameras.main.fadeIn(1000, 0, 0, 0);
 
@@ -171,7 +171,28 @@ class HUD extends Phaser.Scene {
 
     update() {
         this.displayHealProgress();
-        if(corruption == 0) {
+        if(player.canUseCorruption) {
+            this.corruption1.setVisible(true);
+            this.corruption2.setVisible(true);
+            this.corruption3.setVisible(true);
+            this.corruption4.setVisible(true);
+            this.corruption5.setVisible(true);
+            this.corruptionBox.setVisible(true);
+            this.corruptionCooldownBox.setVisible(true);
+            this.healBox.setVisible(true);
+            this.healProgress.setVisible(true);
+        } else {
+            this.corruption1.setVisible(false);
+            this.corruption2.setVisible(false);
+            this.corruption3.setVisible(false);
+            this.corruption4.setVisible(false);
+            this.corruption5.setVisible(false);
+            this.corruptionBox.setVisible(false);
+            this.corruptionCooldownBox.setVisible(false);
+            this.healBox.setVisible(false);
+            this.healProgress.setVisible(false);
+        }
+        if(player.canUseCorruption && corruption == 0) {
             this.corruption1.setAlpha(corruptionLevelAlpha);
             this.corruption2.setAlpha(corruptionLevelAlpha);
             this.corruption3.setAlpha(corruptionLevelAlpha);
@@ -362,7 +383,7 @@ class HUD extends Phaser.Scene {
             y: { from: 0, to: elementY},
             width: { from: screenWidth, to: elementWidth},
             height: { from: screenHeight, to: elementHeight},
-            alpha: { from: 0, to: 0.25},
+            alpha: { from: 0, to: 0.4},
             ease: 'Quart.easeOut',
             duration: 2000,
             hold: holdDuration,

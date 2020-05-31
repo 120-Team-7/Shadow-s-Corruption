@@ -85,6 +85,7 @@ var playerPurple = 0xFF00FF;
 var orchid = 0xDA70D6;
 var darkMagenta = 0x8B008B;
 var gray = 0x808080;
+var orange = 0xFFA500;
 
 // Text settings
 var strokeThickness = 6;
@@ -221,8 +222,8 @@ var enemyDestroyDelay = 1000;
 // Chaser enemy config
 var chaserConfig = {
     spawnPause: 0,
-    accel: 600,
-    maxVel: 290,
+    accel: 400,
+    maxVel: 250,
     moveDelay: 100,
     slowdownDelay: 1000,
     turnAroundMult: 1.5,
@@ -236,8 +237,8 @@ var chaserConfig = {
 // Shooter enemy config
 var shooterConfig = {
     spawnPause: 0,
-    accel: 300,
-    maxVel: 150,
+    accel: 200,
+    maxVel: 100,
     moveDelay: 200,
     slowdownDelay: 1000,
     closeDistance: 500,
@@ -248,7 +249,7 @@ var shooterConfig = {
     health: 10,
     damage: 1,
     bulletSpeed: 400,
-    rof: 2000,
+    rof: 3000,
     shotPredictMult: 1,
     targetLaserLength: 200,
 }

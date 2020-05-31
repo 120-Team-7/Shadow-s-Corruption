@@ -128,6 +128,8 @@ class Arena extends Phaser.Scene {
         inTutorial = true;
 
         this.input.keyboard.on('keydown-Y', function () {
+            game.scene.keys.hudScene.highlightHudElement(0, screenHeight - 80, 150, 80, 5000);
+
             if(!this.scene.spawnedEnemies) {
                 inTutorial = true;
                 this.scene.tutorialNum++; 
@@ -187,12 +189,12 @@ class Arena extends Phaser.Scene {
             if(!this.spawnedEnemies) {
                 this.enemyCount = 0;
                 playConfig.backgroundColor = null;
-                // this.timeElapsed = this.add.text(centerX + 200, 32, 'Time: 0', playConfig).setOrigin(0.5, 0);
+                this.timeElapsed = this.add.text(centerX + 200, 32, 'Time: 0', playConfig).setOrigin(0.5, 0);
                 this.arenaClock = this.time.addEvent({
                     delay: 1000, 
                     callback: () => {
                         this.currTime ++;
-                        // this.timeElapsed.setText("Time: " + this.currTime);
+                        this.timeElapsed.setText("Time: " + this.currTime);
                     }, 
                     callbackContext: this,
                     loop: true,
@@ -258,9 +260,9 @@ class Arena extends Phaser.Scene {
                         this.portalSpawn.play();
                         
                         this.randSpawnEnemies();
-                        // if(this.currTime >= 18*infiniteSpawnerDelay/1000) {
-                        //     this.randSpawnEnemies();
-                        // }
+                        if(this.currTime >= 18*infiniteSpawnerDelay/1000) {
+                            this.randSpawnEnemies();
+                        }
                     },
                     callbackContext: this,
                     loop: true,
@@ -274,9 +276,9 @@ class Arena extends Phaser.Scene {
     }
 
     update() {
-        // if(this.spawnedEnemies) {
-        //     this.killCount.setText("Kills: " + pStats.enemiesKilled);
-        // }
+        if(this.spawnedEnemies) {
+            this.killCount.setText("Kills: " + pStats.enemiesKilled);
+        }
         pointer = this.input.activePointer;
         player.update();
         this.knifeGroup.update();
@@ -302,7 +304,9 @@ class Arena extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
             if(!isGameOver) {
-                this.arenaClock.paused = true;
+                if(this.spawnedEnemies) {
+                    this.arenaClock.paused = true;
+                }
                 isPaused = true;
                 this.scene.pause(currScene);
                 this.scene.pause('hudScene');

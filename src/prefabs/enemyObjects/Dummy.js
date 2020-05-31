@@ -76,7 +76,6 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         this.damageTextConfig = {
             fontFamily: 'Courier',
             fontSize: '32px',
-            color: '#FF00FF',
             align: 'center',
             stroke: '#8B008B',
             strokeThickness: enemyStrokeThickness,
@@ -216,7 +215,7 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    takeDamage(damage){
+    takeDamage(damage, isCorrupt){
         this.health -= damage;
         this.healthText.setText(this.health + "/" + this.maxHealth);
 
@@ -229,6 +228,15 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         this.damageTextTimer = this.scene.time.delayedCall(50, () => {
             this.damageText.setAlpha(1);
         }, null, this.scene);
+        if(player.canUseCorruption && isCorrupt) {
+            this.damageText.setFill('#8B008B');
+            this.damageText.setStroke('#FF00FF', 3);
+            this.damageText.setFontSize(38);
+        } else {
+            this.damageText.setFill('#000000');
+            this.damageText.setStroke('#8B008B', 3);
+            this.damageText.setFontSize(28);
+        }
         this.damageText.setText(damage);
         this.damageTextDisappearing = true;
         this.damageTextTimer = this.scene.time.delayedCall(1000, () => {
