@@ -11,6 +11,7 @@ class Arena extends Phaser.Scene {
         this.sceneKey = 'arenaScene';
         currScene = this.sceneKey;
         this.spawnedEnemies = false;
+        this.currTime = 0;
 
         this.physics.world.debugGraphic.setAlpha(0);
 
@@ -64,15 +65,7 @@ class Arena extends Phaser.Scene {
         // this.lights.enable().setAmbientColor(0x888888);
         // this.lights.addLight(centerX, centerY, 500).setColor(0xFFFFFF)
 
-        this.physics.world.bounds.setTo(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        // this.wallsLayer.active = false;
-        
-        // this.redWallLayer.setCollisionByProperty({collides: true});
-
-
-
-        // this.redWallLayer.active = false;
-        // console.log(this.redWallLayer.state);
+        this.physics.world.bounds.setTo(0, 0, this.map.widthInPixels, this.map.heightInPixels);  
 
         this.rooms = [];
         //this.currentRoom = 1;
@@ -192,8 +185,20 @@ class Arena extends Phaser.Scene {
         // Remove tutorial items and start infinite enemy spawner
         this.startSpawning = this.input.keyboard.on('keydown-N', function () {
             if(!this.spawnedEnemies) {
+                this.enemyCount = 0;
                 playConfig.backgroundColor = null;
-                this.killCount = this.add.text(centerX, 32, '', playConfig).setOrigin(0.5, 0);
+                // this.timeElapsed = this.add.text(centerX + 200, 32, 'Time: 0', playConfig).setOrigin(0.5, 0);
+                this.arenaClock = this.time.addEvent({
+                    delay: 1000, 
+                    callback: () => {
+                        this.currTime ++;
+                        // this.timeElapsed.setText("Time: " + this.currTime);
+                    }, 
+                    callbackContext: this,
+                    loop: true,
+                });
+                this.killCount = this.add.text(centerX - 200, 32, '', playConfig).setOrigin(0.5, 0);
+
                 inTutorial = false;
                 this.spawnedEnemies = true;
                 this.tutorialText.destroy();
@@ -251,19 +256,27 @@ class Arena extends Phaser.Scene {
                     delay: infiniteSpawnerDelay,
                     callback: () => {
                         this.portalSpawn.play();
+                        
                         this.randSpawnEnemies();
+                        // if(this.currTime >= 18*infiniteSpawnerDelay/1000) {
+                        //     this.randSpawnEnemies();
+                        // }
                     },
                     callbackContext: this,
                     loop: true,
                 });
             }
         }, this);
+
+        this.input.keyboard.on('keydown-ZERO', function () {
+            this.currTime = 180;
+        }, this);
     }
 
     update() {
-        if(this.spawnedEnemies) {
-            this.killCount.setText("Kills: " + pStats.enemiesKilled);
-        }
+        // if(this.spawnedEnemies) {
+        //     this.killCount.setText("Kills: " + pStats.enemiesKilled);
+        // }
         pointer = this.input.activePointer;
         player.update();
         this.knifeGroup.update();
@@ -289,6 +302,7 @@ class Arena extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
             if(!isGameOver) {
+                this.arenaClock.paused = true;
                 isPaused = true;
                 this.scene.pause(currScene);
                 this.scene.pause('hudScene');
@@ -297,6 +311,9 @@ class Arena extends Phaser.Scene {
                 this.scene.run('menuScene');
                 this.scene.setVisible(true, 'menuScene');
             }
+        }
+        if(!isPaused && this.spawnedEnemies) {
+            this.arenaClock.paused = false;
         }
     }
 
@@ -334,38 +351,64 @@ class Arena extends Phaser.Scene {
             this.randSpawnX = lX;
         }
 
-        if(randNum4 == 0){
-            if(randChange1 == 1) {
-                // EnemyColorGroup.addShooter(spawnX, spawnY, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
-                this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-            } else if(randChange1 == 2){
-                this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-            } else if(randChange1 == 3) { 
-                this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-            }
-        } else {
-            if(randChange1 == 1) {
-                this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-            } else if(randChange1 == 2){
-                this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-            } else if(randChange1 == 3) { 
-                this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+        if(this.currTime >= 18*infiniteSpawnerDelay/1000){
+            arenaMaxEnemies = 8;
+        } else if(this.currTime >= 12*infiniteSpawnerDelay/1000){
+            arenaMaxEnemies = 6;
+        } else if(this.currTime >= 6*infiniteSpawnerDelay/1000){
+            arenaMaxEnemies = 4;
+        } else if(this.currTime >= 3*infiniteSpawnerDelay/1000){
+            arenaMaxEnemies = 3;
+        } else if(this.currTime >= 1*infiniteSpawnerDelay/1000){
+            arenaMaxEnemies = 2;
+        }
+
+        if(this.currTime >= 5*infiniteSpawnerDelay/1000) {
+            if(this.enemyCount - pStats.enemiesKilled < arenaMaxEnemies) {
+                this.enemyCount++;
+                if(randNum4 == 0){
+                    if(randChange1 == 1) {
+                        // EnemyColorGroup.addShooter(spawnX, spawnY, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
+                        this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+                    } else if(randChange1 == 2){
+                        this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+                    } else if(randChange1 == 3) { 
+                        this.redEnemyGroup.addShooter(this.randSpawnX, cenY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+                    }
+                } else {
+                    if(randChange1 == 1) {
+                        this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'timer', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+                    } else if(randChange1 == 2){
+                        this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+                    } else if(randChange1 == 3) { 
+                        this.blueEnemyGroup.addShooter(this.randSpawnX, cenY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+                    }
+                }
             }
         }
-        if(randChange2 == 1) {
-            // EnemyColorGroup.addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
-            this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange2 == 2) {
-            this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange2 == 3) {
-            this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+        
+        if(this.enemyCount  - pStats.enemiesKilled < arenaMaxEnemies) {
+            this.enemyCount++;
+            if(randChange2 == 1) {
+                // EnemyColorGroup.addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
+                this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+            } else if(randChange2 == 2) {
+                this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
+            } else if(randChange2 == 3) {
+                this.redEnemyGroup.addChaser(this.rSpawnX, this.rSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+            }
         }
-        if(randChange3 == 1) {
-            this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange3 == 2) {
-            this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
-        } else if(randChange3 == 3) {
-            this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+        if(this.currTime >= 2*infiniteSpawnerDelay/1000) {
+            if(this.enemyCount  - pStats.enemiesKilled < arenaMaxEnemies) {
+                this.enemyCount++;
+                if(randChange3 == 1) {
+                    this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+                } else if(randChange3 == 2) {
+                    this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
+                } else if(randChange3 == 3) {
+                    this.blueEnemyGroup.addChaser(this.bSpawnX, this.bSpawnY, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+                }
+            }
         }
     }
 }

@@ -43,7 +43,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     } else {
                         knife.damage = knifeThrowDamage;
                     }
-                    enemy.takeDamage(knife.damage);
+                    enemy.takeDamage(knife.damage, knife.corrupted);
                     increaseCorruption(knife.damage);
                 }
                 // Corruption handling: increase corruption, check if gaining
@@ -73,7 +73,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                         pStats.knifeCorruptedDamage += knife.damage;
                         enemy.scene.cameras.main.shake(500, corruptionScreenShake);
                     }
-                    enemy.takeDamage(knife.damage);
+                    enemy.takeDamage(knife.damage, knife.corrupted);
                     increaseCorruption(knife.damage);
 
                     idleWeaponExists = false;

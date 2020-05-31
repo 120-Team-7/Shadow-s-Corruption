@@ -88,7 +88,7 @@ var gray = 0x808080;
 
 // Text settings
 var strokeThickness = 6;
-var enemyStrokeThickness = 3;
+var enemyStrokeThickness = 2;
 
 // Audio
 var globalVolume = 1;
@@ -141,7 +141,7 @@ var playerState = 0; // 0 = red, 1 = blue
 var switchOnCooldown = false;
 var switchCooldown = 800;
 var switchEffectsDuration = 500;
-var switchScreenShake = 0.003;
+var switchScreenShake = 0.002;
 
 var isInvuln = false; // invulnerability state after taking damage
 var invulnDuration = 1000;
@@ -161,7 +161,7 @@ var maxCorruption = 5;
 var corruptionDecayDelay = 1000;
 var corruptionExpireDelay = 3000;
 var blockCorruptionGain = 3;
-var corruptionScreenShake = 0.003;
+var corruptionScreenShake = 0.002;
 
 var deathFadeDuration = 1000;
 var deathFadeDelay = 2000;
@@ -204,9 +204,10 @@ var orbKnockbackVelocity = 250;     // Velocity magnitude of block knockback
 
 var orbMineDuration = 500;
 // Enemies ----------------------------------------------------------------------------------------------------
-var infiniteSpawnerDelay = 16000;
-var enemySwitchPause = 500;
+var infiniteSpawnerDelay = 15000;
+var enemySwitchPause = 1000;
 var enemyDrag = 500;
+var arenaMaxEnemies = 6;
 
 // Enemy switch conditions
 var timedSwitchDelay = 5000;
