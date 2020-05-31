@@ -47,6 +47,7 @@ class HUD extends Phaser.Scene {
         // hudConfig.color =  playerBlue;
         this.orbCooldownText = this.add.text(weaponCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
         this.switchCooldownText = this.add.text(switchCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
+
         hudConfig.fontSize = '40px';
 
         this.orbCDImage = this.add.sprite(weaponCooldownX + 32, weaponCooldownY + 32, 'orb').setOrigin(0.5, 0.5).setScale(0.4);
@@ -297,7 +298,7 @@ class HUD extends Phaser.Scene {
             this.orbCooldownBox.setAlpha(0);
             this.orbBox.setAlpha(0);
             this.orbCDImage.setAlpha(0);
-            this.knifeCooldownText.setAlpha(1);
+            this.knifeCooldownText.setAlpha(0);
             this.knifeCooldownBox.setAlpha(cooldownAlpha);
             this.knifeBox.setAlpha(boxAlpha);
             this.knifeCDImage.setAlpha(1);

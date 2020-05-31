@@ -97,7 +97,7 @@ var orbShootSound;
 
 // Particles;
 var corruptionParticles;
-var particleDestroy = 1000;
+var particleDestroy = 2000;
 var siphonPredictMult = 0.5;
 
 var enemyExplodeVel = 100;
@@ -204,7 +204,7 @@ var orbKnockbackVelocity = 250;     // Velocity magnitude of block knockback
 
 var orbMineDuration = 500;
 // Enemies ----------------------------------------------------------------------------------------------------
-var infiniteSpawnerDelay = 15000;
+var infiniteSpawnerDelay = 16000;
 var enemySwitchPause = 500;
 var enemyDrag = 500;
 

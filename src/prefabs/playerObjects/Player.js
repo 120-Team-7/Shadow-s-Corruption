@@ -108,11 +108,59 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         scene.shiftCircle = scene.add.ellipse(this.x, this.y, 2*screenWidth, 2*screenWidth);
         scene.shiftCircle.setAlpha(0);
+        scene.corruptCircle = scene.add.ellipse(this.x, this.y, 400, 400);
+        scene.corruptCircle.setFillStyle(darkMagenta);
+        scene.corruptCircle.setAlpha(0);
+
+        let outerRadius = 80;
+        let innerRadius = 40;
+        let cornerReduce = 1.25
+        this.outerRotation = 0.05;
+        this.innerRotation = 0.1;
+
+        this.corrupt1 = scene.add.sprite(outerRadius, 0, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt2 = scene.add.sprite(0, outerRadius, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt3 = scene.add.sprite(-outerRadius, 0, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt4 = scene.add.sprite(0, -outerRadius, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt5 = scene.add.sprite(innerRadius, innerRadius, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt6 = scene.add.sprite(-innerRadius, -innerRadius, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt7 = scene.add.sprite(-innerRadius, innerRadius, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt8 = scene.add.sprite(innerRadius, -innerRadius, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt9 = scene.add.sprite(-innerRadius, -innerRadius, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt10 = scene.add.sprite(innerRadius, -innerRadius, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt11 = scene.add.sprite(-innerRadius, innerRadius, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt12 = scene.add.sprite(innerRadius, innerRadius, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt13 = scene.add.sprite(0, -outerRadius/cornerReduce, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt14 = scene.add.sprite(-outerRadius/cornerReduce, 0, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt15 = scene.add.sprite(0, outerRadius/cornerReduce, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corrupt16 = scene.add.sprite(outerRadius/cornerReduce, 0, 'corruptionParticle').setOrigin(0.5, 0.5).setScale(1);
+        this.corruptContainer1 = scene.add.container(0, 0, [ this.corrupt1, this.corrupt2, this.corrupt3, this.corrupt4, this.corrupt5, this.corrupt6, this.corrupt7, this.corrupt8 ]);
+        this.corruptContainer2 = scene.add.container(0, 0, [ this.corrupt9, this.corrupt10, this.corrupt11, this.corrupt12, this.corrupt13, this.corrupt14, this.corrupt15, this.corrupt16 ]);
+        this.corruptContainer1.setSize(10, 10);
+        this.corruptContainer2.setSize(10, 10);
+
+        this.corrupt1.setAlpha(0);
+        this.corrupt2.setAlpha(0);
+        this.corrupt3.setAlpha(0);
+        this.corrupt4.setAlpha(0);
+        this.corrupt5.setAlpha(0);
+        this.corrupt6.setAlpha(0);
+        this.corrupt7.setAlpha(0);
+        this.corrupt8.setAlpha(0);
+        this.corrupt9.setAlpha(0);
+        this.corrupt10.setAlpha(0);
+        this.corrupt11.setAlpha(0);
+        this.corrupt12.setAlpha(0);
+        this.corrupt13.setAlpha(0);
+        this.corrupt14.setAlpha(0);
+        this.corrupt15.setAlpha(0);
+        this.corrupt16.setAlpha(0);
+
         this.shiftCircleShrink = this.scene.tweens.add({
             targets: scene.shiftCircle,
             paused: true,
             scale: { from: 0, to: 1},
-            alpha: { from: 0.05, to: 0},
+            alpha: { from: 0.2, to: 0},
             ease: 'Sine.easeIn',
             duration: switchEffectsDuration,
             onComplete: function() {
@@ -120,12 +168,55 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             },
             onCompleteScope: scene
         });
+
+        this.corruptCircleBloom = this.scene.tweens.add({
+            targets: scene.corruptCircle,
+            paused: true,
+            scale: { from: 0.5, to: 1},
+            alpha: { from: 1, to: 0},
+            ease: 'Quart.easeOut',
+            duration: 1000,
+            onComplete: function() {
+                // this.corruptCircle.setActive(false);
+            },
+            onCompleteScope: scene
+        });
+        this.corruptContainerFade = this.scene.tweens.add({
+            targets: [ this.corrupt1, this.corrupt2, this.corrupt3, this.corrupt4, this.corrupt5, this.corrupt6, this.corrupt7, this.corrupt8, this.corrupt9, this.corrupt10, this.corrupt11, this.corrupt12, this.corrupt13, this.corrupt14, this.corrupt15, this.corrupt16 ],
+            paused: true,
+            alpha: { from: 1, to: 0},
+            ease: 'Quart.easeOut',
+            duration: 500,
+            onComplete: function() {
+                if(!usingCorruption) {
+                    this.corrupt1.setAlpha(0);
+                    this.corrupt2.setAlpha(0);
+                    this.corrupt3.setAlpha(0);
+                    this.corrupt4.setAlpha(0);
+                    this.corrupt5.setAlpha(0);
+                    this.corrupt6.setAlpha(0);
+                    this.corrupt7.setAlpha(0);
+                    this.corrupt8.setAlpha(0);
+                    this.corrupt9.setAlpha(0);
+                    this.corrupt10.setAlpha(0);
+                    this.corrupt11.setAlpha(0);
+                    this.corrupt12.setAlpha(0);
+                    this.corrupt13.setAlpha(0);
+                    this.corrupt14.setAlpha(0);
+                    this.corrupt15.setAlpha(0);
+                    this.corrupt16.setAlpha(0);
+                }
+
+            },
+            onCompleteScope: this
+        });
     }
 
 
     update() {
         this.getRoom();
         this.scene.shiftCircle.setPosition(this.x, this.y);
+        this.scene.corruptCircle.setPosition(this.x, this.y);
         if(!isGameOver){
             // Player movement
             if(keyLeft.isDown || keyRight.isDown || keyUp.isDown || keyDown.isDown){
@@ -182,12 +273,32 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.playerAccel = playerCorruptAccel;
                     this.particleTrail.start();
 
+                    this.corrupt1.setAlpha(1);
+                    this.corrupt2.setAlpha(1);
+                    this.corrupt3.setAlpha(1);
+                    this.corrupt4.setAlpha(1);
+                    this.corrupt5.setAlpha(1);
+                    this.corrupt6.setAlpha(1);
+                    this.corrupt7.setAlpha(1);
+                    this.corrupt8.setAlpha(1);
+                    this.corrupt9.setAlpha(1);
+                    this.corrupt10.setAlpha(1);
+                    this.corrupt11.setAlpha(1);
+                    this.corrupt12.setAlpha(1);
+                    this.corrupt13.setAlpha(1);
+                    this.corrupt14.setAlpha(1);
+                    this.corrupt15.setAlpha(1);
+                    this.corrupt16.setAlpha(1);
+                    // this.scene.corruptCircle.setActive(true);
+                    // this.corruptCircleBloom.play();
+
                     usingCorruption = true;
                     this.scene.corruptionDecayTimer.paused = true;
                     this.corruptionExpiring = true;
                     // Start timer for corruption charges to expire after not being used
                     this.corruptionExpireTimer = this.scene.time.delayedCall(corruptionExpireDelay, function () {
                         this.corruptionExpiring = false;
+                        player.corruptContainerFade.play();
                         corruption = 0;
                         usingCorruption = false;
                         player.scene.corruptionDecayTimer.paused = false;
@@ -229,8 +340,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             this.emitCircle.setPosition(this.x, this.y);
 
-            this.playerX = player.x
-            this.playerY = player.y
+            this.playerX = player.x;
+            this.playerY = player.y;
 
 
             // Calculate angle to set on idleWeapon sprite (toward pointer)
@@ -276,6 +387,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
 
             this.displayCorruptionExpire();
+
+            this.corruptContainer1.rotation += this.outerRotation;
+            this.corruptContainer1.x = this.body.x + 15;
+            this.corruptContainer1.y = this.body.y + 20;
+            this.corruptContainer2.rotation -= this.innerRotation;
+            this.corruptContainer2.x = this.body.x + 15;
+            this.corruptContainer2.y = this.body.y + 20;
 
             // displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime)
             if(switchOnCooldown) {

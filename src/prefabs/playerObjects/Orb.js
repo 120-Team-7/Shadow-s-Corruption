@@ -69,13 +69,16 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
             this.shooting = true;
             this.shot = false;
             if(usingCorruption) {
+                player.corruptContainerFade.play();
+                // this.scene.corruptCircle.setActive(true);
+                player.corruptCircleBloom.play();
                 this.corrupted = true;
                 this.particleTrail = corruptionParticles.createEmitter({
                     emitZone: { source: this.emitCircle },
                     alpha: { start: 1, end: 0 },
-                    scale: { start: 0.5, end: 0 },
+                    scale: { start: 0.75, end: 0 },
                     speed: { min: 10, max: 60 },
-                    lifespan: { min: 500, max: 1000 },
+                    lifespan: { min: 1500, max: 2000 },
                     frequency: 100 - 20*corruption,
                     quantity: 1,
                     active: true,

@@ -16,15 +16,17 @@ class Arena extends Phaser.Scene {
 
         let playConfig = {
             fontFamily: 'Courier',
-            fontSize: '30px',
-            color: '#000000',
-            backgroundColor: '#FFFFFF',
+            fontSize: '40px',
+            color: '#8B008B',
+            stroke: '#000000',
+            strokeThickness: strokeThickness,
+            backgroundColor: '#555555',
             align: 'center',
             padding: {
                 top: 10,
                 bottom: 10,
-                left: 0,
-                right: 0,
+                left: 10,
+                right: 10,
             },
             fixedWidth: screenWidth,
             wordWrap: {
@@ -137,47 +139,41 @@ class Arena extends Phaser.Scene {
                 inTutorial = true;
                 this.scene.tutorialNum++; 
                 if(this.scene.tutorialNum == 1) {
-                    this.scene.tutorialText.setText("Press SHIFT to change your color state between RED and BLUE. (Y)");
+                    this.scene.tutorialText.setText("Press SHIFT to phase between the RED PHYSICAL REALM and BLUE SPIRIT REALM. (Y)");
                 }
                 if(this.scene.tutorialNum == 2) {
-                    this.scene.tutorialText.setText("When you are BLUE, RED objects cannot collide with you, but BLUE objects can collide with you.(Y)");
-                }
-                if(this.scene.tutorialNum == 3) {
                     this.scene.tutorialText.setText("RED collides with RED, BLUE collides with BLUE, and OPPOSITES pass through. Notice that SHIFTING has a cooldown. (Y)");
                 }
-                if(this.scene.tutorialNum == 4) {
+                if(this.scene.tutorialNum == 3) {
                     this.scene.tutorialText.setText("While your body is RED, you have the RED KNIFE equppied. Use the MOUSE to aim and use LEFT MOUSE BUTTON to rapidly shoot them. (Y)");
                 }
-                if(this.scene.tutorialNum == 5) {
-                    this.scene.tutorialText.setText("While you are not shooting, your weapon is in IDLE form. The IDLE KNIFE stuns and deals extra damage. (Y)");
+                if(this.scene.tutorialNum == 4) {
+                    this.scene.tutorialText.setText("While not shooting, your weapon is the IDLE form. The IDLE KNIFE stuns and deals extra damage. (Y)");
                     this.scene.rDummy1 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY + 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, false, 0, 0);
                     this.scene.rDummy2 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY - 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, false, 0, 0);
                 }
-                if(this.scene.tutorialNum == 6) {
+                if(this.scene.tutorialNum == 5) {
                     this.scene.tutorialText.setText("While your body is BLUE, you have the BLUE ORB equppied. After shooting, it accelerates and pierces enemies. (Y)");
                 }
-                if(this.scene.tutorialNum == 7) {
+                if(this.scene.tutorialNum == 6) {
                     this.scene.tutorialText.setText("The IDLE ORB knocksback and stuns enemies. (Y)");
                     this.scene.bDummy1 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY + 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, false, 0, 0);
                     this.scene.bDummy2 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY - 100, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, false, 0, 0);
                 }
-                if(this.scene.tutorialNum == 8) {
-                    this.scene.tutorialText.setText("Each IDLE weapon can also block and destroy enemy projectiles of the same color. (Y)");
+                if(this.scene.tutorialNum == 7) {
+                    this.scene.tutorialText.setText("Each IDLE weapon can also block enemy projectiles of the same color. (Y)");
                     // Replace dummies with shooting dummies
                     this.scene.rDummy3 = this.scene.redEnemyGroup.addDummy(centerX - 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, false, true, -1, 0);
                     this.scene.bDummy3 = this.scene.blueEnemyGroup.addDummy(centerX + 50, centerY, this.scene.redEnemyGroup, this.scene.blueEnemyGroup, this.scene.redEnemyBulletGroup, this.scene.blueEnemyBulletGroup, true, true, 1, 0);
                 }
+                if(this.scene.tutorialNum == 8) {
+                    this.scene.tutorialText.setText("CORRUPTION enables you to quickly and frequently deal massive damage. The bottom middle HUD element shows your corruption level. (Y)");
+                }
                 if(this.scene.tutorialNum == 9) {
-                    this.scene.tutorialText.setText("The RED KNIFE is good at offense and against single enemies. The BLUE ORB is good at defense and against multiple enemies. (Y)");
-                }
-                if(this.scene.tutorialNum == 10) {
-                    this.scene.tutorialText.setText("CORRUPTION enables you to quickly and frequently deal massive damage. The ESSENCES OF CORRUPTION indicate your corruption level. (Y)");
-                }
-                if(this.scene.tutorialNum == 11) {
-                    this.scene.tutorialText.setText("Gain CORRUPTION by dealing damage with the RED KNIFE, blocking enemies with the BLUE ORB, or blocking projectiles with an IDLE weapon. (Y)");
+                    this.scene.tutorialText.setText("Gain CORRUPTION by damaging with the RED KNIFE, blocking with the BLUE ORB, or blocking projectiles with an IDLE weapon. (Y)");
                 }
                 if(this.scene.tutorialNum == 12) {
-                    this.scene.tutorialText.setText("Once you have some CORRUPTION, SHIFT to ACTIVATE it and empower your NEXT ATTACK with additional damage based on your CORRUPTION. (Y)");
+                    this.scene.tutorialText.setText("Once you have some CORRUPTION, press SHIFT to ACTIVATE it and empower your NEXT ATTACK. (Y)");
                 }
                 if(this.scene.tutorialNum == 13) {
                     this.scene.tutorialText.setText("CORRUPTION decays while not ACTIVATED. While ACTIVATED, use the CORRUPT weapon before it EXPIRES. (Y)");
@@ -195,6 +191,8 @@ class Arena extends Phaser.Scene {
         // Remove tutorial items and start infinite enemy spawner
         this.startSpawning = this.input.keyboard.on('keydown-N', function () {
             if(!this.spawnedEnemies) {
+                playConfig.backgroundColor = null;
+                this.killCount = this.add.text(centerX, 32, '', playConfig).setOrigin(0.5, 0);
                 inTutorial = false;
                 this.spawnedEnemies = true;
                 this.tutorialText.destroy();
@@ -262,6 +260,9 @@ class Arena extends Phaser.Scene {
     }
 
     update() {
+        if(this.spawnedEnemies) {
+            this.killCount.setText("Kills: " + pStats.enemiesKilled);
+        }
         pointer = this.input.activePointer;
         player.update();
         this.knifeGroup.update();

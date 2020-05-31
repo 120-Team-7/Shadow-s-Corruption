@@ -77,9 +77,9 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         this.particleTrail = corruptionParticles.createEmitter({
             follow: this,
             alpha: { start: 1, end: 0 },
-            scale: { start: 0.5, end: 0 },
+            scale: { start: 0.75, end: 0 },
             speed: { min: 10, max: 60 },
-            lifespan: { min: 500, max: 1000 },
+            lifespan: { min: 1500, max: 2000 },
             frequency: 100 - 20*corruption,
             quantity: corruption,
             active: false,
@@ -100,6 +100,9 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             this.shot = false;
             this.shooting = true;
             if(this.corrupted) {
+                player.corruptContainerFade.play();
+                // this.scene.corruptCircle.setActive(true);
+                player.corruptCircleBloom.play();
                 this.particlesActive = true;
                 this.particleTrail.active = true;
                 this.damage = knifeThrowDamage + corruption;
@@ -124,7 +127,9 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             if(this.x < 0 || this.x > this.scene.map.widthInPixels || this.y < 0 || this.y > this.scene.map.heightInPixels) {
                 this.shooting = false;
                 if(this.corrupted) {
-                    // this.scene.particleTrail.stop();
+                    if(this.particlesActive) {
+                        this.particleTrail.stop();
+                    }
                     this.scene.time.delayedCall(particleDestroy, function () {
                         this.particleTrail.remove();
                         this.group.remove(this, true, true);

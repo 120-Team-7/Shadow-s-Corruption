@@ -66,6 +66,9 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     pStats.knifeStabbed++;
                     knife.damage = knifeMeleeDamage;
                     if(knife.corrupted) {
+                        player.corruptContainerFade.play();
+                        // this.scene.corruptCircle.setActive(true);
+                        player.corruptCircleBloom.play();
                         knife.damage += corruption;
                         pStats.knifeCorruptedDamage += knife.damage;
                         enemy.scene.cameras.main.shake(500, corruptionScreenShake);

@@ -46,15 +46,15 @@ class Menu extends Phaser.Scene {
         this.arenaSelect = this.add.text(centerX, centerY + 4*textSpacer, 'Arena: press 3', menuConfig).setOrigin(0.5, 0.5);
         this.startText = this.add.text(centerX, centerY + 5*textSpacer, 'Press ENTER to start selected', menuConfig).setOrigin(0.5, 0.5);
 
-        this.input.keyboard.on('keydown-UP', function () {
+        this.input.keyboard.on('keydown-N', function () {
             chaserConfig.health = 10;
             shooterConfig.health = 10;
-            scene.difficultyText.setText('Press DOWN ARROW for EASY, Press UP ARROW for [NORMAL]')
+            scene.difficultyText.setText('Press E for EASY, Press N for [NORMAL]')
         });
-        this.input.keyboard.on('keydown-DOWN', function () {
+        this.input.keyboard.on('keydown-E', function () {
             chaserConfig.health = 5;
             shooterConfig.health = 5;
-            scene.difficultyText.setText('Press DOWN ARROW for [EASY], Press UP ARROW for NORMAL')
+            scene.difficultyText.setText('Press E for [EASY], Press N for NORMAL')
         });
 
         this.input.keyboard.on('keydown-ONE', function () {
