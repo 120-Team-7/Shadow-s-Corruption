@@ -562,4 +562,26 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    sceneTransfer(destinationKey) {
+        if(idleWeaponExists) {
+            this.idleWeapon.destroy();
+        }
+        if(usingCorruption) {
+            this.corruptionExpireTimer.destroy();
+        }
+        // Effects
+        game.scene.keys.hudScene.cameras.main.fadeOut(deathFadeDuration, 0, 0, 0);
+
+        isGameOver = true;
+        this.setImmovable(true);
+        this.cleanUpTimer = this.scene.time.delayedCall(deathFadeDelay, function () {
+            this.gameOverTimer = this.scene.time.delayedCall(deathFadeDuration, function () {
+                player.particleTrail.remove();
+                this.scene.scene.stop(currScene);
+                this.scene.scene.stop('hudScene');
+                this.scene.scene.stop('menuScene');
+                this.scene.scene.start(destinationKey);
+            }, this, this);
+        }, this, this);
+    }
 }

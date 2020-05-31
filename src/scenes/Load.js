@@ -17,28 +17,34 @@ class Load extends Phaser.Scene {
         this.load.image('title', './assets/images/title.png');
         this.load.image('titleENTERbutton', './assets/images/titleENTERbutton.png');
         this.load.image('team7credits', './assets/images/team7credits.png');
-
         this.load.image('shadowBackground', './assets/images/ShadowBackground.png');
-        this.load.image('heart', './assets/images/heart.png');
+
         this.load.image('redPlayer', './assets/images/redPlayer.png');
         this.load.image('bluePlayer', './assets/images/bluePlayer.png');
-        this.load.image('invisibleRed', './assets/images/invisibleRed.png');
-        this.load.image('invisibleBlue', './assets/images/invisibleBlue.png');
-        this.load.image('redObstacle', './assets/images/RedObstacle.png');
-        this.load.image('blueObstacle', './assets/images/BlueObstacle.png');
+
+        this.load.image('heart', './assets/images/heart.png');
+        this.load.image('essCorruptionDim', './assets/images/essCorruptionDim.png');
+        this.load.image('essCorruptionGlow', './assets/images/essCorruptionGlow.png');
+        this.load.image('switchCD', './assets/images/switchCD.png');
+
         this.load.image('knife', './assets/images/knife.png');
         this.load.image('corruptKnife', './assets/images/corruptknife.png');
         this.load.image('orb', './assets/images/orb.png');
         this.load.image('corruptOrb', './assets/images/corruptorb.png');
         this.load.image('corruptionParticle', './assets/images/corruptionParticle.png');
-        this.load.image('essCorruptionDim', './assets/images/essCorruptionDim.png');
-        this.load.image('essCorruptionGlow', './assets/images/essCorruptionGlow.png');
-        this.load.image('switchCD', './assets/images/switchCD.png');
+
+        this.load.image('invisibleRed', './assets/images/invisibleRed.png');
+        this.load.image('invisibleBlue', './assets/images/invisibleBlue.png');
+        this.load.image('redObstacle', './assets/images/RedObstacle.png');
+        this.load.image('blueObstacle', './assets/images/BlueObstacle.png');
+        this.load.image('door', './assets/images/door.png');
+
         this.load.image('redChaser', './assets/images/redChaser.png');
         this.load.image('blueChaser', './assets/images/blueChaser.png');
         this.load.image('redSlimeball', './assets/images/redSlimeball.png');
         this.load.image('blueSlimeball', './assets/images/blueSlimeball.png');
         this.load.image('stunParticle', './assets/images/stunParticle.png');
+        
         // Load audio assets
         this.load.audio('buttonSound', './assets/sounds/buttonsound.mp3');
         this.load.audio('knifeThrow', './assets/sounds/knife.mp3');

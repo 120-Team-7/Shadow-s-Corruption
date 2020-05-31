@@ -81,6 +81,10 @@ class Tutorial extends Phaser.Scene {
             if (object.name === 'Player') {
                 player = new Player(this, game.scene.keys.hudScene, object.x, object.y);
             }
+            if (object.name === 'End') {
+                // Endpoint(scene, oSpawnX, oSpawnY, sceneDestination)
+                this.endpoint = new Endpoint(this, object.x, object.y, "gameOverScene");
+            }
         }, this);
 
         // ColorGroup(scene, state)
