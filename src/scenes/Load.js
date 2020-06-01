@@ -6,7 +6,7 @@ class Load extends Phaser.Scene {
     preload() {
         this.loadingText = this.add.text(screenWidth, screenHeight, 'LOADING...', {
             fontFamily: 'Courier',
-            fontSize: '30px',
+            fontSize: '40px',
             color: '#8B008B',
             align: 'center',
             stroke: '#000000',
@@ -18,6 +18,16 @@ class Load extends Phaser.Scene {
         this.load.image('titleENTERbutton', './assets/images/titleENTERbutton.png');
         this.load.image('team7credits', './assets/images/team7credits.png');
         this.load.image('shadowBackground', './assets/images/ShadowBackground.png');
+
+        this.load.image('redPlayerCutscene', './assets/images/REDplayer2.png');
+        this.load.image('bluePlayerCutscene', './assets/images/BLUEplayer2.png');
+        this.load.image('groundLight', './assets/images/lightonground.png');
+        this.load.image('sourceLight', './assets/images/lightsource.png');
+        this.load.image('prisonDoor', './assets/images/prisondoor.png');
+        this.load.image('bigEss1', './assets/images/bigEss1.png');
+        this.load.image('bigEss2', './assets/images/bigEss2.png');
+        this.load.image('bigOrb', './assets/images/bigOrb.png');
+        this.load.image('bigSword', './assets/images/bigSword.png');
 
         this.load.image('redPlayer', './assets/images/redPlayer.png');
         this.load.image('bluePlayer', './assets/images/bluePlayer.png');
@@ -99,16 +109,16 @@ class Load extends Phaser.Scene {
         // });
 
         this.loadingText.destroy();
-        this.continueText = this.add.text(screenWidth, screenHeight, 'Press         to continue', {
+        this.continueText = this.add.text(screenWidth, screenHeight, 'Press       to continue', {
             fontFamily: 'Courier',
-            fontSize: '30px',
+            fontSize: '40px',
             color: '#8B008B',
             align: 'center',
             stroke: '#000000',
             strokeThickness: strokeThickness,
         }).setOrigin(1, 1);
         this.title = this.add.sprite(centerX, 20, 'title').setOrigin(0.5, 0);
-        this.titleENTERbutton = this.add.sprite(screenWidth - 210, screenHeight, 'titleENTERbutton').setOrigin(1, 1).setScale(0.5, 0.5);
+        this.titleENTERbutton = this.add.sprite(screenWidth - 280, screenHeight, 'titleENTERbutton').setOrigin(1, 1).setScale(0.5, 0.5);
         this.team7credits = this.add.sprite(0, screenHeight, 'team7credits').setOrigin(0, 1);
 
         this.fadeInTitle = this.tweens.add( {
@@ -133,7 +143,8 @@ class Load extends Phaser.Scene {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             // this.sound.play('buttonsound');
             this.time.delayedCall(1000, function () {
-                this.scene.start('menuScene');
+                // this.scene.start('menuScene');
+                this.scene.start('startCinematicScene');
             }, null, this);
         }
     }

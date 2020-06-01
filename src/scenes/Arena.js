@@ -3,7 +3,6 @@ class Arena extends Phaser.Scene {
         super('arenaScene');
     }
 
-
     create() {
         this.keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -128,8 +127,6 @@ class Arena extends Phaser.Scene {
         inTutorial = true;
 
         this.input.keyboard.on('keydown-Y', function () {
-            game.scene.keys.hudScene.highlightHudElement(0, screenHeight - 80, 150, 80, 5000);
-
             if(!this.scene.spawnedEnemies) {
                 inTutorial = true;
                 this.scene.tutorialNum++; 

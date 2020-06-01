@@ -26,7 +26,7 @@ let config = {
             debug: true,
         }
     },
-    scene: [ Load, Menu, Instructions, Tutorial, Play, Arena, HUD, GameOver ]
+    scene: [ Load, StartCinematic, Menu, Instructions, Tutorial, Play, Arena, HUD, GameOver ]
 }
 
 // Define game
@@ -73,7 +73,7 @@ var expireBoxHeight = 16;
 var healWidth = 325;
 var healHeight = 16;
 
-var pauseAlpha = 0.4;
+var pauseAlpha = 0.9;
 var healthFlashAlpha = 0.5;
 var healthMissingAlpha = 0.3;
 
@@ -205,7 +205,7 @@ var orbKnockbackVelocity = 250;     // Velocity magnitude of block knockback
 
 var orbMineDuration = 500;
 // Enemies ----------------------------------------------------------------------------------------------------
-var infiniteSpawnerDelay = 15000;
+var infiniteSpawnerDelay = 10000;
 var enemySwitchPause = 1000;
 var enemyDrag = 500;
 var arenaMaxEnemies = 6;
@@ -223,7 +223,7 @@ var enemyDestroyDelay = 1000;
 var chaserConfig = {
     spawnPause: 0,
     accel: 400,
-    maxVel: 250,
+    maxVel: 280,
     moveDelay: 100,
     slowdownDelay: 1000,
     turnAroundMult: 1.5,
@@ -237,7 +237,7 @@ var chaserConfig = {
 // Shooter enemy config
 var shooterConfig = {
     spawnPause: 0,
-    accel: 200,
+    accel: 300,
     maxVel: 100,
     moveDelay: 200,
     slowdownDelay: 1000,

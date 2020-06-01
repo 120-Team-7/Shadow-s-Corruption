@@ -158,7 +158,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.corrupt15.setAlpha(0);
         this.corrupt16.setAlpha(0);
 
-        this.shiftCircleShrink = this.scene.tweens.add({
+        this.shiftCircleBurst = this.scene.tweens.add({
             targets: scene.shiftCircle,
             paused: true,
             scale: { from: 0, to: 1},
@@ -331,7 +331,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 } else {
                     this.scene.shiftCircle.setFillStyle(playerBlue);
                 }
-                this.shiftCircleShrink.play();
+                this.shiftCircleBurst.play();
             }
                 
             if(!usingCorruption) {

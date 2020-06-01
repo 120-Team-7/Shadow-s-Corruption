@@ -32,9 +32,9 @@ class Menu extends Phaser.Scene {
         currScene = null;
         nextScene = "next";
 
-        this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.8);
+        // this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.8);
+        this.shadowBackground = this.add.sprite(centerX, 0, 'shadowBackground').setOrigin(0.5, 0).setAlpha(0).setScale(0.65, 1);
         this.title = this.add.sprite(centerX, 20, 'title').setOrigin(0.5, 0);
-        this.shadowBackground = this.add.sprite(0, 0, 'shadowBackground').setOrigin(0, 0).setAlpha(0).setDepth(10000);
 
         // Add menu screen text
         // this.add.text(centerX, 50, "Shadow's Corruption", menuConfig).setOrigin(0.5, 0.5);
@@ -45,6 +45,7 @@ class Menu extends Phaser.Scene {
         this.playSelect = this.add.text(centerX, centerY + 3*textSpacer, 'Play: press 2', menuConfig).setOrigin(0.5, 0.5);
         this.arenaSelect = this.add.text(centerX, centerY + 4*textSpacer, 'Arena: press 3', menuConfig).setOrigin(0.5, 0.5);
         this.startText = this.add.text(centerX, centerY + 5*textSpacer, 'Press ENTER to start selected', menuConfig).setOrigin(0.5, 0.5);
+        this.restartText = this.add.text(centerX, centerY + 3*textSpacer, 'Press R to return to main menu', menuConfig).setOrigin(0.5, 0.5);
 
         this.input.keyboard.on('keydown-N', function () {
             chaserConfig.health = 10;
@@ -90,7 +91,31 @@ class Menu extends Phaser.Scene {
             }
         }, this);
 
-        this.cameras.main.fadeIn(2000, 0, 0, 0);
+        this.input.keyboard.on('keydown-R', function () {
+            if(isPaused) {
+                isPaused = false;
+                isGameOver = true;
+                pStats.enemiesKilled = 0;
+                pStats.orbKilled = 0;
+                pStats.knifeKilled = 0;
+                pStats.damageDealt = 0;
+                pStats.knifeCorruptedDamage = 0; 
+                pStats.orbCorruptedDamage = 0; 
+                pStats.corruptionGained = 0; 
+                pStats.switchNum = 0; 
+                pStats.knifeThrown = 0; 
+                pStats.knifeStabbed = 0; 
+                pStats.knifeBulletBlock = 0; 
+                pStats.orbShot = 0; 
+                pStats.orbEnemyBlock = 0; 
+                pStats.orbBulletBlock = 0;  
+                this.scene.stop(currScene);
+                this.scene.stop('hudScene');
+                this.scene.restart('menuScene');
+            }
+        }, this);
+
+        this.cameras.main.fadeIn(3000, 0, 0, 0);
     }
 
     update() {
@@ -101,9 +126,14 @@ class Menu extends Phaser.Scene {
         }
 
         if(isPaused) {
+            this.restartText.setAlpha(1);
+            this.tutorialSelect.setAlpha(0);
+            this.playSelect.setAlpha(0);
+            this.arenaSelect.setAlpha(0);
             this.shadowBackground.setAlpha(pauseAlpha);
             this.startText.setText("Press ENTER to unpause");
         } else {
+            this.restartText.setAlpha(0);
             this.shadowBackground.setAlpha(0);
             this.startText.setText("Press ENTER to start");
         }
