@@ -182,7 +182,7 @@ class StartCinematic extends Phaser.Scene {
                 }
                 if(this.counter == 2) {
                     this.canContinue = false;
-                    this.cinematicText.setText("As Shadow, master of both physical and spiritual realms, I am the harbinger of the Void Corruption.");
+                    this.cinematicText.setText("As Shadow, master of both physical and spiritual realms, I am the harbinger of the void corruption.");
                     this.corruptCircleBloom.play();
                     this.fadeOut(this.prisonDoor, 1000, 1);
                     this.tweens.add( {
@@ -207,7 +207,7 @@ class StartCinematic extends Phaser.Scene {
                         this.timer3Active = false;
                         this.canContinue = true;
                     }, null, this);
-                    this.cinematicText.setText("Phasing between realms, the void chose me to expand its reach.");
+                    this.cinematicText.setText("Phasing between realms, I was chosen to expand the void's reach.");
                     this.shiftCircleBurst.play();
                     this.shadowCharacter.setTexture('bluePlayerCutscene');
                 }
@@ -248,7 +248,7 @@ class StartCinematic extends Phaser.Scene {
                         this.timer6Active = false;
                         this.canContinue = true;
                     }, null, this);
-                    this.cinematicText.setText("With my knife, orb, and Essense of Corruption, the legendary weapons of both realms and the void are mine.");
+                    this.cinematicText.setText("With my knife, orb, and Essense of Corruption, the legendary weapons of both the realms and void are mine.");
                     this.fadeIn(this.knife, 1000, 1);
                     this.fadeIn(this.orb, 2000, 1);
                     this.fadeIn(this.essCorruption, 3000, 1);
@@ -260,7 +260,7 @@ class StartCinematic extends Phaser.Scene {
                         this.timer7Active = false;
                         this.canContinue = true;
                     }, null, this);
-                    this.cinematicText.setText("Only chaos and power will justify one's existence in this new reality.");
+                    this.cinematicText.setText("Only chaos and power will determine worth in this new reality.");
                     this.corruptionBox.setSize(1, screenHeight);
                     this.corruptionBox.setPosition(centerX, 0);
                     this.essCorruption.setDepth(100);
@@ -328,13 +328,11 @@ class StartCinematic extends Phaser.Scene {
                 });
                 this.tweens.add( {
                     targets: [ this.redHalf, this.blueHalf ],
-                    alpha: { from: 1, to: 0.5},
+                    alpha: { from: 1, to: 0},
                     ease: 'Sine.easeIn',
                     duration: 3000,
                 });
                 this.time.delayedCall(1200, () => {
-                    this.redHalf.setAlpha(0.5);
-                    this.blueHalf.setAlpha(0.5);
                     if(this.timer1Active) {
                         this.timer1.remove();
                     }

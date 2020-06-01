@@ -19,6 +19,7 @@ class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
         this.first = false;
         this.second = false;
 
+        this.setDepth(2000);
         scene.add.existing(this);
         scene.physics.add.existing(this);
 

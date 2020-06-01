@@ -119,6 +119,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 this.setFlipX(false);
             }
         } else {
+            if(this.switching) {
+                this.switchPause.destroy();
+                this.switching = false;
+                this.body.setImmovable(false);
+                if(this.moving) {
+                    this.moveTimer.paused = false
+                }
+                this.clearTint();
+            }
             this.stun1.setAlpha(1);
             this.stun2.setAlpha(1);
             this.stun3.setAlpha(1);
@@ -299,32 +308,41 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.setTint(orchid);
             this.body.setImmovable(true);
             this.switchPause = this.scene.time.delayedCall(enemySwitchPause, () => {
-                if(this.health > 0) {
+                if(!this.stunned) {
+                    if(this.health > 0) {
+                        this.switching = false;
+                        this.body.setImmovable(false);
+                        originalGroup.remove(this); 
+                        if(this.moving) {
+                            this.moveTimer.paused = false
+                        }
+                        if(originalState == 0){
+                            this.state = 1;
+                        } else {
+                            this.state = 0;
+                        }
+                        newGroup.add(this);
+                        this.clearTint();
+                        if(this.state == 0){
+                            this.healthText.setColor('#DC143C');
+                            this.setTexture(this.redTexture);
+                        } else {
+                            this.healthText.setColor('#4169E1');
+                            this.setTexture(this.blueTexture);
+                        }
+                        if(this.x < player.x) {
+                            this.setFlipX(true);
+                        } else {
+                            this.setFlipX(false);
+                        }
+                    }
+                } else {
                     this.switching = false;
                     this.body.setImmovable(false);
-                    originalGroup.remove(this); 
                     if(this.moving) {
                         this.moveTimer.paused = false
                     }
-                    if(originalState == 0){
-                        this.state = 1;
-                    } else {
-                        this.state = 0;
-                    }
-                    newGroup.add(this);
                     this.clearTint();
-                    if(this.state == 0){
-                        this.healthText.setColor('#DC143C');
-                        this.setTexture(this.redTexture);
-                    } else {
-                        this.healthText.setColor('#4169E1');
-                        this.setTexture(this.blueTexture);
-                    }
-                    if(this.x < player.x) {
-                        this.setFlipX(true);
-                    } else {
-                        this.setFlipX(false);
-                    }
                 }
             }, this.enemy, this.scene);
         }

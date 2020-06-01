@@ -48,8 +48,6 @@ class HUD extends Phaser.Scene {
         this.orbCooldownText = this.add.text(weaponCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
         this.switchCooldownText = this.add.text(switchCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
 
-        hudConfig.fontSize = '40px';
-
         this.orbCDImage = this.add.sprite(weaponCooldownX + 32, weaponCooldownY + 32, 'orb').setOrigin(0.5, 0.5).setScale(0.4);
         this.knifeCDImage = this.add.sprite(weaponCooldownX + 5, weaponCooldownY + 10, 'knife').setOrigin(0, 0);
         this.switchCDImage = this.add.sprite(switchCooldownX + 2, cooldownTextY - 18, 'switchCD').setOrigin(0, 0);

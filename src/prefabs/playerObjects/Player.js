@@ -49,6 +49,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.originalOROF = orbShootROF;
         this.originalSCD = switchCooldown;
         this.originalMMV = maxMoveVelocity;
+        this.originalPA = playerAccel;
 
         scene.corruptionDecayTimer = scene.time.addEvent({
             delay: corruptionDecayDelay,
@@ -63,8 +64,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.damageTextConfig = {
             fontFamily: 'Courier',
-            fontSize: '35px',
-            color: "#FF00FF",
+            fontSize: '40px',
+            color: "#8B008B",
+            stroke: '#000000',
+            strokeThickness: enemyStrokeThickness,
             align: 'center',
             padding: {
                 top: 10,
@@ -180,6 +183,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             duration: 1000,
             onComplete: function() {
                 // this.corruptCircle.setActive(false);
+                this.corruptCircle.setAlpha(0);
             },
             onCompleteScope: scene
         });
@@ -247,6 +251,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             // Player color switch
             if(!switchOnCooldown && Phaser.Input.Keyboard.JustDown(keySwitch)){
+                // this.scene.sound.play('switch');
                 pStats.switchNum++;
                 switchOnCooldown = true;
                 // Change state and body appearance
@@ -425,7 +430,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     knifeThrowROF = 1;
                     orbShootROF = 1;
                     switchCooldown = 1;
-                    maxMoveVelocity = 1000
+                    maxMoveVelocity = 500;
+                    playerAccel = 500;
                 } else {
                     isInvuln = false;
                     isGodmode = false;
@@ -434,7 +440,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     orbShootROF = this.originalOROF;
                     switchCooldown = this.originalSCD;
                     maxMoveVelocity = this.originalMMV;
-
+                    playerAccel = this.originalPA;
                 }
             }
         }
@@ -468,6 +474,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.corruptionExpireTimer.destroy();
                 }
                 // Effects
+                this.corrupt1.setAlpha(0);
+                this.corrupt2.setAlpha(0);
+                this.corrupt3.setAlpha(0);
+                this.corrupt4.setAlpha(0);
+                this.corrupt5.setAlpha(0);
+                this.corrupt6.setAlpha(0);
+                this.corrupt7.setAlpha(0);
+                this.corrupt8.setAlpha(0);
+                this.corrupt9.setAlpha(0);
+                this.corrupt10.setAlpha(0);
+                this.corrupt11.setAlpha(0);
+                this.corrupt12.setAlpha(0);
+                this.corrupt13.setAlpha(0);
+                this.corrupt14.setAlpha(0);
+                this.corrupt15.setAlpha(0);
+                this.corrupt16.setAlpha(0);
                 this.particleTrail.stop();
                 this.corruptionBleed.explode(20 + 2*damage);
                 this.scene.cameras.main.flash(500, 218, 112, 214);

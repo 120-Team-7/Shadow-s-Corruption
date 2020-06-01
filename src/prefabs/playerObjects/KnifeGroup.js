@@ -48,7 +48,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                 }
                 // Corruption handling: increase corruption, check if gaining
                 gainingCorruption = true;
-                if(gainingActive) {
+                if(player.canUseCorruption && gainingActive) {
                     // player.corruptionExpiring = false;
                     group.scene.gainingCorruptionTimer.destroy();
                 }
@@ -74,6 +74,9 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                         enemy.scene.cameras.main.shake(500, corruptionScreenShake);
                     }
                     enemy.takeDamage(knife.damage, knife.corrupted);
+                    if(enemy.health <= 0) {
+                        pStats.knifeKilled++;
+                    }
                     increaseCorruption(knife.damage);
 
                     idleWeaponExists = false;

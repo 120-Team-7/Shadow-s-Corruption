@@ -45,7 +45,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
 
                         increaseCorruption(blockCorruptionGain);
                         gainingCorruption = true;
-                        if(gainingActive) {
+                        if(player.canUseCorruption && gainingActive) {
                             // player.corruptionExpiring = false;
                             group.scene.gainingCorruptionTimer.destroy();
                         }

@@ -51,7 +51,7 @@ var smallTextSpacer = 32;
 
 // Text & GUI settings
 // Instructions
-var imagesY = screenHeight - 200;
+var imagesY = screenHeight - 190;
 // Cooldown
 var weaponCooldownX = 4;
 var weaponCooldownY = screenHeight - 68;
@@ -149,7 +149,7 @@ var invulnDuration = 1000;
 
 var pMaxHealth = 5;
 var pCurrHealth = pMaxHealth;
-var healBenchmark = 40;
+var healBenchmark = 50;
 var healedHeartScale = 1.5;
 
 // Player corruption
@@ -171,8 +171,8 @@ var deathFadeDelay = 2000;
 var playerAccel = 30;
 var playerStopDrag = 600;
 var maxMoveVelocity = 300;
-var playerCorruptMaxVelocity = 400;
-var playerCorruptAccel = 40;
+var playerCorruptMaxVelocity = 1.4*maxMoveVelocity;
+var playerCorruptAccel = 1.4*playerAccel;
 
 // Player attack settings
 var knifeStuckOffset = 50;

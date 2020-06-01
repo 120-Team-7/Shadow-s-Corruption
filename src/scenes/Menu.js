@@ -11,8 +11,8 @@ class Menu extends Phaser.Scene {
         let menuConfig = {
             fontFamily: 'Courier',
             fontSize: '100px',
-            color: '#8B008B',
-            stroke: '#000000',
+            color: '#000000',
+            stroke: '#8B008B',
             strokeThickness: strokeThickness,
             align: 'center',
             padding: {
@@ -32,6 +32,7 @@ class Menu extends Phaser.Scene {
         currScene = null;
         nextScene = "next";
 
+        corruptionParticles = this.add.particles('corruptionParticle');
         // this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.8);
         this.shadowBackground = this.add.sprite(centerX, 0, 'shadowBackground').setOrigin(0.5, 0).setAlpha(0).setScale(0.65, 1);
         this.title = this.add.sprite(centerX, 20, 'title').setOrigin(0.5, 0);
@@ -46,6 +47,28 @@ class Menu extends Phaser.Scene {
         this.arenaSelect = this.add.text(centerX, centerY + 4*textSpacer, 'Arena: press 3', menuConfig).setOrigin(0.5, 0.5);
         this.startText = this.add.text(centerX, centerY + 5*textSpacer, 'Press ENTER to start selected', menuConfig).setOrigin(0.5, 0.5);
         this.restartText = this.add.text(centerX, centerY + 3*textSpacer, 'Press R to return to main menu', menuConfig).setOrigin(0.5, 0.5);
+
+        this.corruptionLeft = corruptionParticles.createEmitter({
+            x: -20,
+            y: { min: 0, max: screenHeight },
+            lifespan: { min: 3000, max: 6000,},
+            speedX: { min: 50, max: 130 },
+            alpha: { start: 1, end: 0 },
+            scale: { start: 0.5, end: 0 },
+            quantity: 6,
+            frequency: 200,
+        });
+        this.corruptionRight = corruptionParticles.createEmitter({
+            x: screenWidth + 20,
+            y: { min: 0, max: screenHeight },
+            lifespan: { min: 3000, max: 6000,},
+            speedX: { min: -130, max: -50 },
+            alpha: { start: 1, end: 0 },
+            scale: { start: 0.5, end: 0 },
+            quantity: 6,
+            frequency: 200,
+        });
+
 
         this.input.keyboard.on('keydown-N', function () {
             chaserConfig.health = 10;
@@ -139,6 +162,8 @@ class Menu extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.keyStart) && nextScene != "next") {
+            this.corruptionRight.remove();
+            this.corruptionLeft.remove();
             if(isGameOver && currScene != nextScene) {
                 isGameOver = false;
                 pCurrHealth = pMaxHealth;

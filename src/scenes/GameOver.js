@@ -29,10 +29,10 @@ class GameOver extends Phaser.Scene {
         }
 
         let spacer = 50;
-        let leftTextX = 20;
-        let leftNumX = centerX - 90
-        let rightNumX = screenWidth - 100;
-        let rightTextX = centerX + 20;
+        let leftTextX = 5;
+        let leftNumX = centerX - 105
+        let rightNumX = screenWidth - 115;
+        let rightTextX = centerX + 15;
 
         // Add text
         this.add.text(centerX, 50, "Shadow has been banished to the void!", gameOverConfig).setOrigin(0.5, 0.5);
