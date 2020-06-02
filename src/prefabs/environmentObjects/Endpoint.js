@@ -8,7 +8,9 @@ class Endpoint extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.collider = scene.physics.add.overlap(this, player, function() {
-            player.sceneTransfer(sceneDestination);
+            if(!player.isSceneTransfer) {
+                player.sceneTransfer(sceneDestination);
+            }
         }, null, scene)
     }
 }

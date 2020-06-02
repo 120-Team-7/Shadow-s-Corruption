@@ -52,7 +52,7 @@ class Instructions extends Phaser.Scene {
         this.corruptionCooldownBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth - 200, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(1);
         this.corruptionBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(0.2);
 
-        this.healProgress = this.add.rectangle(screenWidth - 25 - 200, screenHeight, healWidth - 200, healHeight, darkMagenta).setOrigin(1, 1).setAlpha(1);
+        this.healProgress = this.add.rectangle(screenWidth - 25 - 80, screenHeight, healWidth - 80, healHeight, darkMagenta).setOrigin(1, 1).setAlpha(1);
         this.healBox = this.add.rectangle(screenWidth - 25, screenHeight, healWidth, healHeight, playerPurple).setOrigin(1, 1).setAlpha(0.2);
 
         this.knifeCooldownBox = this.add.rectangle(weaponCooldownX, weaponCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerRed).setOrigin(0, 0).setAlpha(cooldownAlpha);

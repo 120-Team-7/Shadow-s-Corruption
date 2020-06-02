@@ -177,12 +177,12 @@ class StartCinematic extends Phaser.Scene {
                         this.timer2Active = false;
                         this.canContinue = true;
                     }, null, this);
-                    this.cinematicText.setText("Traversing the void between realms was corrupting the purity of their perfect reality.");
+                    this.fadeOutInText("Traversing the void between realms was corrupting the purity of their perfect reality.");
                     this.corruptionDoor.start();
                 }
                 if(this.counter == 2) {
                     this.canContinue = false;
-                    this.cinematicText.setText("As Shadow, master of both physical and spiritual realms, I am the harbinger of the void corruption.");
+                    this.fadeOutInText("As Shadow, master of both physical and spiritual realms, I am the harbinger of the void corruption.");
                     this.corruptCircleBloom.play();
                     this.fadeOut(this.prisonDoor, 1000, 1);
                     this.tweens.add( {
@@ -207,7 +207,7 @@ class StartCinematic extends Phaser.Scene {
                         this.timer3Active = false;
                         this.canContinue = true;
                     }, null, this);
-                    this.cinematicText.setText("Phasing between realms, I was chosen to expand the void's reach.");
+                    this.fadeOutInText("Phasing between realms, I was chosen to expand the void's reach.");
                     this.shiftCircleBurst.play();
                     this.shadowCharacter.setTexture('bluePlayerCutscene');
                 }
@@ -218,7 +218,7 @@ class StartCinematic extends Phaser.Scene {
                         this.timer4Active = false;
                         this.canContinue = true;
                     }, null, this);
-                    this.cinematicText.setText("All will become my domain after the realms finally embrace the void.");
+                    this.fadeOutInText("All will become my domain after the realms finally embrace the void.");
                     this.fadeOut(this.groundLight, 1000, 1);
                     this.fadeOut(this.sourceLight, 1000, 1);
 
@@ -237,7 +237,7 @@ class StartCinematic extends Phaser.Scene {
                         this.timer5Active = true;
                         this.canContinue = true;
                     }, null, this);
-                    this.cinematicText.setText("The time has come to dismantle this meaningless barrier.");
+                    this.fadeOutInText("The time has come to dismantle this meaningless barrier.");
                     this.redRealmEnter.play();
                     this.blueRealmEnter.play();
                 }
@@ -248,7 +248,7 @@ class StartCinematic extends Phaser.Scene {
                         this.timer6Active = false;
                         this.canContinue = true;
                     }, null, this);
-                    this.cinematicText.setText("With my knife, orb, and Essense of Corruption, the legendary weapons of both the realms and void are mine.");
+                    this.fadeOutInText("With my knife, orb, and Essense of Corruption, the legendary weapons of both the realms and void are mine.");
                     this.fadeIn(this.knife, 1000, 1);
                     this.fadeIn(this.orb, 2000, 1);
                     this.fadeIn(this.essCorruption, 3000, 1);
@@ -260,7 +260,7 @@ class StartCinematic extends Phaser.Scene {
                         this.timer7Active = false;
                         this.canContinue = true;
                     }, null, this);
-                    this.cinematicText.setText("Only chaos and power will determine worth in this new reality.");
+                    this.fadeOutInText("Only chaos and power will determine worth in this new reality.");
                     this.corruptionBox.setSize(1, screenHeight);
                     this.corruptionBox.setPosition(centerX, 0);
                     this.essCorruption.setDepth(100);
@@ -398,6 +398,24 @@ class StartCinematic extends Phaser.Scene {
             alpha: { from: startAlpha, to: 0},
             ease: 'Quart.easeIn',
             duration: duration,
+        });
+    }
+    fadeOutInText(string) {
+        this.tweens.add( {
+            targets: this.cinematicText,
+            alpha: { from: 1, to: 0},
+            ease: 'Quart.easeOut',
+            duration: 250,
+            onComplete: function() {
+                this.cinematicText.setText(string);
+                this.tweens.add( {
+                    targets: this.cinematicText,
+                    alpha: { from: 0, to: 1},
+                    ease: 'Quart.easeIn',
+                    duration: 250,
+                });
+            },
+            onCompleteScope: this
         });
     }
 }

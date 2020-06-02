@@ -95,7 +95,10 @@ class Shooter extends Enemy {
             ease: 'Quart.easeIn',
             duration: shooterConfig.rof/2,
             onComplete: function() {
-                this.shoot();
+                this.targeting = false;
+                if(!this.stunned) {
+                    this.shoot();
+                }
                 this.targetLaser.setAlpha(0);
             },
             onCompleteScope: this
@@ -106,6 +109,7 @@ class Shooter extends Enemy {
         this.targetTimer = this.scene.time.addEvent({
             delay: shooterConfig.rof/2, 
             callback: () => {
+                this.targeting = true;
                 this.fadeIn.play();
             }, 
             callbackContext: scene,
@@ -121,6 +125,11 @@ class Shooter extends Enemy {
             this.targetTimer.paused = false;
         } else {
             this.targetTimer.paused = true;
+        }
+
+        if(this.stunned && this.targeting) {
+            this.fadeIn.remove();
+            this.targetLaser.setAlpha(0);
         }
 
         if(this.health <= 0 && this.shooting) {
@@ -189,7 +198,6 @@ class Shooter extends Enemy {
 
     shoot() {
         // EnemyBulletGroup.addBullet(state, spawnX, spawnY, targetX, targetY)
-        // console.log(this.x)
         if(this.state == 0) {
             this.redBulletGroup.addBullet(this.state, this.x, this.y, this.targetX, this.targetY);
         }

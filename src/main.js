@@ -37,6 +37,7 @@ var isGameOver = true;
 var isPaused = false;
 var resetAudio = true;
 var inTutorial = false;
+var tutorialNum = 0;
 var hudScene = game.scene.keys.hudScene;
 var currScene = null;
 var nextScene = "next";
@@ -73,7 +74,7 @@ var expireBoxHeight = 16;
 var healWidth = 325;
 var healHeight = 16;
 
-var pauseAlpha = 0.9;
+var pauseAlpha = 0.8;
 var healthFlashAlpha = 0.5;
 var healthMissingAlpha = 0.3;
 

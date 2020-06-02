@@ -11,6 +11,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         var hudScene = game.scene.keys.hudScene;
 
         this.canUseCorruption = true;
+        this.isSceneTransfer = false;
 
         this.currentRoom = 1;
         this.previousRoom = null;
@@ -50,6 +51,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.originalSCD = switchCooldown;
         this.originalMMV = maxMoveVelocity;
         this.originalPA = playerAccel;
+        this.originalPSD = playerStopDrag;
 
         scene.corruptionDecayTimer = scene.time.addEvent({
             delay: corruptionDecayDelay,
@@ -430,8 +432,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     knifeThrowROF = 1;
                     orbShootROF = 1;
                     switchCooldown = 1;
-                    maxMoveVelocity = 500;
-                    playerAccel = 500;
+                    maxMoveVelocity = 1000;
+                    playerAccel = 2000;
+                    playerStopDrag = 1200;
+                    this.setTint(darkMagenta);
                 } else {
                     isInvuln = false;
                     isGodmode = false;
@@ -441,6 +445,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     switchCooldown = this.originalSCD;
                     maxMoveVelocity = this.originalMMV;
                     playerAccel = this.originalPA;
+                    playerStopDrag = this.originalPSD;
+                    this.clearTint();
                 }
             }
         }
@@ -587,16 +593,24 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     sceneTransfer(destinationKey) {
+        this.isSceneTransfer = true;
         if(idleWeaponExists) {
             this.idleWeapon.destroy();
         }
         if(usingCorruption) {
             this.corruptionExpireTimer.destroy();
         }
+        isInvuln = false;
+        isGodmode = false;
+        pCurrHealth = pMaxHealth;
+        knifeThrowROF = this.originalKROF;
+        orbShootROF = this.originalOROF;
+        switchCooldown = this.originalSCD;
+        maxMoveVelocity = this.originalMMV;
+        playerAccel = this.originalPA;
         // Effects
         game.scene.keys.hudScene.cameras.main.fadeOut(deathFadeDuration, 0, 0, 0);
 
-        isGameOver = true;
         this.setImmovable(true);
         this.cleanUpTimer = this.scene.time.delayedCall(deathFadeDelay, function () {
             this.gameOverTimer = this.scene.time.delayedCall(deathFadeDuration, function () {

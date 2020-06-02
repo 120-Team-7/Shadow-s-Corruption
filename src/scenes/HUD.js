@@ -19,10 +19,8 @@ class HUD extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.corruptionSize = '40px';
-
         // HUD ---------------------------------------------------------------------------------
-        this.highlightBox = this.add.rectangle(0, 0, 0, 0, orchid).setOrigin(0, 0).setAlpha(0);
+        this.highlightBox = this.add.rectangle(screenWidth, screenHeight, 0, 0, orchid).setOrigin(0.5, 0.5).setAlpha(0);
         this.borderBox1 = this.add.rectangle(0, screenHeight - 72, 140, 72, black).setOrigin(0, 0).setAlpha(0.8);
 
         this.corruptionCooldownBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(1);
@@ -40,11 +38,8 @@ class HUD extends Phaser.Scene {
         this.switchCooldownBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(cooldownAlpha);
         this.switchBox = this.add.rectangle(switchCooldownX, switchCooldownY, cooldownBoxWidth, cooldownBoxHeight, playerPurple).setOrigin(0, 0).setAlpha(boxAlpha);
 
-        // this.healthText = this.add.text(screenWidth - 5, screenHeight - 45, '', hudConfig).setOrigin(1, 0);
-
         hudConfig.fontSize = '30px';
         this.knifeCooldownText = this.add.text(weaponCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
-        // hudConfig.color =  playerBlue;
         this.orbCooldownText = this.add.text(weaponCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
         this.switchCooldownText = this.add.text(switchCooldownX, cooldownTextY, '', hudConfig).setOrigin(0, 0);
 
@@ -79,7 +74,30 @@ class HUD extends Phaser.Scene {
         this.testText1 = this.add.text(centerX, 50, '', hudConfig).setOrigin(0.5, 0);
         this.testText2 = this.add.text(centerX, 100, '', hudConfig).setOrigin(0.5, 0);
 
-        this.highlightBox = this.add.rectangle(screenWidth, screenHeight, 0, 0, orange).setOrigin(0.5, 0.5).setAlpha(0);
+        let tutorialConfig = {
+            fontFamily: 'Courier',
+            fontSize: '30px',
+            color: '#8B008B',
+            stroke: '#000000',
+            strokeThickness: strokeThickness,
+            align: 'center',
+            padding: {
+                top: 10,
+                bottom: 10,
+                left: 0,
+                right: 0,
+            },
+            wordWrap: {
+                width: screenWidth,
+                useAdvancedWrap: true,
+            }
+        }
+        this.textBoxY = 128;
+        this.textBox = this.add.rectangle(centerX, 0, screenWidth, this.textBoxY, black).setOrigin(0.5, 0).setAlpha(0);
+        this.tutorialText = this.add.text(centerX, 0, "It seems the void only partially amalgamated the realms.", tutorialConfig).setOrigin(0.5, 0).setAlpha(0);
+        tutorialConfig.fontSize = '20px';
+        this.buttonPromt = this.add.text(screenWidth, this.textBoxY, '(Spacebar)', tutorialConfig).setOrigin(1, 1).setAlpha(0);
+        this.objectiveText = this.add.text(10, this.textBoxY, '', tutorialConfig).setOrigin(0, 1).setAlpha(0);
 
         this.cameras.main.fadeIn(1000, 0, 0, 0);
 
@@ -374,7 +392,11 @@ class HUD extends Phaser.Scene {
     }
 
     highlightHudElement(elementX, elementY, elementWidth, elementHeight, holdDuration) {
+        if(this.isHighlighting) {
+            this.elementHiglight.remove();
+        }
         this.highlightBox.setActive(true);
+        this.isHighlighting = true;
         this.elementHiglight = this.tweens.add({
             targets: this.highlightBox,
             x: { from: 0, to: elementX},
@@ -387,6 +409,7 @@ class HUD extends Phaser.Scene {
             hold: holdDuration,
             yoyo: true,
             onComplete: function() {
+                this.isHighlighting = false;
                 this.highlightBox.setActive(false);
                 this.highlightBox.setAlpha(0);
             },

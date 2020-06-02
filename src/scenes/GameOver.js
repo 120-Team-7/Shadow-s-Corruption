@@ -35,7 +35,14 @@ class GameOver extends Phaser.Scene {
         let rightTextX = centerX + 15;
 
         // Add text
-        this.add.text(centerX, 50, "Shadow has been banished to the void!", gameOverConfig).setOrigin(0.5, 0.5);
+        if(currScene == 'tutorialScene') {
+            this.completedScene = "tutorial";
+        }
+        if(isGameOver) {
+            this.add.text(centerX, 50, "Shadow has been banished to the void!", gameOverConfig).setOrigin(0.5, 0.5);
+        } else {
+            this.add.text(centerX, 50, "You've completed the " + this.completedScene + "!", gameOverConfig).setOrigin(0.5, 0.5);
+        }
         this.add.text(centerX, centerY - 4*spacer, 'Your Statistics ', gameOverConfig).setOrigin(0.5, 0.5);
         gameOverConfig.align = 'left';
         this.add.text(leftTextX, centerY - 3*spacer, "Enemies killed: ", gameOverConfig).setOrigin(0, 0);
@@ -69,9 +76,11 @@ class GameOver extends Phaser.Scene {
         this.add.text(rightNumX, centerY + 3*spacer, pStats.orbBulletBlock, gameOverConfig).setOrigin(0, 0);
 
         gameOverConfig.align = 'center';
-        this.add.text(centerX, screenHeight - 50, 'Press ENTER to return to menu', gameOverConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, screenHeight - 100, "Thank you for playing Shadow's Corruption", gameOverConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, screenHeight - 30, 'Press ENTER to return to menu', gameOverConfig).setOrigin(0.5, 0.5);
 
         isPaused = false;
+        isGameOver = true;
     }
 
     update() {

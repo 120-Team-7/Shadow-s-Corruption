@@ -140,8 +140,8 @@ class Load extends Phaser.Scene {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             // this.sound.play('buttonsound');
             this.time.delayedCall(1000, function () {
-                // this.scene.start('menuScene');
-                this.scene.start('startCinematicScene');
+                this.scene.start('menuScene');
+                // this.scene.start('startCinematicScene');
             }, null, this);
         }
     }
