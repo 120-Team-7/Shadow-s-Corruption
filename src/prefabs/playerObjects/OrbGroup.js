@@ -119,7 +119,6 @@ class OrbGroup extends Phaser.GameObjects.Group {
                         this.orb.targetY = this.orb.y + this.forwardShootVector.y;
                     }
                     this.orb.damage = orbShootDamage;
-                    this.scene.sound.play('orbShoot');
                     // Start shot cooldown
                     group.orbCooldown = this.scene.time.delayedCall(orbShootROF, function () {
                         group.isOnCooldown = false;

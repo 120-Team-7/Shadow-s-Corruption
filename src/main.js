@@ -26,7 +26,7 @@ let config = {
             debug: true,
         }
     },
-    scene: [ Load, StartCinematic, Menu, Instructions, Tutorial, Play, Arena, HUD, GameOver ]
+    scene: [ Load, StartCinematic, Menu, Instructions, Tutorial, Practice, Play, Arena, HUD, GameOver ]
 }
 
 // Define game
@@ -86,6 +86,7 @@ var playerPurple = 0xFF00FF;
 var orchid = 0xDA70D6;
 var darkMagenta = 0x8B008B;
 var gray = 0x808080;
+var dimGray = 0x696969;
 var orange = 0xFFA500;
 
 // Text settings
@@ -146,7 +147,7 @@ var switchEffectsDuration = 500;
 var switchScreenShake = 0.002;
 
 var isInvuln = false; // invulnerability state after taking damage
-var invulnDuration = 1000;
+var invulnDuration = 1500;
 
 var pMaxHealth = 5;
 var pCurrHealth = pMaxHealth;

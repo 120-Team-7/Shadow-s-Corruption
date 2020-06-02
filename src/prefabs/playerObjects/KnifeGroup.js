@@ -167,7 +167,11 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     // Triggers knife first throwing state
                     this.knife.shot = true;
                     this.knife.shooting = true;
-                    this.scene.sound.play('knifeThrow');
+                    if(this.knife.corrupted) {
+                        this.scene.sound.play('corruptedKnife');
+                    } else {
+                        this.scene.sound.play('knifeThrow');
+                    }
                     // Start throw cooldown
                     group.knifeCooldown = this.scene.time.delayedCall(knifeThrowROF, function () {
                         group.isOnCooldown = false;

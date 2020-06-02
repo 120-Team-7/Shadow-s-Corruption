@@ -96,6 +96,11 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
                 this.scene.cameras.main.shake(500, corruptionScreenShake);
                 // this.scene.sound.play('corruptionExpire');
             }
+            if(this.corrupted) {
+                this.scene.sound.play('corruptedOrb');
+            } else {
+                this.scene.sound.play('orbShoot');
+            }
         }
         if(this.shooting) {
             this.emitCircle.setPosition(this.x, this.y);

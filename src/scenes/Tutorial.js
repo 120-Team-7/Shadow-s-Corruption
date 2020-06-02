@@ -3,7 +3,6 @@ class Tutorial extends Phaser.Scene {
         super('tutorialScene');
     }
 
-
     create() {
         this.keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -115,6 +114,8 @@ class Tutorial extends Phaser.Scene {
         // OrbGroup(scene, state, blueEnemyGroup)
         this.orbGroup = new OrbGroup(this, game.scene.keys.hudScene, 1, this.blueEnemyGroup);
 
+        this.scene.run('hudScene');
+
         // Add play objects ----------------------------------------------------------------------------------------------------
         
         // Tutorial
@@ -127,7 +128,7 @@ class Tutorial extends Phaser.Scene {
         // }, this);
 
         this.canContinue = false;
-        this.damageTextTimer = this.time.delayedCall(200, () => {
+        this.time.delayedCall(200, () => {
             game.scene.keys.hudScene.tutorialText.setAlpha(1);
             game.scene.keys.hudScene.buttonPromt.setAlpha(1);
             game.scene.keys.hudScene.textBox.setAlpha(0.8);
@@ -150,7 +151,7 @@ class Tutorial extends Phaser.Scene {
                 tutorialNum++;
                 // console.log(tutorialNum);
                 if(tutorialNum == 1) {
-                    this.fadeOutInText("I'll have to leave this cave to continue molding the new world.");
+                    this.fadeOutInText("I'll have to leave this cave to continue shaping the Void Frontier.");
                 }
                 if(tutorialNum == 2) {
                     this.fadeOutInText("SHIFTING between the realms to navigate these old world remnants will have to do for now.");
@@ -168,10 +169,10 @@ class Tutorial extends Phaser.Scene {
                     this.objectiveFadeIn.play();
                 }
                 if(tutorialNum == 4) {
-                    this.fadeOutInText("While not shooting, I'm able to focus on my weapons in the IDLE form.");
+                    this.fadeOutInText("While not shooting, I'm able to focus on my weapons in the MELEE form.");
                 }
                 if(tutorialNum == 5) {
-                    this.fadeOutInText("IDLE weapons paralyze their fragile minds with visions of the void.");
+                    this.fadeOutInText("MELEE weapons paralyze their fragile minds with visions of the void.");
                     this.canContinue = false;
                     pStats.knifeStabbed = 0;
                     pStats.orbEnemyBlock = 0;
@@ -179,7 +180,7 @@ class Tutorial extends Phaser.Scene {
                     this.objectiveFadeIn.play();
                 }
                 if(tutorialNum == 6) {
-                    this.fadeOutInText("IDLE weapons nullify their desperate projectile attacks.");
+                    this.fadeOutInText("MELEE weapons nullify their desperate projectile attacks.");
                     this.canContinue = false;
                     pStats.knifeBulletBlock = 0;
                     pStats.orbBulletBlock = 0;
@@ -195,10 +196,10 @@ class Tutorial extends Phaser.Scene {
                     this.fadeOutInText("With my knife, I can easily extract CORRUPTION from corporeal beings.");
                 }
                 if(tutorialNum == 9) {
-                    this.fadeOutInText("With my orb, I'll have to use the IDLE form to siphon the CORRUPTION from their soul.");
+                    this.fadeOutInText("With my orb, I'll have to use the MELEE form to siphon the CORRUPTION from their soul.");
                 }
                 if(tutorialNum == 10) {
-                    this.fadeOutInText("Projectile attacks are distilled into CORRUPTION with IDLE weapons.");
+                    this.fadeOutInText("Projectile attacks are distilled into CORRUPTION with MELEE weapons.");
                 }
                 if(tutorialNum == 11) {
                     this.fadeOutInText("The natural decay of CORRUPTION is ever present, so I must regularly deplete these slimey vessels.");
@@ -211,10 +212,10 @@ class Tutorial extends Phaser.Scene {
                     this.fadeOutInText("Once I have some CORRUPTION, I can SHIFT to ACTIVATE it with the immense void energy of phasing.");
                 }
                 if(tutorialNum == 13) {
-                    this.fadeOutInText("Once ACTIVATED, I can deliver a single devestating CORRUPTED attack.");
+                    this.fadeOutInText("After ACTIVATION, I can deliver a single devestating CORRUPTED attack.");
                 }
                 if(tutorialNum == 14) {
-                    this.fadeOutInText("Unfortunately, ACTIVATION cannot last long outside the void so I must use it quickly.");
+                    this.fadeOutInText("Unfortunately, ACTIVATION cannot last outside the void's embrace so I must quickly use it.");
                     // Highlight corruption expire bar
                     game.scene.keys.hudScene.highlightHudElement(centerX - 220, screenHeight - 25, 440, 25, 5000);
                 }
@@ -238,7 +239,7 @@ class Tutorial extends Phaser.Scene {
                     this.objectiveFadeIn.play();
                 }
                 if(tutorialNum == 18) {
-                    this.fadeOutInText("CORRUPTION will give me the upperhand in this new reality where I'm not the only one with the power to SHIFT.");
+                    this.fadeOutInText("CORRUPTION will give me the upperhand in the Void Frontier where the power to shift isn't mine alone.");
                     this.canContinue = false;
                     this.door5_end.toggleOpen();
                     // Highlight right room door
@@ -259,14 +260,14 @@ class Tutorial extends Phaser.Scene {
         this.blueEnemyBulletGroup.update();
 
         if(this.shootingObjective) {
-            this.objectiveTracker("Knives shot: " + pStats.knifeThrown + "/8, Orbs shot: " + pStats.orbShot + "/3");
+            this.objectiveTracker("(LEFTCLICK) Knives shot: " + pStats.knifeThrown + "/8, Orbs shot: " + pStats.orbShot + "/3");
             if(pStats.knifeThrown >= 8 && pStats.orbShot >= 3) {
                 this.shootingObjective = false;
                 this.objectiveComplete(true);
             }
         }
         if(this.idleWeaponObjective) {
-            this.objectiveTracker("Idle knife hits: " + pStats.knifeStabbed + "/5, Idle orb hits: " + pStats.orbEnemyBlock + "/8");
+            this.objectiveTracker("(AIM MOUSE TOWARD & WALK CLOSE TO ENEMY) Idle knife hits: " + pStats.knifeStabbed + "/5, Idle orb hits: " + pStats.orbEnemyBlock + "/8");
             if(pStats.knifeStabbed >= 5 && pStats.orbEnemyBlock >= 8) {
                 this.idleWeaponObjective = false;
                 this.objectiveComplete(false);
@@ -276,7 +277,7 @@ class Tutorial extends Phaser.Scene {
             }
         }
         if(this.blockProjectileObjective) {
-            this.objectiveTracker("Red projectiles blocked: " + pStats.knifeBulletBlock + "/3, Blue projectiles blocked: " + pStats.orbBulletBlock + "/3");
+            this.objectiveTracker("(POSITON MELEE WEAPON IN PROJECTILE PATH) Red projectiles blocked: " + pStats.knifeBulletBlock + "/3, Blue projectiles blocked: " + pStats.orbBulletBlock + "/3");
             if(pStats.knifeBulletBlock >= 3 && pStats.orbBulletBlock >= 3) {
                 this.blockProjectileObjective = false;
                 this.objectiveComplete(false);
@@ -286,14 +287,14 @@ class Tutorial extends Phaser.Scene {
             }
         }
         if(this.corruptionGainObjective) {
-            this.objectiveTracker("Corruption gained: " + pStats.corruptionGained + "/20");
+            this.objectiveTracker("(DAMAGE WITH KNIFE, BLOCK WITH ORB, BLOCK PROJECTILES WITH MELEE) Corruption gained: " + pStats.corruptionGained + "/20");
             if(pStats.corruptionGained >= 20) {
                 this.corruptionGainObjective = false;
                 this.objectiveComplete(true);
             }
         }
         if(this.corruptionDamageObjective) {
-            this.objectiveTracker("Corrupted knife damage: " + pStats.knifeCorruptedDamage + "/30, Corrupted orb damage: " + pStats.orbCorruptedDamage + "/30");
+            this.objectiveTracker("(GAIN CORRUPTION, SHIFT, ATTACK) Corrupted knife damage: " + pStats.knifeCorruptedDamage + "/30, Corrupted orb damage: " + pStats.orbCorruptedDamage + "/30");
             if(pStats.knifeCorruptedDamage >= 30 && pStats.orbCorruptedDamage >= 30) {
                 this.corruptionDamageObjective = false;
                 this.objectiveComplete(false);
@@ -303,7 +304,7 @@ class Tutorial extends Phaser.Scene {
             }
         }
         if(this.changingEnemiesObjective) {
-            this.objectiveTracker("Enemies killed: " + pStats.enemiesKilled + "/3");
+            this.objectiveTracker("(KILL SLIMES) Enemies killed: " + pStats.enemiesKilled + "/3");
             if(pStats.enemiesKilled >= 3) {
                 this.changingEnemiesObjective = false;
                 this.objectiveComplete(true);
@@ -315,9 +316,9 @@ class Tutorial extends Phaser.Scene {
                 isPaused = true;
                 this.scene.pause(currScene);
                 this.scene.pause('hudScene');
-                this.scene.swapPosition('menuScene', currScene);
                 this.scene.setVisible(false, 'hudScene');
                 this.scene.run('menuScene');
+                this.scene.swapPosition('menuScene', currScene);
                 this.scene.setVisible(true, 'menuScene');
             }
         }

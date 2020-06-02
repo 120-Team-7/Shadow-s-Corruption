@@ -175,16 +175,16 @@ class Menu extends Phaser.Scene {
                 pointer = null;
 
                 this.scene.run(nextScene);
-                this.scene.run('hudScene');
+                // this.scene.run('hudScene');
                 this.scene.setVisible(true, 'hudScene');
                 this.scene.pause('menuScene');
                 this.scene.setVisible(false, 'menuScene');
 
             } else if(isPaused) {
                 isPaused = false;
+                this.scene.swapPosition('menuScene', currScene);
                 this.scene.run(currScene);
                 this.scene.run('hudScene');
-                this.scene.swapPosition('menuScene', currScene);
                 this.scene.setVisible(true, 'hudScene');
                 this.scene.pause('menuScene');
                 this.scene.setVisible(false, 'menuScene');

@@ -76,10 +76,10 @@ class HUD extends Phaser.Scene {
 
         let tutorialConfig = {
             fontFamily: 'Courier',
-            fontSize: '30px',
-            color: '#8B008B',
-            stroke: '#000000',
-            strokeThickness: strokeThickness,
+            fontSize: '35px',
+            color: '#000000',
+            stroke: '#8B008B',
+            strokeThickness: 3,
             align: 'center',
             padding: {
                 top: 10,
@@ -93,7 +93,7 @@ class HUD extends Phaser.Scene {
             }
         }
         this.textBoxY = 128;
-        this.textBox = this.add.rectangle(centerX, 0, screenWidth, this.textBoxY, black).setOrigin(0.5, 0).setAlpha(0);
+        this.textBox = this.add.rectangle(centerX, 0, screenWidth, this.textBoxY, dimGray).setOrigin(0.5, 0).setAlpha(0);
         this.tutorialText = this.add.text(centerX, 0, "It seems the void only partially amalgamated the realms.", tutorialConfig).setOrigin(0.5, 0).setAlpha(0);
         tutorialConfig.fontSize = '20px';
         this.buttonPromt = this.add.text(screenWidth, this.textBoxY, '(Spacebar)', tutorialConfig).setOrigin(1, 1).setAlpha(0);

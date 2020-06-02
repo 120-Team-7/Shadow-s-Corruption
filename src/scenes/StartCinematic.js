@@ -12,10 +12,10 @@ class StartCinematic extends Phaser.Scene {
 
         let cutsceneConfig = {
             fontFamily: 'Courier',
-            fontSize: '30px',
-            color: '#8B008B',
-            stroke: '#000000',
-            strokeThickness: strokeThickness,
+            fontSize: '35px',
+            color: '#000000',
+            stroke: '#8B008B',
+            strokeThickness: 3,
             align: 'center',
             padding: {
                 top: 10,
@@ -68,8 +68,8 @@ class StartCinematic extends Phaser.Scene {
         this.corruptCircle.setFillStyle(darkMagenta);
         this.corruptCircle.setAlpha(0);
 
-        this.textBoxY = 90;
-        this.textBox = this.add.rectangle(centerX, screenHeight, screenWidth, this.textBoxY, gray).setOrigin(0.5, 1);
+        this.textBoxY = 120;
+        this.textBox = this.add.rectangle(centerX, screenHeight, screenWidth, this.textBoxY + 20, dimGray).setOrigin(0.5, 1).setAlpha(0.8);
         this.cinematicText = this.add.text(centerX, screenHeight - this.textBoxY, 'They imprisoned me for ten thousand years.', cutsceneConfig).setOrigin(0.5, 0);
         cutsceneConfig.fontSize = '20px';
         this.buttonPromt = this.add.text(screenWidth - 10, screenHeight + 5, '(Spacebar)', cutsceneConfig).setOrigin(1, 1);
@@ -207,7 +207,7 @@ class StartCinematic extends Phaser.Scene {
                         this.timer3Active = false;
                         this.canContinue = true;
                     }, null, this);
-                    this.fadeOutInText("Phasing between realms, I was chosen to expand the void's reach.");
+                    this.fadeOutInText("As the first visitor, I was chosen to expand the void's reach beyond the narrow shroud.");
                     this.shiftCircleBurst.play();
                     this.shadowCharacter.setTexture('bluePlayerCutscene');
                 }
@@ -260,7 +260,7 @@ class StartCinematic extends Phaser.Scene {
                         this.timer7Active = false;
                         this.canContinue = true;
                     }, null, this);
-                    this.fadeOutInText("Only chaos and power will determine worth in this new reality.");
+                    this.fadeOutInText("Only chaos and power will determine worth in this new reality, the Void Frontier.");
                     this.corruptionBox.setSize(1, screenHeight);
                     this.corruptionBox.setPosition(centerX, 0);
                     this.essCorruption.setDepth(100);
