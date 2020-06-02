@@ -76,7 +76,7 @@ class GameOver extends Phaser.Scene {
         this.add.text(rightNumX, centerY + 3*spacer, pStats.orbBulletBlock, gameOverConfig).setOrigin(0, 0);
 
         gameOverConfig.align = 'center';
-        this.add.text(centerX, screenHeight - 100, "Thank you for playing Shadow's Corruption", gameOverConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, screenHeight - 100, "Thank you for playing Shadow's Corruption!", gameOverConfig).setOrigin(0.5, 0.5);
         this.add.text(centerX, screenHeight - 30, 'Press ENTER to return to menu', gameOverConfig).setOrigin(0.5, 0.5);
 
         isPaused = false;

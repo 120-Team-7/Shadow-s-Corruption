@@ -196,25 +196,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             ease: 'Quart.easeOut',
             duration: 500,
             onComplete: function() {
-                if(!usingCorruption) {
-                    this.corrupt1.setAlpha(0);
-                    this.corrupt2.setAlpha(0);
-                    this.corrupt3.setAlpha(0);
-                    this.corrupt4.setAlpha(0);
-                    this.corrupt5.setAlpha(0);
-                    this.corrupt6.setAlpha(0);
-                    this.corrupt7.setAlpha(0);
-                    this.corrupt8.setAlpha(0);
-                    this.corrupt9.setAlpha(0);
-                    this.corrupt10.setAlpha(0);
-                    this.corrupt11.setAlpha(0);
-                    this.corrupt12.setAlpha(0);
-                    this.corrupt13.setAlpha(0);
-                    this.corrupt14.setAlpha(0);
-                    this.corrupt15.setAlpha(0);
-                    this.corrupt16.setAlpha(0);
-                }
-
+                this.corrupt1.setAlpha(0);
+                this.corrupt2.setAlpha(0);
+                this.corrupt3.setAlpha(0);
+                this.corrupt4.setAlpha(0);
+                this.corrupt5.setAlpha(0);
+                this.corrupt6.setAlpha(0);
+                this.corrupt7.setAlpha(0);
+                this.corrupt8.setAlpha(0);
+                this.corrupt9.setAlpha(0);
+                this.corrupt10.setAlpha(0);
+                this.corrupt11.setAlpha(0);
+                this.corrupt12.setAlpha(0);
+                this.corrupt13.setAlpha(0);
+                this.corrupt14.setAlpha(0);
+                this.corrupt15.setAlpha(0);
+                this.corrupt16.setAlpha(0);
             },
             onCompleteScope: this
         });
