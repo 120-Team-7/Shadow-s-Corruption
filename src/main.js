@@ -296,11 +296,10 @@ function scaleVectorMagnitude(targetMagnitude, startX, startY, endX, endY) {
 }
 
 function increaseCorruption(amount) {
+    pStats.corruptionGained += amount;
     if(corruption + amount < maxCorruption){
         corruption += amount;
-        pStats.corruptionGained += amount;
     } else {
-        pStats.corruptionGained += maxCorruption - corruption;
         corruption = maxCorruption;
     }
 }

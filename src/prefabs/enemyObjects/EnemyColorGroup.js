@@ -62,4 +62,17 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
         // Shooter(scene, oSpawnX, oSpawnY, state, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup)
         this.add(new Shooter(this.scene, spawnX, spawnY, this.state, changeCondition, redGroup, blueGroup, redBulletGroup, blueBulletGroup));
     }
+
+    // All enemies in group take lethal damage
+    // Crashes game if used too soon after they spawn (careful)
+    nukeEnemies() {
+        this.enemyArray = this.getChildren();
+        if(this.getLength() > 0) {
+            for(let i = 0; i < this.getLength(); i++) {
+                if(this.enemyArray[i].exists) {
+                    this.enemyArray[i].takeDamage(this.enemyArray[i].maxHealth, true);
+                }
+            }
+        }
+    }
 }

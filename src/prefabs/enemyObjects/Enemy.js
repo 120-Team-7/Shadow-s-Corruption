@@ -219,8 +219,12 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 this.timedSwitch.destroy();
             }
             if(this.changeCondition == 'mirror') {
-                this.mirrorTimer.destroy();
-                this.mirrorCD.destroy();
+                if(this.mirroring) {
+                    this.mirrorTimer.destroy();
+                }
+                if(this.mirrorOnCD) {
+                    this.mirrorCD.destroy();
+                }
             }
             this.stunStars.destroy();
             this.stun1.destroy();
@@ -279,7 +283,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     mirrorSwitch() {
         if(this.health > 0 && this.state == playerState && !this.mirrorOnCD) {
-            this.mirrorOnCD = true;
             if(this.mirroring) {
                 this.mirrorTimer.destroy();
             }
@@ -291,6 +294,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 }
             }, null, this);
 
+            this.mirrorOnCD = true;
             this.mirrorCD = this.scene.time.delayedCall(mirrorSwitchCD, function () {
                 this.mirrorOnCD = false;
             }, null, this);

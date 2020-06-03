@@ -22,10 +22,10 @@ class GameOver extends Phaser.Scene {
                 right: 10,
             },
             fixedWidth: 0,
-            // wordWrap: {
-            //     width: (screenWidth/2) - 50,
-            //     useAdvancedWrap: true,
-            // }
+            wordWrap: {
+                width: screenWidth - 20,
+                useAdvancedWrap: true,
+            }
         }
 
         let spacer = 50;
@@ -35,13 +35,15 @@ class GameOver extends Phaser.Scene {
         let rightTextX = centerX + 15;
 
         // Add text
-        if(currScene == 'tutorialScene') {
-            this.completedScene = "tutorial";
-        }
         if(isGameOver) {
             this.add.text(centerX, 50, "Shadow has been banished to the void!", gameOverConfig).setOrigin(0.5, 0.5);
         } else {
-            this.add.text(centerX, 50, "You've completed the " + this.completedScene + "!", gameOverConfig).setOrigin(0.5, 0.5);
+            if(currScene == 'tutorialScene') {
+                this.add.text(centerX, 50, "Tutorial completed!", gameOverConfig).setOrigin(0.5, 0.5);
+            }
+            if(currScene == 'playScene') {
+                this.add.text(centerX, 50, "Level 1 completed! That's all for now!", gameOverConfig).setOrigin(0.5, 0.5);
+            }
         }
         this.add.text(centerX, centerY - 4*spacer, 'Your Statistics ', gameOverConfig).setOrigin(0.5, 0.5);
         gameOverConfig.align = 'left';

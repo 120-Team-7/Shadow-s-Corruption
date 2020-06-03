@@ -151,7 +151,7 @@ class Tutorial extends Phaser.Scene {
                 tutorialNum++;
                 // console.log(tutorialNum);
                 if(tutorialNum == 1) {
-                    this.fadeOutInText("I'll have to leave this cave to continue shaping the Void Frontier.");
+                    this.fadeOutInText("I'll have to leave this cave to continue razing the old world and shaping the new Void Frontier.");
                 }
                 if(tutorialNum == 2) {
                     this.fadeOutInText("SHIFTING between the realms to navigate these old world remnants will have to do for now.");
@@ -159,6 +159,8 @@ class Tutorial extends Phaser.Scene {
                     this.door1_2.toggleOpen();
                     // Highlight right room door
                     game.scene.keys.hudScene.highlightHudElement(screenWidth - 40, centerY - 50, 40, 100, 500);
+                    this.moveShiftObjective = true;
+                    this.objectiveFadeIn.play();
                 }
                 if(tutorialNum == 3) {
                     this.fadeOutInText("I'll make good use of these docile void corrupted slimes.");
@@ -199,10 +201,10 @@ class Tutorial extends Phaser.Scene {
                     this.fadeOutInText("With my orb, I'll have to use the MELEE form to siphon the CORRUPTION from their soul.");
                 }
                 if(tutorialNum == 10) {
-                    this.fadeOutInText("Projectile attacks are distilled into CORRUPTION with MELEE weapons.");
+                    this.fadeOutInText("Their projectile attacks are distilled into CORRUPTION with MELEE weapons.");
                 }
                 if(tutorialNum == 11) {
-                    this.fadeOutInText("The natural decay of CORRUPTION is ever present, so I must regularly deplete these slimey vessels.");
+                    this.fadeOutInText("CORRUPTION naturally decays, and I cannot hold more than five ESSENSES OF CORRUPTION, so I must harvest regularly.");
                     this.canContinue = false;
                     pStats.corruptionGained = 0;
                     this.corruptionGainObjective = true;
@@ -239,7 +241,7 @@ class Tutorial extends Phaser.Scene {
                     this.objectiveFadeIn.play();
                 }
                 if(tutorialNum == 18) {
-                    this.fadeOutInText("CORRUPTION will give me the upperhand in the Void Frontier where the power to shift isn't mine alone.");
+                    this.fadeOutInText("With CORRUPTION, I will reign supreme in the Void Frontier where others have the power to SHIFT.");
                     this.canContinue = false;
                     this.door5_end.toggleOpen();
                     // Highlight right room door
@@ -259,6 +261,9 @@ class Tutorial extends Phaser.Scene {
         this.redEnemyBulletGroup.update();
         this.blueEnemyBulletGroup.update();
 
+        if(this.moveShiftObjective) {
+            this.objectiveTracker("WASD TO MOVE & SHIFT TO PHASE BETWEEN REALMS");
+        }
         if(this.shootingObjective) {
             this.objectiveTracker("(LEFTCLICK) Knives shot: " + pStats.knifeThrown + "/8, Orbs shot: " + pStats.orbShot + "/3");
             if(pStats.knifeThrown >= 8 && pStats.orbShot >= 3) {
@@ -294,8 +299,8 @@ class Tutorial extends Phaser.Scene {
             }
         }
         if(this.corruptionDamageObjective) {
-            this.objectiveTracker("(GAIN CORRUPTION, SHIFT, ATTACK) Corrupted knife damage: " + pStats.knifeCorruptedDamage + "/30, Corrupted orb damage: " + pStats.orbCorruptedDamage + "/30");
-            if(pStats.knifeCorruptedDamage >= 30 && pStats.orbCorruptedDamage >= 30) {
+            this.objectiveTracker("(GAIN CORRUPTION, SHIFT, ATTACK) Corrupted knife damage: " + pStats.knifeCorruptedDamage + "/20, Corrupted orb damage: " + pStats.orbCorruptedDamage + "/30");
+            if(pStats.knifeCorruptedDamage >= 20 && pStats.orbCorruptedDamage >= 30) {
                 this.corruptionDamageObjective = false;
                 this.objectiveComplete(false);
                 this.door4_5.toggleOpen();
@@ -329,6 +334,8 @@ class Tutorial extends Phaser.Scene {
                     if(!this.room2Spawned && player.currentRoom == 1) {
                         this.canContinue = true;
                         this.spawnEnemies2();
+                        this.moveShiftObjective = false;
+                        this.objectiveComplete(true);
                     }
                     if(!this.room3Spawned && player.currentRoom == 2) {
                         this.canContinue = true;
