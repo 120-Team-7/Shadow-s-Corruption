@@ -163,10 +163,10 @@ class Play extends Phaser.Scene {
     this.inFight = true;
 
     // Nuke all enemies
-    this.input.keyboard.on('keydown-N', function () {
-        this.redEnemyGroup.nukeEnemies();
-        this.blueEnemyGroup.nukeEnemies();
-    }, this);
+    // this.input.keyboard.on('keydown-N', function () {
+    //     this.redEnemyGroup.nukeEnemies();
+    //     this.blueEnemyGroup.nukeEnemies();
+    // }, this);
 
     }
 
