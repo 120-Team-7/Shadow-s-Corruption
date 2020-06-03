@@ -219,6 +219,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
     update() {
+        if(playerState == 0) {
+            if(usingCorruption) {
+                this.scene.input.setDefaultCursor('url(assets/images/corruptRedRet.png), pointer');
+            } else {
+                this.scene.input.setDefaultCursor('url(assets/images/redReticle.png), pointer');
+            }
+        } else {
+            if(usingCorruption) {
+                this.scene.input.setDefaultCursor('url(assets/images/corruptBlueRet.png), pointer');
+            } else {
+                this.scene.input.setDefaultCursor('url(assets/images/blueReticle.png), pointer');
+            }
+        }
+
         this.getRoom();
         this.scene.shiftCircle.setPosition(this.x, this.y);
         this.scene.corruptCircle.setPosition(this.x, this.y);

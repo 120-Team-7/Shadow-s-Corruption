@@ -54,6 +54,8 @@ class Load extends Phaser.Scene {
         this.load.image('redSlimeball', './assets/images/redSlimeball.png');
         this.load.image('blueSlimeball', './assets/images/blueSlimeball.png');
         this.load.image('stunParticle', './assets/images/stunParticle.png');
+
+        this.load.image('redReticle', './assets/images/redReticle.png');
         
         // Load audio assets
         this.load.audio('buttonSound', './assets/sounds/buttonsound.mp3');
@@ -70,10 +72,13 @@ class Load extends Phaser.Scene {
         this.load.audio('corruptionExpire', './assets/sounds/corruptionExpire.mp3');
         this.load.audio('corruptedKnife', './assets/sounds/corruptedKnife.mp3');
         this.load.audio('corruptedOrb', './assets/sounds/corruptedOrb.mp3');
+        this.load.audio('corruptKnifeHitmarker', './assets/sounds/corruptedKnifeHitmarker.mp3');
+        this.load.audio('corruptOrbHitmarker', './assets/sounds/corruptedOrbHitmarker.mp3');
+
 
         //tile maps
         // this.load.path = "./assets/tilemap/";
-        this.load.tilemapTiledJSON("level","./assets/tilemap/temp6.json")
+        this.load.tilemapTiledJSON("level","./assets/tilemap/tilemap.json")
         this.load.tilemapTiledJSON("arenaTilemap", "./assets/tilemap/arenaTileMap.json")
         this.load.tilemapTiledJSON("tutorialTilemap", "./assets/tilemap/linearTutorial.json")
         this.load.tilemapTiledJSON("practiceMap", "./assets/tilemap/practiceMap.json")

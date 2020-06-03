@@ -31,7 +31,13 @@ class OrbGroup extends Phaser.GameObjects.Group {
                     enemy.orbInvulnTimer = group.scene.time.delayedCall(orbShotInvulnDuration, function () {
                         enemy.orbDamageInvuln = false;
                     }, null, this.scene);
-                    orb.scene.sound.play('orbHitmarker');
+
+                    if(orb.corrupted) {
+                        orb.scene.sound.play('corruptOrbHitmarker');
+                    } else {
+                        orb.scene.sound.play('orbHitmarker');
+                    }
+
                 // Idle orb blocking
                 } else if (!enemy.orbBlockInvuln) {
                     enemy.orbBlockInvuln = true;
