@@ -5,9 +5,6 @@ class Play extends Phaser.Scene {
 
 
     create() {
-        this.keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-        this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-
         this.sceneKey = 'playScene';
         currScene = this.sceneKey;
 
@@ -178,18 +175,6 @@ class Play extends Phaser.Scene {
         this.blueEnemyGroup.update();
         this.redEnemyBulletGroup.update();
         this.blueEnemyBulletGroup.update();
-
-        if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
-            if(!isGameOver) {
-                isPaused = true;
-                this.scene.pause(currScene);
-                this.scene.pause('hudScene');
-                this.scene.setVisible(false, 'hudScene');
-                this.scene.run('menuScene');
-                this.scene.swapPosition('menuScene', currScene);
-                this.scene.setVisible(true, 'menuScene');
-            }
-        }
 
         if(this.inFight) {
             if(!this.clearedEnemies1 && pStats.enemiesKilled == this.killGoal) {

@@ -35,6 +35,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         keyDebug = scene.input.keyboard.addKey('B');
         keySuicide = scene.input.keyboard.addKey('K');
         keyGodmode = scene.input.keyboard.addKey('PLUS');
+
+        this.keyStart = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        this.keyPause = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
         
         this.corruptionExpiring = false;
 
@@ -81,15 +85,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.damageText = scene.add.text(this.x, this.y - 40, "", this.damageTextConfig).setOrigin(0.5, 0.5).setDepth(1000);
-
-
-        // this.corruptionSiphon = corruptionParticles.createGravityWell({
-        //     x: this.x,
-        //     y: this.y,
-        //     power: 1,       // strength of grav force (larger = stronger)
-        //     epsilon: screenWidth,   // min. distance for which grav force is calculated
-        //     gravity: 3000,    // grav. force of this well (creates "whipping" effect)
-        // });
 
         this.emitCircle = new Phaser.Geom.Circle(this.x, this.y, 20);
 
@@ -215,21 +210,28 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             },
             onCompleteScope: this
         });
+
+        this.playerCursor = scene.add.sprite(0, 0, 'redReticle').setOrigin(0.5, 0.5).setDepth(10000);
     }
 
 
     update() {
+        this.playerCursor.setPosition(pointer.worldX, pointer.worldY);
         if(playerState == 0) {
             if(usingCorruption) {
-                this.scene.input.setDefaultCursor('url(assets/images/corruptRedRet.png), pointer');
+                this.playerCursor.setTexture('corruptRedRet');
+                // this.scene.input.setDefaultCursor('url(assets/images/corruptRedRet.png), pointer');
             } else {
-                this.scene.input.setDefaultCursor('url(assets/images/redReticle.png), pointer');
+                this.playerCursor.setTexture('redReticle');
+                // this.scene.input.setDefaultCursor('url(assets/images/redReticle.png), pointer');
             }
         } else {
             if(usingCorruption) {
-                this.scene.input.setDefaultCursor('url(assets/images/corruptBlueRet.png), pointer');
+                this.playerCursor.setTexture('corruptBlueRet');
+                // this.scene.input.setDefaultCursor('url(assets/images/corruptBlueRet.png), pointer');
             } else {
-                this.scene.input.setDefaultCursor('url(assets/images/blueReticle.png), pointer');
+                this.playerCursor.setTexture('blueReticle');
+                // this.scene.input.setDefaultCursor('url(assets/images/blueReticle.png), pointer');
             }
         }
 
@@ -422,6 +424,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.hudScene.switchCDImage.setAlpha(1);
                 this.hudScene.switchCooldownText.setText("");
                 this.hudScene.switchCooldownBox.setSize(cooldownBoxWidth, cooldownBoxHeight);
+            }
+
+            if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
+                if(!isGameOver) {
+                    this.playerCursor.setVisible(false);
+                    isPaused = true;
+                    this.scene.scene.pause(currScene);
+                    this.scene.scene.pause('hudScene');
+                    this.scene.scene.setVisible(false, 'hudScene');
+                    this.scene.scene.run('menuScene');
+                    this.scene.scene.swapPosition('menuScene', currScene);
+                    this.scene.scene.setVisible(true, 'menuScene');
+                }
             }
 
             if (Phaser.Input.Keyboard.JustDown(keyDebug)) {

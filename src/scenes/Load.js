@@ -4,6 +4,7 @@ class Load extends Phaser.Scene {
     }
 
     preload() {
+        this.sys.canvas.style.cursor = 'none';
         this.loadingText = this.add.text(screenWidth, screenHeight, 'LOADING...', {
             fontFamily: 'Courier',
             fontSize: '40px',
@@ -31,6 +32,11 @@ class Load extends Phaser.Scene {
 
         this.load.image('redPlayer', './assets/images/redPlayer.png');
         this.load.image('bluePlayer', './assets/images/bluePlayer.png');
+
+        this.load.image('corruptRedRet', './assets/images/corruptRedRet.png');
+        this.load.image('redReticle', './assets/images/redReticle.png');
+        this.load.image('corruptBlueRet', './assets/images/corruptBlueRet.png');
+        this.load.image('blueReticle', './assets/images/blueReticle.png');
 
         this.load.image('heart', './assets/images/heart.png');
         this.load.image('essCorruptionDim', './assets/images/essCorruptionDim.png');

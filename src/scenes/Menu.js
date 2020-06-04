@@ -220,6 +220,7 @@ class Menu extends Phaser.Scene {
                 this.scene.setVisible(true, 'hudScene');
                 this.scene.pause('menuScene');
                 this.scene.setVisible(false, 'menuScene');
+                player.playerCursor.setVisible(true);
             }
         }
 

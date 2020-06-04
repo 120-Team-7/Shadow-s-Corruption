@@ -4,9 +4,6 @@ class Arena extends Phaser.Scene {
     }
 
     create() {
-        this.keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-        this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-
         this.sceneKey = 'arenaScene';
         currScene = this.sceneKey;
         this.spawnedEnemies = false;
@@ -216,17 +213,6 @@ class Arena extends Phaser.Scene {
         this.redEnemyBulletGroup.update();
         this.blueEnemyBulletGroup.update();
 
-        if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
-            if(!isGameOver) {
-                isPaused = true;
-                this.scene.pause(currScene);
-                this.scene.pause('hudScene');
-                this.scene.setVisible(false, 'hudScene');
-                this.scene.run('menuScene');
-                this.scene.swapPosition('menuScene', currScene);
-                this.scene.setVisible(true, 'menuScene');
-            }
-        }
         if(!isPaused && this.spawnedEnemies) {
             this.arenaClock.paused = false;
         }

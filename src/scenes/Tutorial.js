@@ -4,9 +4,6 @@ class Tutorial extends Phaser.Scene {
     }
 
     create() {
-        this.keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-        this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-
         this.sceneKey = 'tutorialScene';
         currScene = this.sceneKey;
 
@@ -315,17 +312,6 @@ class Tutorial extends Phaser.Scene {
             }
         }
 
-        if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
-            if(!isGameOver) {
-                isPaused = true;
-                this.scene.pause(currScene);
-                this.scene.pause('hudScene');
-                this.scene.setVisible(false, 'hudScene');
-                this.scene.run('menuScene');
-                this.scene.swapPosition('menuScene', currScene);
-                this.scene.setVisible(true, 'menuScene');
-            }
-        }
         if (player.roomChange) {
             this.cameras.main.fadeOut(250, 0, 0, 0, function(camera, progress) {
                 player.canMove = false;
