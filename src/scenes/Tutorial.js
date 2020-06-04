@@ -69,7 +69,7 @@ class Tutorial extends Phaser.Scene {
             }
             if (object.name === 'End') {
                 // Endpoint(scene, oSpawnX, oSpawnY, sceneDestination)
-                this.endpoint = new Endpoint(this, object.x, object.y, "gameOverScene");
+                this.endpoint = new Endpoint(this, object.x, object.y, "gameOverScene", "x");
             }
         }, this);
 
@@ -237,7 +237,6 @@ class Tutorial extends Phaser.Scene {
                 if(tutorialNum == 17) {
                     this.fadeOutInText("It seems these slimes haven't been fully corrupted, yet they each have their own method of phasing between realms.");
                     this.canContinue = false;
-                    this.changingEnemiesObjective = true;
                     this.objectiveFadeIn.play();
                 }
                 if(tutorialNum == 18) {
@@ -347,6 +346,7 @@ class Tutorial extends Phaser.Scene {
                         player.canUseCorruption = true;
                     }
                     if(!this.room5Spawned && player.currentRoom == 4) {
+                        this.changingEnemiesObjective = true;
                         this.canContinue = true;
                         this.spawnEnemies5();
                     }

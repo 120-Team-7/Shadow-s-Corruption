@@ -27,6 +27,7 @@ class Door extends Phaser.Physics.Arcade.Sprite {
         if(this.isOpen) {
             this.toggleOpen();
         }
+        this.close();
     }
 
     toggleOpen() {

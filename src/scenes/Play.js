@@ -106,7 +106,7 @@ class Play extends Phaser.Scene {
             }
             if (object.name === 'End') {
                 // Endpoint(scene, oSpawnX, oSpawnY, sceneDestination)
-                this.endpoint = new Endpoint(this, object.x, object.y, "gameOverScene");
+                this.endpoint = new Endpoint(this, object.x, object.y, "gameOverScene", "y");
             }
         
         }, this);
@@ -167,7 +167,6 @@ class Play extends Phaser.Scene {
     //     this.redEnemyGroup.nukeEnemies();
     //     this.blueEnemyGroup.nukeEnemies();
     // }, this);
-
     }
 
     update() {

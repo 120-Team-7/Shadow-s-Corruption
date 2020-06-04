@@ -87,7 +87,6 @@ class Menu extends Phaser.Scene {
             if(isGameOver) {
                 if(!this.selectingScene) {
                     this.selectingScene = true;
-                    console.log("selecting");
                 } else {
                     if(currScene != 'tutorialScene') {
                         nextScene = 'tutorialScene';

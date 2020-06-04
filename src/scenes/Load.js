@@ -48,6 +48,7 @@ class Load extends Phaser.Scene {
         this.load.image('redObstacle', './assets/images/RedObstacle.png');
         this.load.image('blueObstacle', './assets/images/BlueObstacle.png');
         this.load.image('door', './assets/images/door.png');
+        this.load.image('endDoor', './assets/images/EndDoor.png');
 
         this.load.image('redChaser', './assets/images/redChaser.png');
         this.load.image('blueChaser', './assets/images/blueChaser.png');
@@ -148,8 +149,8 @@ class Load extends Phaser.Scene {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             // this.sound.play('buttonsound');
             this.time.delayedCall(1000, function () {
-                this.scene.start('menuScene');
-                // this.scene.start('startCinematicScene');
+                // this.scene.start('menuScene');
+                this.scene.start('startCinematicScene');
             }, null, this);
         }
     }
