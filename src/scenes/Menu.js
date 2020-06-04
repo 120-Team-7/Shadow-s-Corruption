@@ -7,6 +7,7 @@ class Menu extends Phaser.Scene {
         this.keyStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         this.keyInstructions = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
         this.keyMute = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+        this.keyMuteBGM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.COMMA);
 
         let menuConfig = {
             fontFamily: 'Courier',
@@ -45,10 +46,10 @@ class Menu extends Phaser.Scene {
         this.tutorialSelect = this.add.text(centerX, centerY + 2*textSpacer, 'Tutorial: press 1', menuConfig).setOrigin(0.5, 0.5);
         this.playSelect = this.add.text(centerX, centerY + 3*textSpacer, 'Play: press 2', menuConfig).setOrigin(0.5, 0.5);
         this.arenaSelect = this.add.text(centerX, centerY + 4*textSpacer, 'Arena: press 3', menuConfig).setOrigin(0.5, 0.5);
-        this.startText = this.add.text(centerX, centerY + 5*textSpacer, 'Press ENTER to start selected', menuConfig).setOrigin(0.5, 0.5);
+        this.startText = this.add.text(centerX, centerY + 5*textSpacer, 'Press ENTER to start selected', menuConfig).setOrigin(0.5, 0.5).setAlpha(0);
         this.restartText = this.add.text(centerX, centerY + 3*textSpacer, 'Press R to return to main menu', menuConfig).setOrigin(0.5, 0.5);
-        this.selectSceneText = this.add.text(centerX, centerY + 3*textSpacer, 'Level select: press 1', menuConfig).setOrigin(0.5, 0.5);
-        this.creditsSceneText = this.add.text(centerX, centerY + 2*textSpacer, 'Credits: press C', menuConfig).setOrigin(0.5, 0.5);
+        this.selectSceneText = this.add.text(centerX, centerY + 2*textSpacer, 'Level select: press 1', menuConfig).setOrigin(0.5, 0.5);
+        this.creditsSceneText = this.add.text(centerX, centerY + 3*textSpacer, 'Credits: press C', menuConfig).setOrigin(0.5, 0.5);
 
         this.corruptionLeft = corruptionParticles.createEmitter({
             x: -20,
@@ -87,6 +88,7 @@ class Menu extends Phaser.Scene {
             if(isGameOver) {
                 if(!this.selectingScene) {
                     this.selectingScene = true;
+                    this.startText.setAlpha(1);
                 } else {
                     if(currScene != 'tutorialScene') {
                         nextScene = 'tutorialScene';
@@ -152,7 +154,7 @@ class Menu extends Phaser.Scene {
             }
         }, this);
 
-        this.cameras.main.fadeIn(3000, 0, 0, 0);
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
     }
 
     update() {
@@ -213,8 +215,9 @@ class Menu extends Phaser.Scene {
                 this.scene.setVisible(false, 'menuScene');
 
             } else if(isPaused) {
+                gameplayBGM.resume();
                 isPaused = false;
-                this.scene.swapPosition('menuScene', currScene);
+                this.scene.sendToBack('menuScene', currScene);
                 this.scene.run(currScene);
                 this.scene.run('hudScene');
                 this.scene.setVisible(true, 'hudScene');
@@ -229,6 +232,14 @@ class Menu extends Phaser.Scene {
                 game.sound.mute = true;
             } else {
                 game.sound.mute = false;
+            }
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(this.keyMuteBGM)) {
+            if(gameplayBGM.mute == false){
+                gameplayBGM.mute = true;
+            } else {
+                gameplayBGM.mute = false;
             }
         }
     }

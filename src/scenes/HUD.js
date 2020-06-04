@@ -18,6 +18,8 @@ class HUD extends Phaser.Scene {
             },
             fixedWidth: 0
         }
+        gameplayBGM.volume = BGMVolume;
+        gameplayBGM.play();
 
         // HUD ---------------------------------------------------------------------------------
         this.highlightBox = this.add.rectangle(screenWidth, screenHeight, 0, 0, black).setOrigin(0.5, 0.5).setAlpha(0);

@@ -66,6 +66,7 @@ class Load extends Phaser.Scene {
         
         // Load audio assets
         this.load.audio('buttonSound', './assets/sounds/buttonsound.mp3');
+        this.load.audio('gameplayBGM', './assets/sounds/Bgm.wav');
         this.load.audio('knifeThrow', './assets/sounds/knife.mp3');
         this.load.audio('knifeHitmarker', './assets/sounds/knifeHitmarker.mp3');
         this.load.audio('switch', './assets/sounds/switch.mp3');
@@ -105,13 +106,12 @@ class Load extends Phaser.Scene {
             duration: 2000,
         });
 
-
-        // knifeThrowSound = game.sound.add('knifeThrow', { 
-        //     mute: false,
-        //     volume: globalVolume,
-        //     rate: 1,
-        //     loop: false 
-        // });
+        gameplayBGM = game.sound.add('gameplayBGM', { 
+            mute: false,
+            volume: BGMVolume,
+            rate: 1,
+            loop: true 
+        });
 
         // orbShootSound = game.sound.add('orbShoot', { 
         //     mute: false,
@@ -152,9 +152,9 @@ class Load extends Phaser.Scene {
     update() {
         // Go to menu scene
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
-            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            this.cameras.main.fadeOut(500, 0, 0, 0);
             // this.sound.play('buttonsound');
-            this.time.delayedCall(1000, function () {
+            this.time.delayedCall(500, function () {
                 // this.scene.start('menuScene');
                 this.scene.start('startCinematicScene');
             }, null, this);

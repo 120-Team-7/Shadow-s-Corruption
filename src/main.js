@@ -98,8 +98,9 @@ var enemyStrokeThickness = 2;
 
 // Audio
 var globalVolume = 1;
-var knifeThrowSound;
-var orbShootSound;
+// var knifeThrowSound;
+// var orbShootSound;
+var gameplayBGM;
 
 // Particles;
 var corruptionParticles;
@@ -271,6 +272,7 @@ var isGodmode = false;
 var keyStart, keyInstructions, keyMute, keyCredits;
 
 // Audio Settings
+var BGMVolume = 0.25;
 var globalVolume = 1;
 var normalSoundRate = 1;
 var volumeChange = 0.1;

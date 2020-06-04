@@ -428,13 +428,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
                 if(!isGameOver) {
+                    gameplayBGM.pause();
                     this.playerCursor.setVisible(false);
                     isPaused = true;
                     this.scene.scene.pause(currScene);
                     this.scene.scene.pause('hudScene');
                     this.scene.scene.setVisible(false, 'hudScene');
                     this.scene.scene.run('menuScene');
-                    this.scene.scene.swapPosition('menuScene', currScene);
+                    this.scene.scene.bringToTop('menuScene');
                     this.scene.scene.setVisible(true, 'menuScene');
                 }
             }
@@ -506,6 +507,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.corruptionExpireTimer.destroy();
                 }
                 // Effects
+                this.scene.tweens.add({
+                    targets: gameplayBGM,
+                    volume: 0,
+                    ease: 'Linear',
+                    duration: 3000,
+                });
+                // gameplayBGM.stop();
                 this.corrupt1.setAlpha(0);
                 this.corrupt2.setAlpha(0);
                 this.corrupt3.setAlpha(0);

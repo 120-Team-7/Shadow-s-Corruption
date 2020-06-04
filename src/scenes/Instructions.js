@@ -5,6 +5,8 @@ class Instructions extends Phaser.Scene {
 
     create() {
         keyInstructions = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
+        this.keyMute = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+        this.keyMuteBGM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.COMMA);
 
         this.cameras.main.setBackgroundColor('#000000');
 
@@ -44,7 +46,7 @@ class Instructions extends Phaser.Scene {
         this.add.text(centerX, centerY - 20 - 2*textSpacer, 'WASD to move        SHIFT to phase between realms', instructionsConfig).setOrigin(0.5, 0.5);
         this.add.text(centerX, centerY - 20 - textSpacer, 'MOUSE to aim, LEFT MOUSE BUTTON to shoot', instructionsConfig).setOrigin(0.5, 0.5);
         this.add.text(centerX, centerY - 20, 'I return to menu, ESC or ENTER to pause', instructionsConfig).setOrigin(0.5, 0.5);
-        this.add.text(centerX, centerY - 20 + textSpacer, 'M to toggle mute, K to reset', instructionsConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, centerY - 20 + textSpacer, 'M to mute all, COMMA mute BGM, K to reset', instructionsConfig).setOrigin(0.5, 0.5);
 
         // HUD 
         this.borderBox1 = this.add.rectangle(0, screenHeight - 72, 140, 72, black).setOrigin(0, 0).setAlpha(0.8);
@@ -113,6 +115,22 @@ class Instructions extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyInstructions)) {
             this.scene.stop('instructionsScene');
             this.scene.run('menuScene');
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(this.keyMute)) {
+            if(game.sound.mute == false){
+                game.sound.mute = true;
+            } else {
+                game.sound.mute = false;
+            }
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(this.keyMuteBGM)) {
+            if(gameplayBGM.mute == false){
+                gameplayBGM.mute = true;
+            } else {
+                gameplayBGM.mute = false;
+            }
         }
     }
 }
