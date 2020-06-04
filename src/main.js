@@ -29,7 +29,7 @@ let config = {
             debug: true,
         }
     },
-    scene: [ Load, StartCinematic, Menu, Instructions, Tutorial, Practice, Play, Arena, HUD, GameOver ]
+    scene: [ Load, StartCinematic, Menu, Instructions, Credits, Tutorial, Practice, Play, Arena, HUD, GameOver ]
 }
 
 // Define game
@@ -268,7 +268,7 @@ var keyDebug, keySuicide, keyGodmode;
 var isGodmode = false;
 
 // Menu
-var keyStart, keyInstructions, keyMute;
+var keyStart, keyInstructions, keyMute, keyCredits;
 
 // Audio Settings
 var globalVolume = 1;

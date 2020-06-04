@@ -20,7 +20,7 @@ class HUD extends Phaser.Scene {
         }
 
         // HUD ---------------------------------------------------------------------------------
-        this.highlightBox = this.add.rectangle(screenWidth, screenHeight, 0, 0, orchid).setOrigin(0.5, 0.5).setAlpha(0);
+        this.highlightBox = this.add.rectangle(screenWidth, screenHeight, 0, 0, black).setOrigin(0.5, 0.5).setAlpha(0);
         this.borderBox1 = this.add.rectangle(0, screenHeight - 72, 140, 72, black).setOrigin(0, 0).setAlpha(0.8);
 
         this.corruptionCooldownBox = this.add.rectangle(corruptionExpireX, corruptionExpireY, expireBoxWidth, expireBoxHeight, playerPurple).setOrigin(0.5, 0.5).setAlpha(1);

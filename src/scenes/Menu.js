@@ -31,6 +31,7 @@ class Menu extends Phaser.Scene {
         let scene = this;
         currScene = null;
         nextScene = "next";
+        this.selectingScene = false;
 
         corruptionParticles = this.add.particles('corruptionParticle');
         // this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.8);
@@ -38,7 +39,6 @@ class Menu extends Phaser.Scene {
         this.title = this.add.sprite(centerX, 20, 'title').setOrigin(0.5, 0);
 
         // Add menu screen text
-        // this.add.text(centerX, 50, "Shadow's Corruption", menuConfig).setOrigin(0.5, 0.5);
         menuConfig.fontSize = '35px';
         this.add.text(centerX, centerY, 'Press I for controls', menuConfig).setOrigin(0.5, 0.5);
         this.difficultyText = this.add.text(centerX, centerY + textSpacer, 'Press E for EASY, Press N for NORMAL', menuConfig).setOrigin(0.5, 0.5);
@@ -47,6 +47,8 @@ class Menu extends Phaser.Scene {
         this.arenaSelect = this.add.text(centerX, centerY + 4*textSpacer, 'Arena: press 3', menuConfig).setOrigin(0.5, 0.5);
         this.startText = this.add.text(centerX, centerY + 5*textSpacer, 'Press ENTER to start selected', menuConfig).setOrigin(0.5, 0.5);
         this.restartText = this.add.text(centerX, centerY + 3*textSpacer, 'Press R to return to main menu', menuConfig).setOrigin(0.5, 0.5);
+        this.selectSceneText = this.add.text(centerX, centerY + 3*textSpacer, 'Level select: press 1', menuConfig).setOrigin(0.5, 0.5);
+        this.creditsSceneText = this.add.text(centerX, centerY + 2*textSpacer, 'Credits: press C', menuConfig).setOrigin(0.5, 0.5);
 
         this.corruptionLeft = corruptionParticles.createEmitter({
             x: -20,
@@ -82,18 +84,23 @@ class Menu extends Phaser.Scene {
         });
 
         this.input.keyboard.on('keydown-ONE', function () {
-            if(isGameOver || isPaused) {
-                if(currScene != 'tutorialScene') {
-                    nextScene = 'tutorialScene';
+            if(isGameOver) {
+                if(!this.selectingScene) {
+                    this.selectingScene = true;
+                    console.log("selecting");
+                } else {
+                    if(currScene != 'tutorialScene') {
+                        nextScene = 'tutorialScene';
+                    }
+                    this.tutorialSelect.setText('[Tutorial]: press 1');
+                    this.playSelect.setText('Play: press 2');
+                    this.arenaSelect.setText('Arena: press 3');
                 }
-                this.tutorialSelect.setText('[Tutorial]: press 1');
-                this.playSelect.setText('Play: press 2');
-                this.arenaSelect.setText('Arena: press 3');
             }
         }, this);
 
         this.input.keyboard.on('keydown-TWO', function () {
-            if(isGameOver || isPaused) {
+            if(isGameOver && this.selectingScene) {
                 if(currScene != 'playScene') {
                     nextScene = 'playScene';
                 }
@@ -104,13 +111,21 @@ class Menu extends Phaser.Scene {
         }, this);
 
         this.input.keyboard.on('keydown-THREE', function () {
-            if(isGameOver || isPaused) {
+            if(isGameOver && this.selectingScene) {
                 if(currScene != 'arenaScene') {
                     nextScene = 'arenaScene';
                 }
                 this.tutorialSelect.setText('Tutorial: press 1');
                 this.playSelect.setText('Play: press 2');
                 this.arenaSelect.setText('[Arena]: press 3');
+            }
+        }, this);
+
+        this.input.keyboard.on('keydown-C', function () {
+            if(isGameOver && !this.selectingScene) {
+                this.scene.run('creditsScene');
+                this.scene.pause('menuScene');
+                this.scene.bringToTop('creditsScene');
             }
         }, this);
 
@@ -149,6 +164,7 @@ class Menu extends Phaser.Scene {
         }
 
         if(isPaused) {
+            this.selectSceneText.setAlpha(0);
             this.restartText.setAlpha(1);
             this.tutorialSelect.setAlpha(0);
             this.playSelect.setAlpha(0);
@@ -158,10 +174,27 @@ class Menu extends Phaser.Scene {
         } else {
             this.restartText.setAlpha(0);
             this.shadowBackground.setAlpha(0);
-            this.startText.setText("Press ENTER to start");
+            this.startText.setText("Press ENTER to start selected level");
+        }
+        
+        if(isGameOver) {
+            if(!this.selectingScene) {
+                this.creditsSceneText.setAlpha(1);
+                this.selectSceneText.setAlpha(1);
+                this.tutorialSelect.setAlpha(0);
+                this.playSelect.setAlpha(0);
+                this.arenaSelect.setAlpha(0);
+            } else {
+                this.creditsSceneText.setAlpha(0);
+                this.selectSceneText.setAlpha(0);
+                this.tutorialSelect.setAlpha(1);
+                this.playSelect.setAlpha(1);
+                this.arenaSelect.setAlpha(1);
+            }
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.keyStart) && nextScene != "next") {
+            this.selectingScene = false;
             this.corruptionRight.remove();
             this.corruptionLeft.remove();
             if(isGameOver && currScene != nextScene) {

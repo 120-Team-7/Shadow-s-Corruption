@@ -191,8 +191,6 @@ class Tutorial extends Phaser.Scene {
                 }
                 if(tutorialNum == 7) {
                     this.fadeOutInText("With such a juicy assortment of minions, I must gather CORRUPTION.");
-                    // Highlight corruption counter
-                    game.scene.keys.hudScene.highlightHudElement(centerX - 220, screenHeight - 70, 440, 60, 5000);
                 }
                 if(tutorialNum == 8) {
                     this.fadeOutInText("With my knife, I can easily extract CORRUPTION from corporeal beings.");
@@ -205,6 +203,8 @@ class Tutorial extends Phaser.Scene {
                 }
                 if(tutorialNum == 11) {
                     this.fadeOutInText("CORRUPTION naturally decays, and I cannot hold more than five ESSENSES OF CORRUPTION, so I must harvest regularly.");
+                    // Highlight corruption counter
+                    game.scene.keys.hudScene.highlightHudElement(centerX - 220, screenHeight - 70, 440, 60, 5000);
                     this.canContinue = false;
                     pStats.corruptionGained = 0;
                     this.corruptionGainObjective = true;
@@ -452,16 +452,37 @@ class Tutorial extends Phaser.Scene {
     }
     spawnEnemies5() {
         this.room5Spawned = true;
+        let tutorialConfig = {
+            fontFamily: 'Courier',
+            fontSize: '25px',
+            color: '#000000',
+            stroke: '#8B008B',
+            strokeThickness: 1,
+            align: 'center',
+            padding: {
+                top: 10,
+                bottom: 10,
+                left: 0,
+                right: 0,
+            },
+            wordWrap: {
+                width: screenWidth,
+                useAdvancedWrap: true,
+            }
+        }
         this.map.findObject('Spawns5', function(object) {
             if (object.name === 'Slime5_1') {
                 //addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
                 this.blueEnemyGroup.addChaser(object.x, object.y, "timed", this.redEnemyGroup, this.blueEnemyGroup);
+                this.add.text(object.x, object.y - 105, 'Timer', tutorialConfig).setOrigin(0.5, 0);
             }
             if (object.name === 'Slime5_2') {
                 this.redEnemyGroup.addChaser(object.x, object.y, "damaged", this.redEnemyGroup, this.blueEnemyGroup);
+                this.add.text(object.x, object.y - 105, 'Damage', tutorialConfig).setOrigin(0.5, 0);
             }
             if (object.name === 'Slime5_3') {
-                this.blueEnemyGroup.addChaser(object.x, object.y, "mirror", this.redEnemyGroup, this.blueEnemyGroup);        
+                this.blueEnemyGroup.addChaser(object.x, object.y, "mirror", this.redEnemyGroup, this.blueEnemyGroup);
+                this.add.text(object.x, object.y - 105, 'Mirror', tutorialConfig).setOrigin(0.5, 0);        
             }
         }, this);
     }

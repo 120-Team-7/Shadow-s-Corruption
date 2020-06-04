@@ -34,6 +34,9 @@ class Arena extends Phaser.Scene {
                 useAdvancedWrap: true,
             }
         }
+
+        // Initialize play objects ----------------------------------------------------------------------------------------------------
+
         corruptionParticles = this.add.particles('corruptionParticle');
         corruptionParticles.setDepth(500);
 
@@ -77,13 +80,8 @@ class Arena extends Phaser.Scene {
                 }
         }, this);
 
-
-        // Initialize play objects ----------------------------------------------------------------------------------------------------
-
         // Pointer
         pointer = this.input.activePointer;
-
-
 
         // EnemyColorGroup(scene, state, obstacleGroup)
         this.redEnemyGroup = new EnemyColorGroup(this, 0, this.redGroup);
@@ -119,7 +117,6 @@ class Arena extends Phaser.Scene {
         this.startSpawning = this.input.keyboard.on('keydown-SPACE', function () {
             if(!this.spawnedEnemies) {
                 this.enemyCount = 0;
-                playConfig.backgroundColor = null;
                 this.timeElapsed = this.add.text(centerX + 200, 32, 'Time: 0', playConfig).setOrigin(0.5, 0);
                 this.arenaClock = this.time.addEvent({
                     delay: 1000, 
