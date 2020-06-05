@@ -286,7 +286,7 @@ class Play extends Phaser.Scene {
         this.map.findObject('Objects', function(object) {
             if (object.type === 'Spawn') {
                 if (object.name === 'Slime') {
-                    this.blueEnemyGroup.addShooter(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+                    this.redEnemyGroup.addShooter(object.x, object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
                     //this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
                 }
             }

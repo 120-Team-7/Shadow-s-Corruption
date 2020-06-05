@@ -4,6 +4,22 @@ class Practice extends Phaser.Scene {
     }
 
     preload () {
+        this.loadingText = this.add.text(screenWidth, screenHeight, 'LOADING...', {
+            fontFamily: 'Courier',
+            fontSize: '40px',
+            color: '#8B008B',
+            align: 'center',
+            stroke: '#000000',
+            strokeThickness: strokeThickness,
+        }).setOrigin(1, 1);
+        this.tweens.add({
+            targets: this.loadingText,
+            alpha: { from: 1, to: 0.25},
+            ease: 'Sine.easeInOut',
+            duration: 1000,
+            yoyo: true,
+            loop: -1,
+        });
         this.load.video('stunLocking', './assets/videos/StunLocking.mp4');
         this.load.video('meleeKnife', './assets/videos/MeleeKnifeKill.mp4');
         this.load.video('orbDouble', './assets/videos/OrbDouble.mp4');
@@ -131,6 +147,7 @@ class Practice extends Phaser.Scene {
         //     tutorialNum = 4;
         // }, this);
         
+        this.loadingText.destroy();
     }
 
     update() {

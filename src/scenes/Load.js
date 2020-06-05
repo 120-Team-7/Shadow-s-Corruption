@@ -13,6 +13,14 @@ class Load extends Phaser.Scene {
             stroke: '#000000',
             strokeThickness: strokeThickness,
         }).setOrigin(1, 1);
+        this.tweens.add({
+            targets: this.loadingText,
+            alpha: { from: 1, to: 0.25},
+            ease: 'Sine.easeInOut',
+            duration: 1000,
+            yoyo: true,
+            loop: -1,
+        });
         // Load image assets
         this.load.image('titleSplash', './assets/images/titleSplash.png');
         this.load.image('title', './assets/images/title.png');
@@ -113,14 +121,6 @@ class Load extends Phaser.Scene {
             loop: true 
         });
 
-        // orbShootSound = game.sound.add('orbShoot', { 
-        //     mute: false,
-        //     volume: 0.5,
-        //     rate: 1,
-        //     loop: false 
-        // });
-
-        this.loadingText.destroy();
         this.continueText = this.add.text(screenWidth, screenHeight, 'Press       to continue', {
             fontFamily: 'Courier',
             fontSize: '40px',
@@ -147,7 +147,7 @@ class Load extends Phaser.Scene {
             ease: 'Quart.easeIn',
             duration: 3500,
         });
-
+        this.loadingText.destroy();
     }
     update() {
         // Go to menu scene
