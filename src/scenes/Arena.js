@@ -114,16 +114,16 @@ class Arena extends Phaser.Scene {
         this.startSpawning = this.input.keyboard.on('keydown-SPACE', function () {
             if(!this.spawnedEnemies) {
                 this.enemyCount = 0;
-                // this.timeElapsed = this.add.text(centerX + 200, 32, 'Time: 0', playConfig).setOrigin(0.5, 0);
-                // this.arenaClock = this.time.addEvent({
-                //     delay: 1000, 
-                //     callback: () => {
-                //         this.currTime ++;
-                //         this.timeElapsed.setText("Time: " + this.currTime);
-                //     }, 
-                //     callbackContext: this,
-                //     loop: true,
-                // });
+                this.timeElapsed = this.add.text(centerX + 200, 32, 'Time: 0', playConfig).setOrigin(0.5, 0);
+                this.arenaClock = this.time.addEvent({
+                    delay: 1000, 
+                    callback: () => {
+                        this.currTime ++;
+                        this.timeElapsed.setText("Time: " + this.currTime);
+                    }, 
+                    callbackContext: this,
+                    loop: true,
+                });
                 this.killCount = this.add.text(centerX - 200, 32, '', playConfig).setOrigin(0.5, 0);
 
                 inTutorial = false;
@@ -201,9 +201,9 @@ class Arena extends Phaser.Scene {
     }
 
     update() {
-        // if(this.spawnedEnemies) {
-        //     this.killCount.setText("Kills: " + pStats.enemiesKilled);
-        // }
+        if(this.spawnedEnemies) {
+            this.killCount.setText("Kills: " + pStats.enemiesKilled);
+        }
         pointer = this.input.activePointer;
         player.update();
         this.knifeGroup.update();
@@ -214,7 +214,7 @@ class Arena extends Phaser.Scene {
         this.blueEnemyBulletGroup.update();
 
         if(!isPaused && this.spawnedEnemies) {
-            // this.arenaClock.paused = false;
+            this.arenaClock.paused = false;
         }
     }
 
