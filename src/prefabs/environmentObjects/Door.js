@@ -23,11 +23,24 @@ class Door extends Phaser.Physics.Arcade.Sprite {
             }
         }, scene)
 
+        this.corruptionBleed = corruptionParticles.createEmitter({
+            x: this.x,
+            y: this.y,
+            alpha: { start: 1, end: 0 },
+            scale: { start: 1, end: 0 },
+            lifespan: { min: 1500, max: 2000 },
+            speedX: { min: -50, max: 200 },
+            speedY: { min: -50, max: 200 },
+        });
+        this.corruptionBleed.stop();
+
         // Closed by default, if set to isOpen true, open door
-        if(this.isOpen) {
-            this.toggleOpen();
+        if(!this.isOpen) {
+            this.enableBody(true, this.spawnX, this.spawnY, true, true);
         }
-        this.close();
+        if(this.isOpen) {
+            this.disableBody(false, true);
+        }
     }
 
     toggleOpen() {

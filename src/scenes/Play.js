@@ -17,6 +17,7 @@ class Play extends Phaser.Scene {
         this.spawnedEnemies5 = false;
         this.spawnedEnemies6 = false;
 
+        this.clearedEnemies1 = false;
         this.clearedEnemies2 = false;
         this.clearedEnemies3 = false;
         this.clearedEnemies4 = false;
@@ -160,11 +161,11 @@ class Play extends Phaser.Scene {
     this.inFight = true;
 
     // Nuke all enemies
-    // this.input.keyboard.on('keydown-N', function () {
-    //     this.redEnemyGroup.nukeEnemies();
-    //     this.blueEnemyGroup.nukeEnemies();
-    // }, this);
-    }
+    this.input.keyboard.on('keydown-N', function () {
+        this.redEnemyGroup.nukeEnemies();
+        this.blueEnemyGroup.nukeEnemies();
+    }, this);
+}
 
     update() {
         pointer = this.input.activePointer;
@@ -281,7 +282,6 @@ class Play extends Phaser.Scene {
     }
 
     spawnEnemies() {
-        let screenBuffer = 20;
         this.map.findObject('Objects', function(object) {
             if (object.type === 'Spawn') {
                 if (object.name === 'Slime') {
@@ -289,17 +289,16 @@ class Play extends Phaser.Scene {
                     //this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
                 }
             }
-            if (object.type === 'Spawn') {
-                if (object.name === 'Slime2') {
-                    this.blueEnemyGroup.addShooter(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-                    //this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-                }
-            }
+            // if (object.type === 'Spawn') {
+            //     if (object.name === 'Slime2') {
+            //         this.blueEnemyGroup.addShooter(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            //         //this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+            //     }
+            // }
         }, this);
     }
     //spawn enemies in room2
     spawnEnemies2() {
-        let screenBuffer = 20;
         this.map.findObject('Objects', function(object) {
             if (object.type === 'Spawn2') {
                 if (object.name === 'Slime5') {
@@ -328,7 +327,6 @@ class Play extends Phaser.Scene {
         }, this);
     }
     spawnEnemies3() {
-        let screenBuffer = 20;
         this.map.findObject('Objects', function(object) {
             if (object.type === 'Spawn3') {
                 if (object.name === 'Slime9') {
@@ -357,7 +355,6 @@ class Play extends Phaser.Scene {
         }, this);
     }
     spawnEnemies4() {
-        let screenBuffer = 20;
         this.map.findObject('Objects', function(object) {
             if (object.type === 'Spawn4') {
                 if (object.name === 'Slime13') {
@@ -386,7 +383,6 @@ class Play extends Phaser.Scene {
         }, this);
     }
     spawnEnemies5() {
-        let screenBuffer = 20;
         this.map.findObject('Objects', function(object) {
             if (object.type === 'Spawn5') {
                 if (object.name === 'Slime17') {
@@ -415,7 +411,6 @@ class Play extends Phaser.Scene {
         }, this);
     }
     spawnEnemies6() {
-        let screenBuffer = 20;
         this.map.findObject('Objects', function(object) {
             if (object.type === 'Spawn6') {
                 if (object.name === 'Slime21') {
