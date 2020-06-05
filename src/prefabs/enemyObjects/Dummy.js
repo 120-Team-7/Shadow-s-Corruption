@@ -119,7 +119,7 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
                 if(inTutorial && enemy.moving) {
 
                     // Calculate new accel vector
-                    enemy.accelVector = scaleVectorMagnitude(chaserConfig.accel, enemy.x, enemy.y, enemy.oSpawnX, enemy.oSpawnY)
+                    enemy.accelVector = scaleVectorMagnitude(chaserConfig.accel*2, enemy.x, enemy.y, enemy.oSpawnX, enemy.oSpawnY)
     
                     enemy.body.setAcceleration(enemy.accelVector.x, enemy.accelVector.y);
     

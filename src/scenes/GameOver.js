@@ -44,6 +44,9 @@ class GameOver extends Phaser.Scene {
             if(currScene == 'playScene') {
                 this.add.text(centerX, 50, "Level 1 completed! That's all for now!", gameOverConfig).setOrigin(0.5, 0.5);
             }
+            if(currScene == 'practiceScene') {
+                this.add.text(centerX, 50, "Advanced tutorial completed!", gameOverConfig).setOrigin(0.5, 0.5);
+            }
         }
         this.add.text(centerX, centerY - 4*spacer, 'Your Statistics ', gameOverConfig).setOrigin(0.5, 0.5);
         gameOverConfig.align = 'left';

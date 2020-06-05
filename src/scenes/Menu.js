@@ -37,19 +37,20 @@ class Menu extends Phaser.Scene {
         corruptionParticles = this.add.particles('corruptionParticle');
         // this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.8);
         this.shadowBackground = this.add.sprite(centerX, 0, 'shadowBackground').setOrigin(0.5, 0).setAlpha(0).setScale(0.65, 1);
-        this.title = this.add.sprite(centerX, 20, 'title').setOrigin(0.5, 0);
+        this.title = this.add.sprite(centerX, 20, 'title').setOrigin(0.5, 0).setScale(0.8, 0.8);
 
         // Add menu screen text
         menuConfig.fontSize = '35px';
-        this.add.text(centerX, centerY, 'Press I for controls', menuConfig).setOrigin(0.5, 0.5);
-        this.difficultyText = this.add.text(centerX, centerY + textSpacer, 'Press E for EASY, Press N for NORMAL', menuConfig).setOrigin(0.5, 0.5);
-        this.tutorialSelect = this.add.text(centerX, centerY + 2*textSpacer, 'Tutorial: press 1', menuConfig).setOrigin(0.5, 0.5);
-        this.playSelect = this.add.text(centerX, centerY + 3*textSpacer, 'Play: press 2', menuConfig).setOrigin(0.5, 0.5);
-        this.arenaSelect = this.add.text(centerX, centerY + 4*textSpacer, 'Arena: press 3', menuConfig).setOrigin(0.5, 0.5);
+        this.add.text(centerX, centerY - textSpacer, 'Press I for controls', menuConfig).setOrigin(0.5, 0.5);
+        this.difficultyText = this.add.text(centerX, centerY, 'Press E for EASY, Press N for NORMAL', menuConfig).setOrigin(0.5, 0.5);
+        this.tutorialSelect = this.add.text(centerX, centerY + textSpacer, 'Tutorial: press 1', menuConfig).setOrigin(0.5, 0.5);
+        this.advancedSelect = this.add.text(centerX, centerY + 2*textSpacer, 'Advanced tutorial: press 2', menuConfig).setOrigin(0.5, 0.5);
+        this.playSelect = this.add.text(centerX, centerY + 3*textSpacer, 'Play: press 3', menuConfig).setOrigin(0.5, 0.5);
+        this.arenaSelect = this.add.text(centerX, centerY + 4*textSpacer, 'Arena: press 4', menuConfig).setOrigin(0.5, 0.5);
         this.startText = this.add.text(centerX, centerY + 5*textSpacer, 'Press ENTER to start selected', menuConfig).setOrigin(0.5, 0.5).setAlpha(0);
-        this.restartText = this.add.text(centerX, centerY + 3*textSpacer, 'Press R to return to main menu', menuConfig).setOrigin(0.5, 0.5);
-        this.selectSceneText = this.add.text(centerX, centerY + 2*textSpacer, 'Level select: press 1', menuConfig).setOrigin(0.5, 0.5);
-        this.creditsSceneText = this.add.text(centerX, centerY + 3*textSpacer, 'Credits: press C', menuConfig).setOrigin(0.5, 0.5);
+        this.restartText = this.add.text(centerX, centerY + 2*textSpacer, 'Press R to return to main menu', menuConfig).setOrigin(0.5, 0.5);
+        this.selectSceneText = this.add.text(centerX, centerY + textSpacer, 'Level select: press 1', menuConfig).setOrigin(0.5, 0.5);
+        this.creditsSceneText = this.add.text(centerX, centerY + 2*textSpacer, 'Credits: press C', menuConfig).setOrigin(0.5, 0.5);
 
         this.corruptionLeft = corruptionParticles.createEmitter({
             x: -20,
@@ -94,31 +95,46 @@ class Menu extends Phaser.Scene {
                         nextScene = 'tutorialScene';
                     }
                     this.tutorialSelect.setText('[Tutorial]: press 1');
-                    this.playSelect.setText('Play: press 2');
-                    this.arenaSelect.setText('Arena: press 3');
+                    this.advancedSelect.setText('Advanced tutorial: press 2');
+                    this.playSelect.setText('Play: press 3');
+                    this.arenaSelect.setText('Arena: press 4');
                 }
             }
         }, this);
 
         this.input.keyboard.on('keydown-TWO', function () {
             if(isGameOver && this.selectingScene) {
-                if(currScene != 'playScene') {
-                    nextScene = 'playScene';
+                if(currScene != 'practiceScene') {
+                    nextScene = 'practiceScene';
                 }
                 this.tutorialSelect.setText('Tutorial: press 1');
-                this.playSelect.setText('[Play]: press 2');
-                this.arenaSelect.setText('Arena: press 3');
+                this.advancedSelect.setText('[Advanced tutorial]: press 2');
+                this.playSelect.setText('Play: press 3');
+                this.arenaSelect.setText('Arena: press 4');
             }
         }, this);
 
         this.input.keyboard.on('keydown-THREE', function () {
             if(isGameOver && this.selectingScene) {
+                if(currScene != 'playScene') {
+                    nextScene = 'playScene';
+                }
+                this.tutorialSelect.setText('Tutorial: press 1');
+                this.advancedSelect.setText('Advanced tutorial: press 2');
+                this.playSelect.setText('[Play]: press 3');
+                this.arenaSelect.setText('Arena: press 4');
+            }
+        }, this);
+
+        this.input.keyboard.on('keydown-FOUR', function () {
+            if(isGameOver && this.selectingScene) {
                 if(currScene != 'arenaScene') {
                     nextScene = 'arenaScene';
                 }
                 this.tutorialSelect.setText('Tutorial: press 1');
-                this.playSelect.setText('Play: press 2');
-                this.arenaSelect.setText('[Arena]: press 3');
+                this.advancedSelect.setText('Advanced tutorial: press 2');
+                this.playSelect.setText('Play: press 3');
+                this.arenaSelect.setText('[Arena]: press 4');
             }
         }, this);
 
@@ -168,6 +184,7 @@ class Menu extends Phaser.Scene {
             this.selectSceneText.setAlpha(0);
             this.restartText.setAlpha(1);
             this.tutorialSelect.setAlpha(0);
+            this.advancedSelect.setAlpha(0);
             this.playSelect.setAlpha(0);
             this.arenaSelect.setAlpha(0);
             this.shadowBackground.setAlpha(pauseAlpha);
@@ -183,12 +200,14 @@ class Menu extends Phaser.Scene {
                 this.creditsSceneText.setAlpha(1);
                 this.selectSceneText.setAlpha(1);
                 this.tutorialSelect.setAlpha(0);
+                this.advancedSelect.setAlpha(0);
                 this.playSelect.setAlpha(0);
                 this.arenaSelect.setAlpha(0);
             } else {
                 this.creditsSceneText.setAlpha(0);
                 this.selectSceneText.setAlpha(0);
                 this.tutorialSelect.setAlpha(1);
+                this.advancedSelect.setAlpha(1);
                 this.playSelect.setAlpha(1);
                 this.arenaSelect.setAlpha(1);
             }

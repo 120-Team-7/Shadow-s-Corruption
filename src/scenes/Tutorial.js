@@ -46,7 +46,7 @@ class Tutorial extends Phaser.Scene {
             }
             if(object.name === 'Door1_2') {
                 // Door(scene, oSpawnX, oSpawnY, room1, room2, isOpen)
-                this.door1_2 = new Door(this, object.x, object.y, 'Room1', 'Room2', true);
+                this.door1_2 = new Door(this, object.x, object.y, 'Room1', 'Room2', false);
             }
             if(object.name === 'Door2_3') {
                 this.door2_3 = new Door(this, object.x, object.y, 'Room2', 'Room3', false);
@@ -131,7 +131,6 @@ class Tutorial extends Phaser.Scene {
             game.scene.keys.hudScene.textBox.setAlpha(0.8);
             this.canContinue = true;
         }, null, this);
-        
 
         this.objectiveFadeIn = this.tweens.add( {
             targets: game.scene.keys.hudScene.objectiveText,

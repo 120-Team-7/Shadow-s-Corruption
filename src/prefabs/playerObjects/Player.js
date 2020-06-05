@@ -268,7 +268,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(!switchOnCooldown && Phaser.Input.Keyboard.JustDown(keySwitch)){
                 // this.scene.sound.play('switch');
                 pStats.switchNum++;
-                switchOnCooldown = true;
                 // Change state and body appearance
                 if(playerState == 0){
                     playerState = 1;
@@ -339,6 +338,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     }, null, this.scene);
                 }
 
+                switchOnCooldown = true;
                 this.switchCooldown = this.scene.time.delayedCall(switchCooldown, function () {
                     switchOnCooldown = false;
                 }, null, this.scene);

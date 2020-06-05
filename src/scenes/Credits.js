@@ -6,14 +6,14 @@ class Credits extends Phaser.Scene {
     create() {
         keyCredits = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
 
-        this.cameras.main.setBackgroundColor('#000000');
+        this.cameras.main.setBackgroundColor('#696969');
 
         let creditsConfig = {
             fontFamily: 'Courier',
-            fontSize: '25px',
+            fontSize: '30px',
             color: '#000000',
             stroke: '#8B008B',
-            strokeThickness: strokeThickness,
+            strokeThickness: 2,
             align: 'center',
             padding: {
                 top: 15,

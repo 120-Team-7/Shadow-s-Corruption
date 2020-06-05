@@ -150,22 +150,23 @@ class Play extends Phaser.Scene {
             if (object.name === 'Blue') {
                 this.blueGroup.addObstacle(object.x, object.y);
             }
-    }, this);
+        }, this);
 
-    this.scene.run('hudScene');
+        this.scene.run('hudScene');
 
-    // Add play objects ----------------------------------------------------------------------------------------------------
+        // Add play objects ----------------------------------------------------------------------------------------------------
 
-    this.spawnEnemies();
-    this.updateRoomData(this.spawnedEnemies2);
-    this.inFight = true;
+        this.spawnEnemies();
+        this.updateRoomData(this.spawnedEnemies2);
+        this.inFight = true;
 
-    // Nuke all enemies
-    this.input.keyboard.on('keydown-N', function () {
-        this.redEnemyGroup.nukeEnemies();
-        this.blueEnemyGroup.nukeEnemies();
-    }, this);
-}
+        // Nuke all enemies
+        // this.input.keyboard.on('keydown-N', function () {
+        //     this.redEnemyGroup.nukeEnemies();
+        //     this.blueEnemyGroup.nukeEnemies();
+        // }, this);
+
+    }
 
     update() {
         pointer = this.input.activePointer;

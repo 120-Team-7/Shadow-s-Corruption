@@ -28,11 +28,12 @@ class Door extends Phaser.Physics.Arcade.Sprite {
             y: this.y,
             alpha: { start: 1, end: 0 },
             scale: { start: 1, end: 0 },
-            lifespan: { min: 1500, max: 2000 },
-            speedX: { min: -50, max: 200 },
-            speedY: { min: -50, max: 200 },
+            lifespan: { min: 2000, max: 3000 },
+            speedX: { min: -80, max: 80 },
+            speedY: { min: -80, max: 80 },
         });
         this.corruptionBleed.stop();
+        this.explodeNum = 15;
 
         // Closed by default, if set to isOpen true, open door
         if(!this.isOpen) {
@@ -44,6 +45,7 @@ class Door extends Phaser.Physics.Arcade.Sprite {
     }
 
     toggleOpen() {
+        this.corruptionBleed.explode(this.explodeNum);
         if(!this.isOpen) {
             this.isOpen = true;
             this.disableBody(false, true);
@@ -55,12 +57,14 @@ class Door extends Phaser.Physics.Arcade.Sprite {
 
     close() {
         if(this.isOpen) {
+            this.corruptionBleed.explode(this.explodeNum);
             this.isOpen = false;
             this.enableBody(true, this.spawnX, this.spawnY, true, true);
         }
     }
     open() {
         if(!this.isOpen) {
+            this.corruptionBleed.explode(this.explodeNum);
             this.isOpen = true;
             this.disableBody(false, true);
         }

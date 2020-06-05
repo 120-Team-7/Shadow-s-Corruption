@@ -5,13 +5,11 @@ class Practice extends Phaser.Scene {
 
     preload () {
         this.load.video('stunLocking', './assets/videos/StunLocking.mp4');
-        this.load.video('idleKnife', './assets/videos/IdleKnifeKillBonus.mp4');
-        this.load.video('orbMulti', './assets/videos/OrbStunMultihit.mp4');
-        this.load.video('weaponMines', './assets/videos/WeaponMines.mp4');
-        this.load.video('speedBoost', './assets/videos/CorruptionSpeedBoost.mp4');
-        this.load.video('knifeChain', './assets/videos/CorruptionKnifeChaining.mp4');
+        this.load.video('meleeKnife', './assets/videos/MeleeKnifeKill.mp4');
+        this.load.video('orbDouble', './assets/videos/OrbDouble.mp4');
+        this.load.video('weaponMines', './assets/videos/WeaponMine.mp4');
+        this.load.video('cKnifeChain', './assets/videos/CorruptKnifeChain.mp4');
         this.load.video('shootBlockShoot', './assets/videos/ShootBlockShoot.mp4');
-        this.load.video('short3', './assets/videos/SCshort3.mp4');
     }
 
     create() {
@@ -21,42 +19,64 @@ class Practice extends Phaser.Scene {
         this.sceneKey = 'practiceScene';
         currScene = this.sceneKey;
 
-        this.room2Spawned = false;
-        this.room3Spawned = false;
-        this.room4Spawned = false;
-        this.room5Spawned = false;
-
         this.physics.world.debugGraphic.setAlpha(0);
 
         corruptionParticles = this.add.particles('corruptionParticle');
         corruptionParticles.setDepth(500);
+
+
+        let practiceConfig = {
+            fontFamily: 'Courier',
+            fontSize: '25px',
+            color: '#000000',
+            stroke: '#8B008B',
+            strokeThickness: 2,
+            align: 'center',
+            padding: {
+                top: 10,
+                bottom: 10,
+                left: 0,
+                right: 0,
+            },
+            wordWrap: {
+                width: screenWidth - 64,
+                useAdvancedWrap: true,
+            }
+        }
 
         this.map = this.make.tilemap({key: "practiceMap", tileWidth: 32, tileHeight: 32 });
 
         // Define tiles used in map.
         this.tileset = this.map.addTilesetImage("fornow5",  "tiles", 32, 32,);
 
-        // The map layers.
-        
+        // The map layers
         this.floorLayer = this.map.createStaticLayer("Background", this.tileset);
         this.sceneryBottomLayer = this.map.createStaticLayer("SceneryBottom", this.tileset);
-        // this.sceneryTopLayer = this.map.createStaticLayer("SceneryTop", this.tileset);
-        this.wallsLayer = this.map.createStaticLayer("Walls", this.tileset);
 
+        // Text
+        this.textBoxY = 220;
+        this.textBox = this.add.rectangle(0, screenHeight, 12*screenWidth, this.textBoxY, dimGray).setOrigin(0, 1);
+        this.text1 = this.add.text(centerX, screenHeight - this.textBoxY, "For the duration of the stun condition, enemies stop all actions and cannot contact damage. Each MELEE weapon stuns for 1 second. The MELEE knife has a 0.8 second cooldown. The MELEE orb has a 0.5 second cooldown before it can affect the same enemy. If you continuously stun an enemy, it is stun locked or unable to do anything.", practiceConfig).setOrigin(0.5, 0);
+        this.text2 = this.add.text(centerX + screenWidth, screenHeight - this.textBoxY, "If the MELEE knife kills an enemy, you gain full CORRUPTION and the MELEE knife reload of 0.8 seconds is instant. Additionally, if your MELEE knife is corrupted, kills don't stop CORRUPTION ACTIVATION. In other words, a CORRUPTED MELEE knife can finish off many hurt enemies and still be shot as either an orb or knife.", practiceConfig).setOrigin(0.5, 0);
+        this.text2 = this.add.text(centerX + 2*screenWidth, screenHeight - this.textBoxY, "An enemy is invulnerable to the orb's effects after being hit by it for 0.5 seconds. By stunning an enemy with the MELEE orb and then walking into the enemy, you are able to shoot the orb on top of the enemy while it is knocked away. Since the orb moves slowly at first and accelerates, it eventually catches up to the enemy to hit them again.", practiceConfig).setOrigin(0.5, 0);
+        this.text3 = this.add.text(centerX + 3*screenWidth, screenHeight - this.textBoxY, "When you SHIFT, the MELEE weapon you held before you switched is dropped as a mine. The mine has all the same effects as the MELEE form of the weapon but rapidly disapates. The mine can be used as a brief trap to protect you after SHIFTING.", practiceConfig).setOrigin(0.5, 0);
+        this.text4 = this.add.text(centerX + 4*screenWidth, screenHeight - this.textBoxY, "You gain CORRUPTION equal to the damage dealt of a knife attack. CORRUPT attacks have bonus damage based on CORRUPTION level at the time of the attack. Using these facts, you can use the knife to chain CORRUPT knife throws and net 1 CORRUPTION each time due to the 1 base damage of the thrown knife.", practiceConfig).setOrigin(0.5, 0);
+        this.text5 = this.add.text(centerX + 5*screenWidth, screenHeight - this.textBoxY, "Being efficient with CORRUPTION is key to doing well. A single CORRUPT attack always deal more overall damage than several normal attacks. Gaining and using CORRUPTION is easy so, constantly doing so will allow you to kill enemies the fastest. By repeatedly and quickly gaining CORRUPTION, SHIFTING, and using it, you can efficiently maintain your CORRUPTION at a high level.", practiceConfig).setOrigin(0.5, 0);
+
+        this.wallsLayer = this.map.createStaticLayer("Walls", this.tileset);
         this.wallsLayer.setCollisionByProperty({collides: true});
 
         this.physics.world.bounds.setTo(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         
         // Videos
-        this.video1 = this.add.video(centerX, 0, 'idleKnife').setOrigin(0.5, 0).setScale(0.5, 0.5);
-        this.video1.play(true);
-        this.video2 = this.add.video(centerX + screenWidth, 0, 'stunLocking').setOrigin(0.5, 0).setScale(0.5, 0.5);
-        this.video3 = this.add.video(centerX + 2*screenWidth, 0, 'orbMulti').setOrigin(0.5, 0).setScale(0.5, 0.5);
-        this.video4 = this.add.video(centerX + 3*screenWidth, 0, 'weaponMines').setOrigin(0.5, 0).setScale(0.5, 0.5);
-        this.video5 = this.add.video(centerX + 4*screenWidth, 0, 'speedBoost').setOrigin(0.5, 0).setScale(0.5, 0.5);
-        this.video6 = this.add.video(centerX + 5*screenWidth, 0, 'knifeChain').setOrigin(0.5, 0).setScale(0.5, 0.5);
-        this.video7 = this.add.video(centerX + 6*screenWidth, 0, 'shootBlockShoot').setOrigin(0.5, 0).setScale(0.5, 0.5);
-        this.video8 = this.add.video(centerX + 7*screenWidth, 0, 'short3').setOrigin(0.5, 0).setScale(0.5, 0.5);
+        this.videoScale = 0.75;
+        this.video1 = this.add.video(centerX, 0, 'stunLocking').setOrigin(0.5, 0).setScale(this.videoScale, this.videoScale);
+        this.video2 = this.add.video(centerX + screenWidth, 0, 'meleeKnife').setOrigin(0.5, 0).setScale(this.videoScale, this.videoScale);
+        this.video3 = this.add.video(centerX + 2*screenWidth, 0, 'orbDouble').setOrigin(0.5, 0).setScale(this.videoScale, this.videoScale);
+        this.video4 = this.add.video(centerX + 3*screenWidth, 0, 'weaponMines').setOrigin(0.5, 0).setScale(this.videoScale, this.videoScale);
+        this.video5 = this.add.video(centerX + 4*screenWidth, 0, 'cKnifeChain').setOrigin(0.5, 0).setScale(this.videoScale, this.videoScale);
+        this.video6 = this.add.video(centerX + 5*screenWidth, 0, 'shootBlockShoot').setOrigin(0.5, 0).setScale(this.videoScale, this.videoScale);
+        // this.video7 = this.add.video(centerX + 6*screenWidth, 0, 'cKnifeChain').setOrigin(0.5, 0).setScale(this.videoScale, this.videoScale);
 
         this.rooms = [];
         //this.currentRoom = 1;
@@ -138,9 +158,59 @@ class Practice extends Phaser.Scene {
             this.cameras.main.fadeOut(250, 0, 0, 0, function(camera, progress) {
                 player.canMove = false;
                 if (progress === 1) {
-
-                    if(player.currentRoom == 1) {
+                    if(player.currentRoom == 0) {
                         this.video1.play(true);
+                        this.video2.stop();
+                        this.video3.stop();
+                        this.video4.stop();
+                        this.video5.stop();
+                        this.video6.stop();
+                        // this.video7.stop();
+                    }
+                    if(player.currentRoom == 1) {
+                        this.video1.stop();
+                        this.video2.play(true);
+                        this.video3.stop();
+                        this.video4.stop();
+                        this.video5.stop();
+                        this.video6.stop();
+                        // this.video7.stop();
+                    }
+                    if(player.currentRoom == 2) {
+                        this.video1.stop();
+                        this.video2.stop();
+                        this.video3.play(true);
+                        this.video4.stop();
+                        this.video5.stop();
+                        this.video6.stop();
+                        // this.video7.stop();
+                    }
+                    if(player.currentRoom == 3) {
+                        this.video1.stop();
+                        this.video2.stop();
+                        this.video3.stop();
+                        this.video4.play(true);
+                        this.video5.stop();
+                        this.video6.stop();
+                        // this.video7.stop();
+                    }
+                    if(player.currentRoom == 4) {
+                        this.video1.stop();
+                        this.video2.stop();
+                        this.video3.stop();
+                        this.video4.stop();
+                        this.video5.play(true);
+                        this.video6.stop();
+                        // this.video7.stop();
+                    }
+                    if(player.currentRoom == 5) {
+                        this.video1.stop();
+                        this.video2.stop();
+                        this.video3.stop();
+                        this.video4.stop();
+                        this.video5.stop();
+                        this.video6.play(true);
+                        // this.video7.stop();
                     }
                     // Change camera boundaries when fade out complete.
                     this.cameras.main.setBounds(this.rooms[player.currentRoom].x,
@@ -161,7 +231,6 @@ class Practice extends Phaser.Scene {
     }
 
     spawnEnemies2() {
-        this.room2Spawned = true;
         this.map.findObject('Spawns2', function(object) {
             if (object.name === 'Slime2_1') {
                 //addDummy(spawnX, spawnY, redGroup, blueGroup, redBulletGroup, blueBulletGroup, flip, isShooter, shotX, shotY)
@@ -184,71 +253,5 @@ class Practice extends Phaser.Scene {
             }
         }, this);
     }
-    spawnEnemies3() {
-        this.room3Spawned = true;
-        this.map.findObject('Spawns3', function(object) {
-            if (object.name === 'Slime3_1') {
-                //addDummy(spawnX, spawnY, redGroup, blueGroup, redBulletGroup, blueBulletGroup, flip, isShooter, shotX, shotY)
-                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, 1);
-            }
-            if (object.name === 'Slime3_2') {
-                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, -1);
-            }
-            if (object.name === 'Slime3_3') {
-                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, 1);
-            }
-            if (object.name === 'Slime3_4') {
-                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, -1);
-            }
-            if (object.name === 'Slime3_5') {
-                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, 1);
-            }
-        }, this);
-    }
-    spawnEnemies4() {
-        this.room4Spawned = true;
-        this.map.findObject('Spawns4', function(object) {
-            if (object.name === 'Slime4_1') {
-                //addDummy(spawnX, spawnY, redGroup, blueGroup, redBulletGroup, blueBulletGroup, flip, isShooter, shotX, shotY)
-                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
-            }
-            if (object.name === 'Slime4_2') {
-                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
-            }
-            if (object.name === 'Slime4_3') {
-                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, -1);
-            }
-            if (object.name === 'Slime4_4') {
-                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
 
-            }
-            if (object.name === 'Slime4_5') {
-                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
-            }
-            if (object.name === 'Slime4_6') {
-                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, true, 0, -1);
-            }
-            if (object.name === 'Slime4_7') {
-                this.redEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
-            }
-            if (object.name === 'Slime4_8') {
-                this.blueEnemyGroup.addDummy(object.x, object.y, this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup, false, false);
-            }
-        }, this);
-    }
-    spawnEnemies5() {
-        this.room5Spawned = true;
-        this.map.findObject('Spawns5', function(object) {
-            if (object.name === 'Slime5_1') {
-                //addChaser(spawnX, spawnY, changeCondition, redGroup, blueGroup)
-                this.blueEnemyGroup.addChaser(object.x, object.y, "timed", this.redEnemyGroup, this.blueEnemyGroup);
-            }
-            if (object.name === 'Slime5_2') {
-                this.redEnemyGroup.addChaser(object.x, object.y, "damaged", this.redEnemyGroup, this.blueEnemyGroup);
-            }
-            if (object.name === 'Slime5_3') {
-                this.blueEnemyGroup.addChaser(object.x, object.y, "mirror", this.redEnemyGroup, this.blueEnemyGroup);        
-            }
-        }, this);
-    }
 }
