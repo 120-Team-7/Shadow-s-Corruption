@@ -249,11 +249,11 @@ class KnifeGroup extends Phaser.GameObjects.Group {
 
         let outVector = scaleVectorMagnitude(50, meleeStartX, meleeStartY, finalStuckX, finalStuckY);
         let offsetVector = scaleVectorMagnitude(30, meleeStartX, meleeStartY, finalStuckX, finalStuckY);
-        let meleeStreak = this.scene.add.line(0, 0, meleeStartX  - offsetVector.x, meleeStartY - offsetVector.y, finalStuckX + outVector.x, finalStuckY + outVector.y, playerRed);
+        let meleeStreak = this.scene.add.line(0, 0, meleeStartX  - offsetVector.x, meleeStartY - offsetVector.y, finalStuckX + outVector.x, finalStuckY + outVector.y, playerRed).setAlpha(0.6);
         meleeStreak.setLineWidth(4, 1);
         this.fadeAway = this.scene.tweens.add({
             targets: meleeStreak,
-            alpha: { from: 1, to: 0 },
+            alpha: 0,
             ease: 'Quart.easeIn',
             duration: 1000,
             onComplete: function() {

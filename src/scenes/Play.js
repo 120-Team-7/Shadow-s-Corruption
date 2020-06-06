@@ -16,6 +16,9 @@ class Play extends Phaser.Scene {
         this.spawnedEnemies4 = false;
         this.spawnedEnemies5 = false;
         this.spawnedEnemies6 = false;
+        this.spawnedEnemies7 = false;
+        this.spawnedEnemies8 = false;
+        this.spawnedEnemies9 = false;
 
         this.clearedEnemies1 = false;
         this.clearedEnemies2 = false;
@@ -23,6 +26,9 @@ class Play extends Phaser.Scene {
         this.clearedEnemies4 = false;
         this.clearedEnemies5 = false;
         this.clearedEnemies6 = false;
+        this.clearedEnemies7 = false;
+        this.clearedEnemies8 = false;
+        this.clearedEnemies9 = false;
 
         this.physics.world.debugGraphic.setAlpha(0);
 
@@ -82,7 +88,7 @@ class Play extends Phaser.Scene {
             }
             if (object.name === 'End') {
                 // Endpoint(scene, oSpawnX, oSpawnY, sceneDestination)
-                this.endpoint = new Endpoint(this, object.x, object.y, "gameOverScene", "y");
+                this.endpoint = new Endpoint(this, object.x, object.y, "gameOverScene", "x");
             }
         
         }, this);
@@ -117,23 +123,32 @@ class Play extends Phaser.Scene {
             // Doors
             if (object.type === 'Door') {
                 if(object.name === 'Door1_2') {
-                    // Door(scene, oSpawnX, oSpawnY, room1, room2, isOpen)
-                    this.door1_2 = new Door(this, object.x, object.y, 'Room1', 'Room2', false);
+                    // Door(scene, oSpawnX, oSpawnY, isOpen)
+                    this.door1_2 = new Door(this, object.x, object.y, false);
                 }
                 if(object.name === 'Door2_3') {
-                    this.door2_3 = new Door(this, object.x, object.y, 'Room2', 'Room3', false);
+                    this.door2_3 = new Door(this, object.x, object.y, false);
                 }
                 if(object.name === 'Door3_4') {
-                    this.door3_4 = new Door(this, object.x, object.y, 'Room3', 'Room4', false);
+                    this.door3_4 = new Door(this, object.x, object.y, false);
                 }
                 if(object.name === 'Door4_5') {
-                    this.door4_5 = new Door(this, object.x, object.y, 'Room4', 'Room5', false);
+                    this.door4_5 = new Door(this, object.x, object.y, false);
                 }
                 if(object.name === 'Door5_6') {
-                    this.door5_6 = new Door(this, object.x, object.y, 'Room5', 'Room6', false);
+                    this.door5_6 = new Door(this, object.x, object.y, false);
                 }
-                if(object.name === 'Door6_end') {
-                    this.door6_end = new Door(this, object.x, object.y, 'Room6', 'End', false);
+                if(object.name === 'Door6_7') {
+                    this.door6_7 = new Door(this, object.x, object.y, false);
+                }
+                if(object.name === 'Door7_8') {
+                    this.door7_8 = new Door(this, object.x, object.y, false);
+                }
+                if(object.name === 'Door8_9') {
+                    this.door8_9 = new Door(this, object.x, object.y, false);
+                }
+                if(object.name === 'Door9_end') {
+                    this.door9_end = new Door(this, object.x, object.y, false);
                 }
             }
         }, this);
@@ -214,7 +229,25 @@ class Play extends Phaser.Scene {
                 this.inFight = false;
                 this.clearedEnemies6 = true;
                 this.door5_6.open();
-                this.door6_end.open();
+                this.door6_7.open();
+            }
+            if(this.spawnedEnemies7  && !this.clearedEnemies7 && pStats.enemiesKilled == this.killGoal) {
+                this.inFight = false;
+                this.clearedEnemies7 = true;
+                this.door6_7.open();
+                this.door7_8.open();
+            }
+            if(this.spawnedEnemies8  && !this.clearedEnemies8 && pStats.enemiesKilled == this.killGoal) {
+                this.inFight = false;
+                this.clearedEnemies8 = true;
+                this.door7_8.open();
+                this.door8_9.open();
+            }
+            if(this.spawnedEnemies9  && !this.clearedEnemies9 && pStats.enemiesKilled == this.killGoal) {
+                this.inFight = false;
+                this.clearedEnemies9 = true;
+                this.door8_9.open();
+                this.door9_end.open();
             }
         }
 
@@ -275,6 +308,27 @@ class Play extends Phaser.Scene {
             this.spawnedEnemies6 = true;
             this.spawnEnemies6();
             this.door5_6.close();
+            this.updateRoomData();
+        }
+        if (!this.spawnedEnemies7 && roomNumber == 6) {
+            this.inFight = true;
+            this.spawnedEnemies7 = true;
+            this.spawnEnemies7();
+            this.door6_7.close();
+            this.updateRoomData();
+        }
+        if (!this.spawnedEnemies8 && roomNumber == 7) {
+            this.inFight = true;
+            this.spawnedEnemies8 = true;
+            this.spawnEnemies8();
+            this.door7_8.close();
+            this.updateRoomData();
+        }
+        if (!this.spawnedEnemies9 && roomNumber == 8) {
+            this.inFight = true;
+            this.spawnedEnemies9 = true;
+            this.spawnEnemies9();
+            this.door8_9.close();
             this.updateRoomData();
         }
     }
@@ -421,12 +475,12 @@ class Play extends Phaser.Scene {
                     //this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
                 }
             }
-            if (object.type === 'Spawn6') {
-                if (object.name === 'Slime22') {
-                    this.redEnemyGroup.addChaser(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-                    //this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-                }
-            }
+            // if (object.type === 'Spawn6') {
+            //     if (object.name === 'Slime22') {
+            //         this.redEnemyGroup.addChaser(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+            //         //this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+            //     }
+            // }
             if (object.type === 'Spawn6') {
                 if (object.name === 'Slime23') {
                     this.blueEnemyGroup.addChaser(object.x,object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
@@ -438,6 +492,78 @@ class Play extends Phaser.Scene {
                     this.redEnemyGroup.addShooter(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
                     //this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
                 }
+            }
+        }, this);
+    }
+    spawnEnemies7() {
+        this.map.findObject('Objects', function(object) {
+            if (object.name === 'Slime7_1') {
+                this.redEnemyGroup.addShooter(object.x,object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+            if (object.name === 'Slime7_2') {
+                this.blueEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime7_3') {
+                this.redEnemyGroup.addShooter(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+            if (object.name === 'Slime7_4') {
+                this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime7_5') {
+                this.redEnemyGroup.addShooter(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+            if (object.name === 'Slime7_6') {
+                this.redEnemyGroup.addShooter(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+        }, this);
+    }
+    spawnEnemies8() {
+        this.map.findObject('Objects', function(object) {
+            if (object.name === 'Slime8_1') {
+                this.blueEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime8_2') {
+                this.redEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime8_3') {
+                this.blueEnemyGroup.addShooter(object.x,object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+            if (object.name === 'Slime8_4') {
+                this.redEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime8_5') {
+                this.blueEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime8_6') {
+                this.redEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+            }
+        }, this);
+    }
+    spawnEnemies9() {
+        this.map.findObject('Objects', function(object) {
+            if (object.name === 'Slime9_1') {
+                this.redEnemyGroup.addShooter(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+            if (object.name === 'Slime9_2') {
+                this.blueEnemyGroup.addShooter(object.x,object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+            if (object.name === 'Slime9_3') {
+                this.redEnemyGroup.addShooter(object.x,object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            }
+            if (object.name === 'Slime9_4') {
+                this.blueEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime9_5') {
+                this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime9_6') {
+                this.redEnemyGroup.addChaser(object.x, object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime9_7') {
+                this.redEnemyGroup.addChaser(object.x, object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
+            }
+            if (object.name === 'Slime9_8') {
+                this.blueEnemyGroup.addChaser(object.x, object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
             }
         }, this);
     }

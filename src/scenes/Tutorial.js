@@ -83,20 +83,20 @@ class Tutorial extends Phaser.Scene {
         this.map.findObject('MainObjects', function(object) {
             // Doors
             if(object.name === 'Door1_2') {
-                // Door(scene, oSpawnX, oSpawnY, room1, room2, isOpen)
-                this.door1_2 = new Door(this, object.x, object.y, 'Room1', 'Room2', false);
+                // Door(scene, oSpawnX, oSpawnY, isOpen)
+                this.door1_2 = new Door(this, object.x, object.y, false);
             }
             if(object.name === 'Door2_3') {
-                this.door2_3 = new Door(this, object.x, object.y, 'Room2', 'Room3', false);
+                this.door2_3 = new Door(this, object.x, object.y, false);
             }
             if(object.name === 'Door3_4') {
-                this.door3_4 = new Door(this, object.x, object.y, 'Room3', 'Room4', false);
+                this.door3_4 = new Door(this, object.x, object.y, false);
             }
             if(object.name === 'Door4_5') {
-                this.door4_5 = new Door(this, object.x, object.y, 'Room4', 'Room5', false);
+                this.door4_5 = new Door(this, object.x, object.y, false);
             }
             if(object.name === 'Door5_end') {
-                this.door5_end = new Door(this, object.x, object.y, 'Room5', 'End', false);
+                this.door5_end = new Door(this, object.x, object.y, false);
             }
             if (object.name === 'Player') {
                 player = new Player(this, game.scene.keys.hudScene, object.x, object.y);

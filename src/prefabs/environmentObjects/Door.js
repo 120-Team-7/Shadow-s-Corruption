@@ -1,12 +1,10 @@
 class Door extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, oSpawnX, oSpawnY, room1, room2, isOpen) {
+    constructor(scene, oSpawnX, oSpawnY, isOpen) {
         super(scene, oSpawnX, oSpawnY, 'door').setOrigin(0.5, 0.5);
         
         this.scene = scene;
         this.spawnX = oSpawnX;
         this.spawnY = oSpawnY;
-        this.room1 = room1;
-        this.room2 = room2;
         this.isOpen = isOpen;
 
         this.exists = true;
