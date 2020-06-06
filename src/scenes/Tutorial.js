@@ -54,17 +54,6 @@ class Tutorial extends Phaser.Scene {
         // Pointer
         pointer = this.input.activePointer;
 
-        // EnemyColorGroup(scene, state, obstacleGroup)
-        this.redEnemyGroup = new EnemyColorGroup(this, 0, this.redGroup);
-        this.blueEnemyGroup = new EnemyColorGroup(this, 1, this.blueGroup);
-        this.collideEnemyGroups = this.physics.add.collider(this.redEnemyGroup, this.blueEnemyGroup, null, function(red, blue) {
-            if(red.stunned || blue.stunned) {
-                return false;
-            } else {
-                return true;
-            }
-        }, this);
-
         
         this.map.findObject('MainObjects', function(object) {
             // Doors
@@ -90,6 +79,22 @@ class Tutorial extends Phaser.Scene {
             }
         }, this);
 
+        // ColorGroup(scene, state)
+        this.redGroup = new ObsColorGroup(this, 0);
+        this.blueGroup = new ObsColorGroup(this, 1);
+        
+
+        // EnemyColorGroup(scene, state, obstacleGroup)
+        this.redEnemyGroup = new EnemyColorGroup(this, 0, this.redGroup);
+        this.blueEnemyGroup = new EnemyColorGroup(this, 1, this.blueGroup);
+        this.collideEnemyGroups = this.physics.add.collider(this.redEnemyGroup, this.blueEnemyGroup, null, function(red, blue) {
+            if(red.stunned || blue.stunned) {
+                return false;
+            } else {
+                return true;
+            }
+        }, this);
+
         // EnemyBulletGroup(scene, state)
         this.redEnemyBulletGroup = new EnemyBulletGroup(this, 0);
         this.blueEnemyBulletGroup = new EnemyBulletGroup(this, 1);
@@ -98,10 +103,6 @@ class Tutorial extends Phaser.Scene {
         this.knifeGroup = new KnifeGroup(this, game.scene.keys.hudScene, 0, this.redEnemyGroup);
         // OrbGroup(scene, state, blueEnemyGroup)
         this.orbGroup = new OrbGroup(this, game.scene.keys.hudScene, 1, this.blueEnemyGroup);
-
-        // ColorGroup(scene, state)
-        this.redGroup = new ObsColorGroup(this, 0);
-        this.blueGroup = new ObsColorGroup(this, 1);
 
         this.map.findObject('ColorWalls', function(object) {
                 if (object.name === 'Red') {
@@ -147,7 +148,6 @@ class Tutorial extends Phaser.Scene {
         this.input.keyboard.on('keydown-SPACE', function () {
             if(this.canContinue) {
                 tutorialNum++;
-                // console.log(tutorialNum);
                 if(tutorialNum == 1) {
                     this.fadeOutInText("I'll have to leave this cave to continue razing the old world and shaping the Void Frontier.");
                 }
@@ -248,7 +248,6 @@ class Tutorial extends Phaser.Scene {
     }
 
     update() {
-        console.log(playerState);
         pointer = this.input.activePointer;
         player.update();
         this.knifeGroup.update();
