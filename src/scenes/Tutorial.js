@@ -44,9 +44,7 @@ class Tutorial extends Phaser.Scene {
             if (object.type === 'Room') {
                 this.rooms.push(object);
             }
-            if (object.name === 'End') {
-                this.endpoint = new Endpoint(this, object.x, object.y, "gameOverScene", "x");
-            }
+            
         }, this);
 
         // Initialize play objects ----------------------------------------------------------------------------------------------------
@@ -76,6 +74,9 @@ class Tutorial extends Phaser.Scene {
             if (object.name === 'Player') {
                 player = new Player(this, game.scene.keys.hudScene, object.x, object.y);
                 player.canUseCorruption = false;
+            }
+            if (object.name === 'End') {
+                this.endpoint = new Endpoint(this, object.x, object.y, "gameOverScene", "x");
             }
         }, this);
 
