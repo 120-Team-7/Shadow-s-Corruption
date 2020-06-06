@@ -49,20 +49,6 @@ class Tutorial extends Phaser.Scene {
             }
         }, this);
 
-        // ColorGroup(scene, state)
-        this.redGroup = new ObsColorGroup(this, 0);
-        this.blueGroup = new ObsColorGroup(this, 1);
-
-        this.map.findObject('ColorWalls', function(object) {
-                if (object.name === 'Red') {
-                    this.redGroup.addObstacle(object.x, object.y);
-                }
-                if (object.name === 'Blue') {
-                    this.blueGroup.addObstacle(object.x, object.y);
-                }
-        }, this);
-
-
         // Initialize play objects ----------------------------------------------------------------------------------------------------
 
         // Pointer
@@ -112,6 +98,20 @@ class Tutorial extends Phaser.Scene {
         this.knifeGroup = new KnifeGroup(this, game.scene.keys.hudScene, 0, this.redEnemyGroup);
         // OrbGroup(scene, state, blueEnemyGroup)
         this.orbGroup = new OrbGroup(this, game.scene.keys.hudScene, 1, this.blueEnemyGroup);
+
+        // ColorGroup(scene, state)
+        this.redGroup = new ObsColorGroup(this, 0);
+        this.blueGroup = new ObsColorGroup(this, 1);
+
+        this.map.findObject('ColorWalls', function(object) {
+                if (object.name === 'Red') {
+                    this.redGroup.addObstacle(object.x, object.y);
+                }
+                if (object.name === 'Blue') {
+                    this.blueGroup.addObstacle(object.x, object.y);
+                }
+        }, this);
+
 
         this.scene.run('hudScene');
 
@@ -248,6 +248,7 @@ class Tutorial extends Phaser.Scene {
     }
 
     update() {
+        console.log(playerState);
         pointer = this.input.activePointer;
         player.update();
         this.knifeGroup.update();
