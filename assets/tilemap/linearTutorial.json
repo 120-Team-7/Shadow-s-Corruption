@@ -3186,7 +3186,7 @@
                  "type":"Spawn",
                  "visible":true,
                  "width":0,
-                 "x":6400,
+                 "x":6392,
                  "y":352
                 }, 
                 {
@@ -3247,7 +3247,7 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }],

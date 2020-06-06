@@ -42,7 +42,7 @@ class GameOver extends Phaser.Scene {
                 this.add.text(centerX, 50, "Tutorial completed!", gameOverConfig).setOrigin(0.5, 0.5);
             }
             if(currScene == 'playScene') {
-                this.add.text(centerX, 50, "Level 1 completed! That's all for now!", gameOverConfig).setOrigin(0.5, 0.5);
+                this.add.text(centerX, 50, "Level 1 completed! That's all for now! Check out the arena for more.", gameOverConfig).setOrigin(0.5, 0.5);
             }
             if(currScene == 'practiceScene') {
                 this.add.text(centerX, 50, "Advanced tutorial completed!", gameOverConfig).setOrigin(0.5, 0.5);
@@ -69,13 +69,13 @@ class GameOver extends Phaser.Scene {
         this.add.text(rightNumX, centerY - 3*spacer, pStats.switchNum, gameOverConfig).setOrigin(0, 0);
         this.add.text(rightTextX, centerY - 2*spacer, "Knives thrown: ", gameOverConfig).setOrigin(0, 0);
         this.add.text(rightNumX, centerY - 2*spacer, pStats.knifeThrown, gameOverConfig).setOrigin(0, 0);
-        this.add.text(rightTextX, centerY - spacer, "Idle knife hits: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightTextX, centerY - spacer, "Melee knife hits: ", gameOverConfig).setOrigin(0, 0);
         this.add.text(rightNumX, centerY - spacer, pStats.knifeStabbed, gameOverConfig).setOrigin(0, 0);
         this.add.text(rightTextX, centerY, "Red bullets blocked: ", gameOverConfig).setOrigin(0, 0);
         this.add.text(rightNumX, centerY, pStats.knifeBulletBlock, gameOverConfig).setOrigin(0, 0);
         this.add.text(rightTextX, centerY + spacer, "Orbs shot: ", gameOverConfig).setOrigin(0, 0);
         this.add.text(rightNumX, centerY + spacer, pStats.orbShot, gameOverConfig).setOrigin(0, 0);
-        this.add.text(rightTextX, centerY + 2*spacer, "Idle orb hits: ", gameOverConfig).setOrigin(0, 0);
+        this.add.text(rightTextX, centerY + 2*spacer, "Melee orb hits: ", gameOverConfig).setOrigin(0, 0);
         this.add.text(rightNumX, centerY + 2*spacer, pStats.orbEnemyBlock, gameOverConfig).setOrigin(0, 0);
         this.add.text(rightTextX, centerY + 3*spacer, "Blue bullets blocked: ", gameOverConfig).setOrigin(0, 0);
         this.add.text(rightNumX, centerY + 3*spacer, pStats.orbBulletBlock, gameOverConfig).setOrigin(0, 0);

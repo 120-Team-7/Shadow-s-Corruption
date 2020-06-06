@@ -44,28 +44,7 @@ class Tutorial extends Phaser.Scene {
             if (object.type === 'Room') {
                 this.rooms.push(object);
             }
-            if(object.name === 'Door1_2') {
-                // Door(scene, oSpawnX, oSpawnY, room1, room2, isOpen)
-                this.door1_2 = new Door(this, object.x, object.y, 'Room1', 'Room2', false);
-            }
-            if(object.name === 'Door2_3') {
-                this.door2_3 = new Door(this, object.x, object.y, 'Room2', 'Room3', false);
-            }
-            if(object.name === 'Door3_4') {
-                this.door3_4 = new Door(this, object.x, object.y, 'Room3', 'Room4', false);
-            }
-            if(object.name === 'Door4_5') {
-                this.door4_5 = new Door(this, object.x, object.y, 'Room4', 'Room5', false);
-            }
-            if(object.name === 'Door5_end') {
-                this.door5_end = new Door(this, object.x, object.y, 'Room5', 'End', false);
-            }
-            if (object.name === 'Player') {
-                player = new Player(this, game.scene.keys.hudScene, object.x, object.y);
-                player.canUseCorruption = false;
-            }
             if (object.name === 'End') {
-                // Endpoint(scene, oSpawnX, oSpawnY, sceneDestination)
                 this.endpoint = new Endpoint(this, object.x, object.y, "gameOverScene", "x");
             }
         }, this);
@@ -99,8 +78,31 @@ class Tutorial extends Phaser.Scene {
                 return true;
             }
         }, this);
-        this.physics.add.collider(this.redEnemyGroup,  this.wallsLayer);
-        this.physics.add.collider(this.blueEnemyGroup,  this.wallsLayer);
+
+        
+        this.map.findObject('MainObjects', function(object) {
+            // Doors
+            if(object.name === 'Door1_2') {
+                // Door(scene, oSpawnX, oSpawnY, room1, room2, isOpen)
+                this.door1_2 = new Door(this, object.x, object.y, 'Room1', 'Room2', false);
+            }
+            if(object.name === 'Door2_3') {
+                this.door2_3 = new Door(this, object.x, object.y, 'Room2', 'Room3', false);
+            }
+            if(object.name === 'Door3_4') {
+                this.door3_4 = new Door(this, object.x, object.y, 'Room3', 'Room4', false);
+            }
+            if(object.name === 'Door4_5') {
+                this.door4_5 = new Door(this, object.x, object.y, 'Room4', 'Room5', false);
+            }
+            if(object.name === 'Door5_end') {
+                this.door5_end = new Door(this, object.x, object.y, 'Room5', 'End', false);
+            }
+            if (object.name === 'Player') {
+                player = new Player(this, game.scene.keys.hudScene, object.x, object.y);
+                player.canUseCorruption = false;
+            }
+        }, this);
 
         // EnemyBulletGroup(scene, state)
         this.redEnemyBulletGroup = new EnemyBulletGroup(this, 0);
@@ -147,7 +149,7 @@ class Tutorial extends Phaser.Scene {
                 tutorialNum++;
                 // console.log(tutorialNum);
                 if(tutorialNum == 1) {
-                    this.fadeOutInText("I'll have to leave this cave to continue razing the old world and shaping the new Void Frontier.");
+                    this.fadeOutInText("I'll have to leave this cave to continue razing the old world and shaping the Void Frontier.");
                 }
                 if(tutorialNum == 2) {
                     this.fadeOutInText("SHIFTING between the realms to navigate these old world remnants will have to do for now.");
@@ -236,9 +238,8 @@ class Tutorial extends Phaser.Scene {
                     this.objectiveFadeIn.play();
                 }
                 if(tutorialNum == 18) {
-                    this.fadeOutInText("With CORRUPTION, I will reign supreme in the Void Frontier where others have the power to SHIFT.");
+                    this.fadeOutInText("With CORRUPTION, I will reign supreme in this world in which all have the been touched by the void.");
                     this.canContinue = false;
-                    this.door5_end.toggleOpen();
                     // Highlight right room door
                     game.scene.keys.hudScene.highlightHudElement(screenWidth - 40, centerY - 50, 40, 100, 500);
                 }
@@ -267,7 +268,7 @@ class Tutorial extends Phaser.Scene {
             }
         }
         if(this.idleWeaponObjective) {
-            this.objectiveTracker("(AIM MOUSE TOWARD & WALK CLOSE TO ENEMY) Idle knife hits: " + pStats.knifeStabbed + "/5, Idle orb hits: " + pStats.orbEnemyBlock + "/8");
+            this.objectiveTracker("(AIM MOUSE TOWARD & WALK CLOSE TO ENEMY) Melee knife hits: " + pStats.knifeStabbed + "/5, Melee orb hits: " + pStats.orbEnemyBlock + "/8");
             if(pStats.knifeStabbed >= 5 && pStats.orbEnemyBlock >= 8) {
                 this.idleWeaponObjective = false;
                 this.objectiveComplete(false);
@@ -306,6 +307,7 @@ class Tutorial extends Phaser.Scene {
         if(this.changingEnemiesObjective) {
             this.objectiveTracker("(KILL SLIMES) Enemies killed: " + pStats.enemiesKilled + "/3");
             if(pStats.enemiesKilled >= 3) {
+                this.door5_end.toggleOpen();
                 this.changingEnemiesObjective = false;
                 this.objectiveComplete(true);
             }

@@ -49,8 +49,8 @@ class Menu extends Phaser.Scene {
         this.arenaSelect = this.add.text(centerX, centerY + 4*textSpacer, 'Arena: press 4', menuConfig).setOrigin(0.5, 0.5);
         this.startText = this.add.text(centerX, centerY + 5*textSpacer, 'Press ENTER to start selected', menuConfig).setOrigin(0.5, 0.5).setAlpha(0);
         this.restartText = this.add.text(centerX, centerY + 2.5*textSpacer, 'Press R to return to main menu', menuConfig).setOrigin(0.5, 0.5);
-        this.selectSceneText = this.add.text(centerX, centerY + textSpacer, 'Level select: press 1', menuConfig).setOrigin(0.5, 0.5);
-        this.creditsSceneText = this.add.text(centerX, centerY + 2*textSpacer, 'Credits: press C', menuConfig).setOrigin(0.5, 0.5);
+        this.selectSceneText = this.add.text(centerX, centerY + 2*textSpacer, 'Level select: press 1', menuConfig).setOrigin(0.5, 0.5);
+        this.creditsSceneText = this.add.text(centerX, centerY + 4*textSpacer, 'Credits: press C', menuConfig).setOrigin(0.5, 0.5);
 
         this.corruptionLeft = corruptionParticles.createEmitter({
             x: -20,
@@ -150,6 +150,15 @@ class Menu extends Phaser.Scene {
             if(isPaused) {
                 isPaused = false;
                 isGameOver = true;
+                isInvuln = false;
+                isGodmode = false;
+                pCurrHealth = pMaxHealth;
+                knifeThrowROF = player.originalKROF;
+                orbShootROF = player.originalOROF;
+                switchCooldown = player.originalSCD;
+                maxMoveVelocity = player.originalMMV;
+                playerAccel = player.originalPA;
+                playerStopDrag = player.originalPSD;
                 pStats.enemiesKilled = 0;
                 pStats.orbKilled = 0;
                 pStats.knifeKilled = 0;
@@ -171,7 +180,7 @@ class Menu extends Phaser.Scene {
         }, this);
 
         this.cameras.main.fadeIn(1000, 0, 0, 0);
-        gameplayBGM.mute = true;
+        // gameplayBGM.mute = true;
     }
 
     update() {

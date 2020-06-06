@@ -23,6 +23,9 @@ class Door extends Phaser.Physics.Arcade.Sprite {
             }
         }, scene)
 
+        scene.physics.add.collider(this, scene.redEnemyGroup);
+        scene.physics.add.collider(this, scene.blueEnemyGroup);
+
         this.corruptionBleed = corruptionParticles.createEmitter({
             x: this.x,
             y: this.y,

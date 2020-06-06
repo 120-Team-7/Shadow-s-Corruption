@@ -16,6 +16,14 @@ class Endpoint extends Phaser.Physics.Arcade.Sprite {
 
         this.collider = scene.physics.add.overlap(this, player, function() {
             if(!player.isSceneTransfer) {
+                isGodmode = false;
+                pCurrHealth = pMaxHealth;
+                knifeThrowROF = player.originalKROF;
+                orbShootROF = player.originalOROF;
+                switchCooldown = player.originalSCD;
+                maxMoveVelocity = player.originalMMV;
+                playerAccel = player.originalPA;
+                playerStopDrag = player.originalPSD;
                 player.sceneTransfer(sceneDestination);
             }
         }, null, scene)

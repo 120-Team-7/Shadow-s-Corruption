@@ -14,6 +14,9 @@ class KnifeGroup extends Phaser.GameObjects.Group {
 
         this.isOnCooldown = false;
 
+        
+        // this.meleeStreak.setAlpha(0);
+
         // Knife x Enemy collider
         this.kxeCollider = scene.physics.add.overlap(group, redEnemyGroup, function(knife, enemy) {
             if(enemy.exists) {
@@ -123,6 +126,27 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                             group.knifeCooldown.destroy();
                         }, null, group.scene);
                     }
+                    group.knifeStreak(knife);
+                    // this.finalStuckX = knife.stuckEnemy.x + knife.stuckOffsetX + 12.5;
+                    // this.finalStuckY = knife.stuckEnemy.y + knife.stuckOffsetY + 12.5;
+
+                    // this.meleeStartX = idleWeaponX + 12.5;
+                    // this.meleeStartY = idleWeaponY + 12.5;
+
+                    // this.outVector = scaleVectorMagnitude(50, this.meleeStartX, this.meleeStartY, this.finalStuckX, this.finalStuckY);
+                    // this.offsetVector = scaleVectorMagnitude(30, this.meleeStartX, this.meleeStartY, this.finalStuckX, this.finalStuckY);
+                    // group.meleeStreak = scene.add.line(0, 0, this.meleeStartX  - this.offsetVector.x, this.meleeStartY - this.offsetVector.y, this.finalStuckX + this.outVector.x, this.finalStuckY + this.outVector.y, playerRed);
+                    // group.meleeStreak.setLineWidth(4, 1);
+                    // group.fadeAway = group.scene.tweens.add({
+                    //     targets: group.meleeStreak,
+                    //     alpha: { from: 1, to: 0 },
+                    //     ease: 'Quart.easeIn',
+                    //     duration: 500,
+                    //     onComplete: function() {
+                    //         group.meleeStreak.destroy();
+                    //     },
+                    //     onCompleteScope: group
+                    // });
                 }
             } else {
                 if(knife.corrupted) {
@@ -214,5 +238,28 @@ class KnifeGroup extends Phaser.GameObjects.Group {
             this.hudScene.knifeCooldownText.setText("");
             this.hudScene.knifeCooldownBox.setSize(cooldownBoxWidth, cooldownBoxHeight);
         }
+    }
+
+    knifeStreak(knife) {
+        let finalStuckX = knife.stuckEnemy.x + knife.stuckOffsetX + 12.5;
+        let finalStuckY = knife.stuckEnemy.y + knife.stuckOffsetY + 12.5;
+
+        let meleeStartX = idleWeaponX + 12.5;
+        let meleeStartY = idleWeaponY + 12.5;
+
+        let outVector = scaleVectorMagnitude(50, meleeStartX, meleeStartY, finalStuckX, finalStuckY);
+        let offsetVector = scaleVectorMagnitude(30, meleeStartX, meleeStartY, finalStuckX, finalStuckY);
+        let meleeStreak = this.scene.add.line(0, 0, meleeStartX  - offsetVector.x, meleeStartY - offsetVector.y, finalStuckX + outVector.x, finalStuckY + outVector.y, playerRed);
+        meleeStreak.setLineWidth(4, 1);
+        this.fadeAway = this.scene.tweens.add({
+            targets: meleeStreak,
+            alpha: { from: 1, to: 0 },
+            ease: 'Quart.easeIn',
+            duration: 1000,
+            onComplete: function() {
+                meleeStreak.destroy();
+            },
+            onCompleteScope: this
+        });
     }
 }

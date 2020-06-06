@@ -14,6 +14,8 @@ class OrbGroup extends Phaser.GameObjects.Group {
 
         this.isOnCooldown = false;
 
+        this.pulseCount = 0;
+
         // Orb x Enemy collider
         this.oxecollider = scene.physics.add.overlap(group, blueEnemyGroup, function(orb, enemy) {
             if(!enemy.orbDamageInvuln && enemy.exists) {
@@ -84,6 +86,7 @@ class OrbGroup extends Phaser.GameObjects.Group {
                             enemy.orbBlockInvuln = false;
                         }, null, this.scene);
                     }
+                    group.pulseCircle(orb);  
                 }
             }
         }, function() {
@@ -161,5 +164,21 @@ class OrbGroup extends Phaser.GameObjects.Group {
             this.hudScene.orbCooldownText.setText("");
             this.hudScene.orbCooldownBox.setSize(cooldownBoxWidth, cooldownBoxHeight);
         }
+    }
+
+    pulseCircle(orb) {
+        let pulseCircle = this.scene.add.ellipse(orb.x, orb.y, 300, 300).setAlpha(0);
+        pulseCircle.setFillStyle(playerBlue);
+        this.fadeAway = this.scene.tweens.add({
+            targets: pulseCircle,
+            alpha: { from: 0.8, to: 0 },
+            scale: { from: 0.2, to: 1 },
+            ease: 'Quart.easeOut',
+            duration: 1000,
+            onComplete: function() {
+                pulseCircle.destroy();
+            },
+            onCompleteScope: this
+        });
     }
 }

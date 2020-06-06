@@ -74,28 +74,6 @@ class Play extends Phaser.Scene {
             if (object.type === 'Room') {
                 this.rooms.push(object);
             }
-            // Doors
-            if (object.type === 'Door') {
-                if(object.name === 'Door1_2') {
-                    // Door(scene, oSpawnX, oSpawnY, room1, room2, isOpen)
-                    this.door1_2 = new Door(this, object.x, object.y, 'Room1', 'Room2', false);
-                }
-                if(object.name === 'Door2_3') {
-                    this.door2_3 = new Door(this, object.x, object.y, 'Room2', 'Room3', false);
-                }
-                if(object.name === 'Door3_4') {
-                    this.door3_4 = new Door(this, object.x, object.y, 'Room3', 'Room4', false);
-                }
-                if(object.name === 'Door4_5') {
-                    this.door4_5 = new Door(this, object.x, object.y, 'Room4', 'Room5', false);
-                }
-                if(object.name === 'Door5_6') {
-                    this.door5_6 = new Door(this, object.x, object.y, 'Room5', 'Room6', false);
-                }
-                if(object.name === 'Door6_end') {
-                    this.door6_end = new Door(this, object.x, object.y, 'Room6', 'End', false);
-                }
-            }
             // Spawn points
             if (object.type === 'Spawn') {
                 if (object.name === 'Player') {
@@ -135,6 +113,30 @@ class Play extends Phaser.Scene {
             }
         }, this);
 
+        this.map.findObject('Objects', function(object) {
+            // Doors
+            if (object.type === 'Door') {
+                if(object.name === 'Door1_2') {
+                    // Door(scene, oSpawnX, oSpawnY, room1, room2, isOpen)
+                    this.door1_2 = new Door(this, object.x, object.y, 'Room1', 'Room2', false);
+                }
+                if(object.name === 'Door2_3') {
+                    this.door2_3 = new Door(this, object.x, object.y, 'Room2', 'Room3', false);
+                }
+                if(object.name === 'Door3_4') {
+                    this.door3_4 = new Door(this, object.x, object.y, 'Room3', 'Room4', false);
+                }
+                if(object.name === 'Door4_5') {
+                    this.door4_5 = new Door(this, object.x, object.y, 'Room4', 'Room5', false);
+                }
+                if(object.name === 'Door5_6') {
+                    this.door5_6 = new Door(this, object.x, object.y, 'Room5', 'Room6', false);
+                }
+                if(object.name === 'Door6_end') {
+                    this.door6_end = new Door(this, object.x, object.y, 'Room6', 'End', false);
+                }
+            }
+        }, this);
         // EnemyBulletGroup(scene, state)
         this.redEnemyBulletGroup = new EnemyBulletGroup(this, 0);
         this.blueEnemyBulletGroup = new EnemyBulletGroup(this, 1);
@@ -308,17 +310,17 @@ class Play extends Phaser.Scene {
                 }
             }
             if (object.type === 'Spawn2') {
-                if (object.name === 'Slime6') {
+                if (object.name === 'Slime7') {
                     //this.redEnemyGroup.addChaser(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
                     this.blueEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
                 }
             }
-            if (object.type === 'Spawn2') {
-                if (object.name === 'Slime7') {
-                    this.blueEnemyGroup.addShooter(object.x,object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
-                    //this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
-                }
-            }
+            // if (object.type === 'Spawn2') {
+            //     if (object.name === 'Slime7') {
+            //         this.blueEnemyGroup.addShooter(object.x,object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
+            //         //this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
+            //     }
+            // }
             if (object.type === 'Spawn2') {
                 if (object.name === 'Slime8') {
                     this.redEnemyGroup.addShooter(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
