@@ -113,11 +113,13 @@ class Instructions extends Phaser.Scene {
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyInstructions)) {
+            buttonSound.play();
             this.scene.stop('instructionsScene');
             this.scene.run('menuScene');
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.keyMute)) {
+            buttonSound.play();
             if(game.sound.mute == false){
                 game.sound.mute = true;
             } else {
@@ -126,6 +128,7 @@ class Instructions extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.keyMuteBGM)) {
+            buttonSound.play();
             if(gameplayBGM.mute == false){
                 gameplayBGM.mute = true;
             } else {

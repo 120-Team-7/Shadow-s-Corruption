@@ -264,7 +264,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             // Player color switch
             if(!switchOnCooldown && Phaser.Input.Keyboard.JustDown(keySwitch)){
-                // this.scene.sound.play('switch');
+                switchSound.play();
                 pStats.switchNum++;
                 // Change state and body appearance
                 if(playerState == 0){
@@ -438,6 +438,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (Phaser.Input.Keyboard.JustDown(this.keyStart) || Phaser.Input.Keyboard.JustDown(this.keyPause)) {
                 if(!isGameOver) {
                     gameplayBGM.pause();
+                    buttonSound.play();
                     this.playerCursor.setVisible(false);
                     isPaused = true;
                     this.scene.scene.pause(currScene);
@@ -450,6 +451,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
 
             if (Phaser.Input.Keyboard.JustDown(keyDebug)) {
+                buttonSound.play();
                 if(this.scene.physics.world.debugGraphic.alpha == 1){
                     this.scene.physics.world.debugGraphic.setAlpha(0);
                 } else {
@@ -461,6 +463,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.playerHit(pMaxHealth);
             }
             if(Phaser.Input.Keyboard.JustDown(keyGodmode)) {
+                buttonSound.play();
                 if(!isGodmode) {
                     isGodmode = true;
                     isInvuln = true;

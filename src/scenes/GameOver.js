@@ -91,7 +91,7 @@ class GameOver extends Phaser.Scene {
     update() {
         // Input to return to menu
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
-            // this.sound.play('buttonsound');
+            buttonSound.play();
             pStats.enemiesKilled = 0;
             pStats.orbKilled = 0;
             pStats.knifeKilled = 0;

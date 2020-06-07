@@ -121,6 +121,18 @@ class Load extends Phaser.Scene {
             loop: true 
         });
 
+        switchSound = game.sound.add('switch', { 
+            mute: false,
+            volume: 4*globalVolume/10,
+            rate: 3,
+        });
+
+        buttonSound = game.sound.add('buttonSound', { 
+            mute: false,
+            volume: globalVolume/3,
+            rate: 1.5,
+        });
+
         this.continueText = this.add.text(screenWidth, screenHeight, 'Press       to continue', {
             fontFamily: 'Courier',
             fontSize: '40px',
@@ -153,7 +165,7 @@ class Load extends Phaser.Scene {
         // Go to menu scene
         if (Phaser.Input.Keyboard.JustDown(keyStart)) {
             this.cameras.main.fadeOut(500, 0, 0, 0);
-            // this.sound.play('buttonsound');
+            buttonSound.play();
             this.time.delayedCall(500, function () {
                 // this.scene.start('menuScene');
                 this.scene.start('startCinematicScene');

@@ -34,6 +34,8 @@ class Menu extends Phaser.Scene {
         nextScene = "next";
         this.selectingScene = false;
 
+        this.difficulty = "normal";
+
         corruptionParticles = this.add.particles('corruptionParticle');
         // this.titleSplash = this.add.sprite(0, 0, 'titleSplash').setOrigin(0, 0).setAlpha(0.8);
         this.shadowBackground = this.add.sprite(centerX, 0, 'shadowBackground').setOrigin(0.5, 0).setAlpha(0).setScale(0.65, 1);
@@ -42,7 +44,11 @@ class Menu extends Phaser.Scene {
         // Add menu screen text
         menuConfig.fontSize = '35px';
         this.add.text(centerX, centerY - textSpacer, 'Press I for controls', menuConfig).setOrigin(0.5, 0.5);
-        this.difficultyText = this.add.text(centerX, centerY, 'Press E for EASY, Press N for NORMAL', menuConfig).setOrigin(0.5, 0.5);
+        if(this.difficulty == "normal") {
+            this.difficultyText = this.add.text(centerX, centerY, 'Press E for EASY, Press N for [NORMAL]', menuConfig).setOrigin(0.5, 0.5);
+        } else {
+            this.difficultyText = this.add.text(centerX, centerY, 'Press E for [EASY], Press N for NORMAL', menuConfig).setOrigin(0.5, 0.5);
+        }
         this.tutorialSelect = this.add.text(centerX, centerY + textSpacer, 'Tutorial: press 1', menuConfig).setOrigin(0.5, 0.5);
         this.advancedSelect = this.add.text(centerX, centerY + 2*textSpacer, 'Advanced tutorial: press 2', menuConfig).setOrigin(0.5, 0.5);
         this.playSelect = this.add.text(centerX, centerY + 3*textSpacer, 'Play: press 3', menuConfig).setOrigin(0.5, 0.5);
@@ -75,18 +81,23 @@ class Menu extends Phaser.Scene {
 
 
         this.input.keyboard.on('keydown-N', function () {
+            buttonSound.play();
             chaserConfig.health = 10;
             shooterConfig.health = 10;
+            this.difficulty = "normal";
             scene.difficultyText.setText('Press E for EASY, Press N for [NORMAL]')
         });
         this.input.keyboard.on('keydown-E', function () {
+            buttonSound.play();
             chaserConfig.health = 5;
             shooterConfig.health = 5;
+            this.difficulty = "easy";
             scene.difficultyText.setText('Press E for [EASY], Press N for NORMAL')
         });
 
         this.input.keyboard.on('keydown-ONE', function () {
             if(isGameOver) {
+                buttonSound.play();
                 if(!this.selectingScene) {
                     this.selectingScene = true;
                     this.startText.setAlpha(1);
@@ -104,6 +115,7 @@ class Menu extends Phaser.Scene {
 
         this.input.keyboard.on('keydown-TWO', function () {
             if(isGameOver && this.selectingScene) {
+                buttonSound.play();
                 if(currScene != 'practiceScene') {
                     nextScene = 'practiceScene';
                 }
@@ -116,6 +128,7 @@ class Menu extends Phaser.Scene {
 
         this.input.keyboard.on('keydown-THREE', function () {
             if(isGameOver && this.selectingScene) {
+                buttonSound.play();
                 if(currScene != 'playScene') {
                     nextScene = 'playScene';
                 }
@@ -128,6 +141,7 @@ class Menu extends Phaser.Scene {
 
         this.input.keyboard.on('keydown-FOUR', function () {
             if(isGameOver && this.selectingScene) {
+                buttonSound.play();
                 if(currScene != 'arenaScene') {
                     nextScene = 'arenaScene';
                 }
@@ -140,6 +154,7 @@ class Menu extends Phaser.Scene {
 
         this.input.keyboard.on('keydown-C', function () {
             if(isGameOver && !this.selectingScene) {
+                buttonSound.play();
                 this.scene.run('creditsScene');
                 this.scene.pause('menuScene');
                 this.scene.bringToTop('creditsScene');
@@ -148,6 +163,7 @@ class Menu extends Phaser.Scene {
 
         this.input.keyboard.on('keydown-R', function () {
             if(isPaused) {
+                buttonSound.play();
                 isPaused = false;
                 isGameOver = true;
                 isInvuln = false;
@@ -185,6 +201,7 @@ class Menu extends Phaser.Scene {
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.keyInstructions)) {
+            buttonSound.play();
             this.scene.run('instructionsScene');
             this.scene.pause('menuScene');
             this.scene.bringToTop('instructionsScene');
@@ -224,6 +241,7 @@ class Menu extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.keyStart) && nextScene != "next") {
+            buttonSound.play();
             this.selectingScene = false;
             this.corruptionRight.remove();
             this.corruptionLeft.remove();
@@ -257,6 +275,7 @@ class Menu extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.keyMute)) {
+            buttonSound.play();
             if(game.sound.mute == false){
                 game.sound.mute = true;
             } else {
@@ -265,6 +284,7 @@ class Menu extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.keyMuteBGM)) {
+            buttonSound.play();
             if(gameplayBGM.mute == false){
                 gameplayBGM.mute = true;
             } else {

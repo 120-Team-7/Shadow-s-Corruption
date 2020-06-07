@@ -112,6 +112,7 @@ class Arena extends Phaser.Scene {
         // Remove tutorial items and start infinite enemy spawner
         this.startSpawning = this.input.keyboard.on('keydown-SPACE', function () {
             if(!this.spawnedEnemies) {
+                buttonSound.play();
                 this.enemyCount = 0;
                 this.timeElapsed = this.add.text(centerX + 200, 32, 'Time: 0', playConfig).setOrigin(0.5, 0);
                 this.arenaClock = this.time.addEvent({
@@ -194,9 +195,9 @@ class Arena extends Phaser.Scene {
             }
         }, this);
 
-        this.input.keyboard.on('keydown-ZERO', function () {
-            this.currTime = 180;
-        }, this);
+        // this.input.keyboard.on('keydown-ZERO', function () {
+        //     this.currTime = 180;
+        // }, this);
     }
 
     update() {

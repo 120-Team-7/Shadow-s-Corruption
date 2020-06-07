@@ -7,9 +7,6 @@ class StartCinematic extends Phaser.Scene {
     create() {
         this.keyContinue = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        // this.sceneKey = 'startCinematicScene';
-        // currScene = this.sceneKey;
-
         let cutsceneConfig = {
             fontFamily: 'Courier',
             fontSize: '35px',
@@ -169,6 +166,7 @@ class StartCinematic extends Phaser.Scene {
         this.fadeIn(this.cinematicText, 2000, 1);
         this.input.keyboard.on('keydown-SPACE', function () {
             if(this.canContinue) {
+                buttonSound.play();
                 this.counter++;
                 if(this.counter == 1) {
                     this.canContinue = false;
@@ -289,6 +287,7 @@ class StartCinematic extends Phaser.Scene {
 
         this.input.keyboard.on('keydown-ESC', function () {
             if(!this.skipping) {
+                buttonSound.play();
                 this.tweens.killAll();
                 this.skipping = true;
                 this.canContinue = false;

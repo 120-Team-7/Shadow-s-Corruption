@@ -1,5 +1,5 @@
 /*
-    Shadow's Realm Corruption by Evan Li, Hoang Huynh, Henry Nguyen.
+    Shadow's Corruption by Evan Li, Hoang Huynh, Henry Nguyen.
 
     Credits: 
     http://www.geekwagon.net/index.php/2019/room-changing-phaser3-titled/ for tile 
@@ -95,12 +95,6 @@ var orange = 0xFFA500;
 // Text settings
 var strokeThickness = 6;
 var enemyStrokeThickness = 2;
-
-// Audio
-var globalVolume = 1;
-// var knifeThrowSound;
-// var orbShootSound;
-var gameplayBGM;
 
 // Particles;
 var corruptionParticles;
@@ -276,6 +270,10 @@ var BGMVolume = 0.25;
 var globalVolume = 1;
 var normalSoundRate = 1;
 var volumeChange = 0.1;
+
+var gameplayBGM;
+var switchSound;
+var buttonSound;
 
 // Given co-ordinates of two points, start and end, and a chosen magnitude, returns a Vector2
 // that has the same direction as the vector from the start point to end point, but has the chosen magnitude

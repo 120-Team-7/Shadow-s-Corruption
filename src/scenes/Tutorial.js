@@ -148,6 +148,7 @@ class Tutorial extends Phaser.Scene {
         // Progress tutorial text
         this.input.keyboard.on('keydown-SPACE', function () {
             if(this.canContinue) {
+                buttonSound.play();
                 tutorialNum++;
                 if(tutorialNum == 1) {
                     this.fadeOutInText("I'll have to leave this cave to continue razing the old world and shaping the Void Frontier.");
