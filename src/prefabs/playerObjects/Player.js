@@ -69,7 +69,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.damageTextConfig = {
             fontFamily: 'Courier',
-            fontSize: '40px',
+            fontSize: '50px',
             color: "#8B008B",
             stroke: '#000000',
             strokeThickness: enemyStrokeThickness,
@@ -209,7 +209,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             onCompleteScope: this
         });
 
-        this.playerCursor = scene.add.sprite(0, 0, 'redReticle').setOrigin(0.5, 0.5).setDepth(10000);
+        this.playerCursor = scene.add.sprite(0, 0, 'redReticle').setOrigin(0.5, 0.5).setScale(1.5, 1.5).setDepth(10000);
     }
 
 
@@ -218,18 +218,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(playerState == 0) {
             if(usingCorruption) {
                 this.playerCursor.setTexture('corruptRedRet');
-                // this.scene.input.setDefaultCursor('url(assets/images/corruptRedRet.png), pointer');
             } else {
                 this.playerCursor.setTexture('redReticle');
-                // this.scene.input.setDefaultCursor('url(assets/images/redReticle.png), pointer');
             }
         } else {
             if(usingCorruption) {
                 this.playerCursor.setTexture('corruptBlueRet');
-                // this.scene.input.setDefaultCursor('url(assets/images/corruptBlueRet.png), pointer');
             } else {
                 this.playerCursor.setTexture('blueReticle');
-                // this.scene.input.setDefaultCursor('url(assets/images/blueReticle.png), pointer');
             }
         }
 
@@ -308,8 +304,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.corrupt14.setAlpha(1);
                     this.corrupt15.setAlpha(1);
                     this.corrupt16.setAlpha(1);
-                    // this.scene.corruptCircle.setActive(true);
-                    // this.corruptCircleBloom.play();
 
                     usingCorruption = true;
                     this.scene.corruptionDecayTimer.paused = true;
@@ -505,7 +499,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }, null, this.scene);
             this.damageText.setText(damage);
             this.damageTextDisappearing = true;
-            this.damageTextTimer = this.scene.time.delayedCall(2000, () => {
+            this.damageTextTimer = this.scene.time.delayedCall(3000, () => {
                 this.damageTextDisappearing = false;
                 this.damageText.setAlpha(0);
             }, null, this.scene);
