@@ -92,7 +92,6 @@ class Practice extends Phaser.Scene {
         this.video4 = this.add.video(centerX + 3*screenWidth, 0, 'weaponMines').setOrigin(0.5, 0).setScale(this.videoScale, this.videoScale);
         this.video5 = this.add.video(centerX + 4*screenWidth, 0, 'cKnifeChain').setOrigin(0.5, 0).setScale(this.videoScale, this.videoScale);
         this.video6 = this.add.video(centerX + 5*screenWidth, 0, 'shootBlockShoot').setOrigin(0.5, 0).setScale(this.videoScale, this.videoScale);
-        // this.video7 = this.add.video(centerX + 6*screenWidth, 0, 'cKnifeChain').setOrigin(0.5, 0).setScale(this.videoScale, this.videoScale);
 
         this.rooms = [];
         //this.currentRoom = 1;
@@ -182,7 +181,6 @@ class Practice extends Phaser.Scene {
                         this.video4.stop();
                         this.video5.stop();
                         this.video6.stop();
-                        // this.video7.stop();
                     }
                     if(player.currentRoom == 1) {
                         this.video1.stop();
@@ -191,7 +189,6 @@ class Practice extends Phaser.Scene {
                         this.video4.stop();
                         this.video5.stop();
                         this.video6.stop();
-                        // this.video7.stop();
                     }
                     if(player.currentRoom == 2) {
                         this.video1.stop();
@@ -200,7 +197,6 @@ class Practice extends Phaser.Scene {
                         this.video4.stop();
                         this.video5.stop();
                         this.video6.stop();
-                        // this.video7.stop();
                     }
                     if(player.currentRoom == 3) {
                         this.video1.stop();
@@ -209,7 +205,6 @@ class Practice extends Phaser.Scene {
                         this.video4.play(true);
                         this.video5.stop();
                         this.video6.stop();
-                        // this.video7.stop();
                     }
                     if(player.currentRoom == 4) {
                         this.video1.stop();
@@ -218,7 +213,6 @@ class Practice extends Phaser.Scene {
                         this.video4.stop();
                         this.video5.play(true);
                         this.video6.stop();
-                        // this.video7.stop();
                     }
                     if(player.currentRoom == 5) {
                         this.video1.stop();
@@ -227,7 +221,6 @@ class Practice extends Phaser.Scene {
                         this.video4.stop();
                         this.video5.stop();
                         this.video6.play(true);
-                        // this.video7.stop();
                     }
                     // Change camera boundaries when fade out complete.
                     this.cameras.main.setBounds(this.rooms[player.currentRoom].x,

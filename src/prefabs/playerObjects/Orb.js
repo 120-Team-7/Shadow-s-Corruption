@@ -2,7 +2,6 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, group, oSpawnX, oSpawnY, state, shot) {
         super(scene, oSpawnX, oSpawnY, 'orb').setOrigin(0.5, 0.5);
 
-        let orb = this;
         this.group = group;
         this.scene = scene;
         this.state = state;
@@ -23,9 +22,7 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        // this.body.setMaxVelocity(orbMaxSpeed, orbMaxSpeed);
 
-        // this.body.setCircle(25, 50, 50);
         this.body.setCircle(50, 100, 100);
         this.setDepth(999);
 
@@ -70,7 +67,6 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
             this.shot = false;
             if(usingCorruption) {
                 player.corruptContainerFade.play();
-                // this.scene.corruptCircle.setActive(true);
                 player.corruptCircleBloom.play();
                 this.corrupted = true;
                 this.particleTrail = corruptionParticles.createEmitter({
@@ -94,7 +90,6 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
                     player.corruptionExpireTimer.destroy();
                 }
                 this.scene.cameras.main.shake(500, corruptionScreenShake);
-                // this.scene.sound.play('corruptionExpire');
             }
             if(this.corrupted) {
                 this.scene.sound.play('corruptedOrb');
@@ -120,8 +115,6 @@ class Orb extends Phaser.Physics.Arcade.Sprite {
                 this.accelVector = scaleVectorMagnitude(this.accel, this.shotX, this.shotY, this.targetX, this.targetY)
                 
                 // Set new accel
-                // this.body.acceleration.x = this.accelVector.x;
-                // this.body.acceleration.y = this.accelVector.y;
                 this.body.setAcceleration(this.accelVector.x, this.accelVector.y);
 
                 // Increase accel

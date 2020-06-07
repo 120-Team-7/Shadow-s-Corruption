@@ -157,10 +157,8 @@ class OrbGroup extends Phaser.GameObjects.Group {
 
         // displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime)
         if(this.isOnCooldown) {
-            // this.hudScene.orbCooldownImage.setAlpha(0.5);
             displayCooldown(this.hudScene.orbCooldownText, this.hudScene.orbCooldownBox, this.orbCooldown, orbShootROF, this.hudScene.orbCDImage);
         } else {
-            // this.hudScene.orbCooldownImage.setAlpha(1);
             this.hudScene.orbCooldownText.setText("");
             this.hudScene.orbCooldownBox.setSize(cooldownBoxWidth, cooldownBoxHeight);
         }

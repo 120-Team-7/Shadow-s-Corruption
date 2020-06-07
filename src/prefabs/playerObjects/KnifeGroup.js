@@ -1,10 +1,8 @@
 class KnifeGroup extends Phaser.GameObjects.Group {
     constructor(scene, hudScene, state, redEnemyGroup) {
-        // https://photonstorm.github.io/phaser3-docs/Phaser.Types.Physics.Arcade.html#.PhysicsGroupConfig__anchor
         let groupConfig = {
             runChildUpdate: true,
         }
-        // Group(scene [, children] [, config])
         super(scene, null, groupConfig);
 
         let group = this;
@@ -13,9 +11,6 @@ class KnifeGroup extends Phaser.GameObjects.Group {
         this.state = state;
 
         this.isOnCooldown = false;
-
-        
-        // this.meleeStreak.setAlpha(0);
 
         // Knife x Enemy collider
         this.kxeCollider = scene.physics.add.overlap(group, redEnemyGroup, function(knife, enemy) {
@@ -56,7 +51,6 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                 // Corruption handling: increase corruption, check if gaining
                 gainingCorruption = true;
                 if(player.canUseCorruption && gainingActive) {
-                    // player.corruptionExpiring = false;
                     group.scene.gainingCorruptionTimer.destroy();
                 }
                 gainingActive = true;
@@ -74,7 +68,6 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     knife.damage = knifeMeleeDamage;
                     if(knife.corrupted) {
                         player.corruptContainerFade.play();
-                        // this.scene.corruptCircle.setActive(true);
                         player.corruptCircleBloom.play();
                         knife.damage += corruption;
                         pStats.knifeCorruptedDamage += knife.damage;
@@ -127,26 +120,6 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                         }, null, group.scene);
                     }
                     group.knifeStreak(knife);
-                    // this.finalStuckX = knife.stuckEnemy.x + knife.stuckOffsetX + 12.5;
-                    // this.finalStuckY = knife.stuckEnemy.y + knife.stuckOffsetY + 12.5;
-
-                    // this.meleeStartX = idleWeaponX + 12.5;
-                    // this.meleeStartY = idleWeaponY + 12.5;
-
-                    // this.outVector = scaleVectorMagnitude(50, this.meleeStartX, this.meleeStartY, this.finalStuckX, this.finalStuckY);
-                    // this.offsetVector = scaleVectorMagnitude(30, this.meleeStartX, this.meleeStartY, this.finalStuckX, this.finalStuckY);
-                    // group.meleeStreak = scene.add.line(0, 0, this.meleeStartX  - this.offsetVector.x, this.meleeStartY - this.offsetVector.y, this.finalStuckX + this.outVector.x, this.finalStuckY + this.outVector.y, playerRed);
-                    // group.meleeStreak.setLineWidth(4, 1);
-                    // group.fadeAway = group.scene.tweens.add({
-                    //     targets: group.meleeStreak,
-                    //     alpha: { from: 1, to: 0 },
-                    //     ease: 'Quart.easeIn',
-                    //     duration: 500,
-                    //     onComplete: function() {
-                    //         group.meleeStreak.destroy();
-                    //     },
-                    //     onCompleteScope: group
-                    // });
                 }
             } else {
                 if(knife.corrupted) {

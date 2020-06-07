@@ -19,19 +19,6 @@ class Chaser extends Enemy {
         this.body.setBounce(chaserConfig.bounce, chaserConfig.bounce);
         this.body.setMaxVelocity(chaserConfig.maxVel, chaserConfig.maxVel);
 
-        // this.slowDown = scene.tweens.add({
-        //     paused: true,
-        //     targets: enemy.body,
-        //     // delay: chaserSlowdownDelay,
-        //     duration: 500,
-        //     ease: 'Linear',
-        //     props: {
-        //         x: { to: 0, duration: 250, ease: 'Linear' },
-        //         y: { to: 0, duration: 250, ease: 'Linear' }
-        //     },
-        // });
-
-
         // Chaser movement
         this.body.setEnable(false);
         this.startMoving = this.scene.time.delayedCall(chaserConfig.spawnPause, function () {
@@ -79,12 +66,6 @@ class Chaser extends Enemy {
                     }
     
                     enemy.body.setAcceleration(enemy.xAccel, enemy.yAccel);
-    
-                    // this.slowDownTimer = scene.time.delayedCall(chaserSlowdownDelay, function () {
-                    //     // enemy.body.setAcceleration(0, 0);
-                    //     enemy.slowDown.play();
-    
-                    // }, this, scene);
                 }, 
                 callbackContext: scene,
                 loop: true,

@@ -64,7 +64,7 @@ class EnemyColorGroup extends Phaser.Physics.Arcade.Group {
     }
 
     // All enemies in group take lethal damage
-    // Crashes game if used too soon after they spawn (careful)
+    // Breaks game if used too soon after they spawn (careful)
     nukeEnemies() {
         this.enemyArray = this.getChildren();
         if(this.getLength() > 0) {

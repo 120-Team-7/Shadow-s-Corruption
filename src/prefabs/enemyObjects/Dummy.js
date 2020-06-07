@@ -8,7 +8,6 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
 
         this.setTint(0x555555);
         this.setFlipX(flip);
-
         this.setOrigin(0.5, 0.5);
 
         // Scope parameters to this instance
@@ -26,6 +25,7 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         this.shotX = shotX;
         this.shotY = shotY;
 
+        // Enemy variables
         this.targetX = 0;
         this.targetY = 0;
         this.damage = 0;
@@ -33,14 +33,11 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         this.shooting = false;
         this.switching = false;
         this.moving = false;
-
-        // Enemy variables
         this.exists = true;
         this.damaged = false;
         this.orbDamageInvuln = false;
         this.orbBlockInvuln = false
         this.damageTextDisappearing = false;
-        
         this.maxHealth = 10;
         this.health = this.maxHealth;
 
@@ -49,11 +46,6 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
         this.body.setDrag(enemyDrag, enemyDrag);
         this.body.setMaxVelocity(chaserConfig.maxVel, chaserConfig.maxVel);
 
-        // this.customBounds = new Phaser.Geom.Rectangle(100, 100, screenWidth - 200, screenHeight - 200)
-        // console.log(this.customBounds);
-        // this.body.setBoundsRectangle(this.customBounds);
-        // this.body.setDrag(enemyDrag, enemyDrag);
-        // console.log(this.body);
         this.healthTextConfig = {
             fontFamily: 'Courier',
             fontSize: '22px',
@@ -112,6 +104,7 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             });
         }
 
+        // Dummy moves back to its spawn point
         enemy.moving = true;
         enemy.moveTimer = scene.time.addEvent({
             delay: chaserConfig.moveDelay, 
@@ -124,12 +117,6 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
                     enemy.body.setAcceleration(enemy.accelVector.x, enemy.accelVector.y);
     
                 }
-
-                // this.slowDownTimer = scene.time.delayedCall(chaserSlowdownDelay, function () {
-                //     // enemy.body.setAcceleration(0, 0);
-                //     enemy.slowDown.play();
-
-                // }, this, scene);
             }, 
             callbackContext: scene,
             loop: true,
@@ -177,6 +164,7 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             this.destroy();
         }
 
+        // Stop moving if close enough to its spawn
         if(inTutorial && this.x < this.oSpawnX + 30 && this.x > this.oSpawnX - 30 &&
             this.y < this.oSpawnY + 30 && this.y > this.oSpawnY - 30 && !this.stunned) {
             this.body.stop();
@@ -249,11 +237,6 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             // Effects
             this.emitCircle.setPosition(this.x, this.y);
             this.corruptionBleed.explode(2 + 2*damage);
-            // this.setAlpha(0.5)
-            // this.damagedTimer = this.scene.time.delayedCall(500, function () {
-            //     this.damaged = false;
-            //     enemy.setAlpha(1);
-            // }, null, this.scene);
         // Dead
         } else {
             this.exists = false;
@@ -261,14 +244,10 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
             this.body.stop();
             this.emitCircle.setPosition(this.x, this.y);
             this.corruptionBleed.explode(8 + 2*damage);
-            // this.exists = false;
             // Remove active timers & functions
             if(this.moving) {
                 this.moveTimer.paused = true;
             }
-            // if(this.damaged) {
-            //     this.damagedTimer.remove();
-            // }
             this.setAlpha(0.05);
             // Wait to remove enemy corpse & text 
             this.destroyTimer = this.scene.time.delayedCall(enemyDestroyDelay, () => {
@@ -287,27 +266,6 @@ class Dummy extends Phaser.Physics.Arcade.Sprite {
                     this.setAlpha(1);
                 }
             }, null, this);
-        }
-    }
-
-    // Switch enemy color & everything else related
-    eSwitchColor(originalGroup, newGroup) {
-        let originalState = this.state;
-        originalGroup.remove(this); 
-        if(this.moving) {
-            this.moveTimer.paused = false
-        }
-        this.body.setImmovable(false);
-        if(originalState == 0){
-            this.state = 1;
-        } else {
-            this.state = 0;
-        }
-        newGroup.add(this);
-        if(this.state == 0){
-            this.setTexture(this.redTexture);
-        } else {
-            this.setTexture(this.blueTexture);
         }
     }
 

@@ -25,18 +25,6 @@ class Shooter extends Enemy {
         this.body.setBounce(chaserConfig.bounce, shooterConfig.bounce);
         this.body.setMaxVelocity(chaserConfig.maxVel, shooterConfig.maxVel);
 
-        // this.slowDown = scene.tweens.add({
-        //     paused: true,
-        //     targets: enemy.body,
-        //     // delay: chaserSlowdownDelay,
-        //     duration: 500,
-        //     ease: 'Linear',
-        //     props: {
-        //         x: { to: 0, duration: 250, ease: 'Linear' },
-        //         y: { to: 0, duration: 250, ease: 'Linear' }
-        //     },
-        // });
-
         // Shooter movement
         this.body.setEnable(false);
         this.startMoving = this.scene.time.delayedCall(shooterConfig.spawnPause, function () {
@@ -51,6 +39,7 @@ class Shooter extends Enemy {
                     
                     this.enemyDistance = Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y);
 
+                    // Move closer to player if far away, and run away if too close
                     if(this.enemyDistance < shooterConfig.closeDistance) {
                         enemy.xComponent = enemy.x - player.x;
                         enemy.yComponent = enemy.y - player.y;
@@ -72,23 +61,17 @@ class Shooter extends Enemy {
                     enemy.yAccel = enemy.yComponent / enemy.scaleFactor;
     
                     enemy.body.setAcceleration(enemy.xAccel, enemy.yAccel);
-    
-                    // this.slowDownTimer = scene.time.delayedCall(chaserSlowdownDelay, function () {
-                    //     // enemy.body.setAcceleration(0, 0);
-                    //     enemy.slowDown.play();
-    
-                    // }, this, scene);
                 }, 
                 callbackContext: scene,
                 loop: true,
             });
         }, null, this.scene);
 
-
         this.targetLaser = scene.add.line(0, 0, 0, 0, 0, 0, playerRed);
         this.targetLaser.setLineWidth(3, 0.5);
         this.targetLaser.setAlpha(0);
 
+        // Fades in laser and shoots on complete
         this.fadeIn = this.scene.tweens.add({
             targets: this.targetLaser,
             alpha: { from: 0, to: 1 },
@@ -106,6 +89,7 @@ class Shooter extends Enemy {
         this.fadeIn.stop();
 
         this.shooting = true;
+        // Timer to begin shot targetting
         this.targetTimer = this.scene.time.addEvent({
             delay: shooterConfig.rof/2, 
             callback: () => {
@@ -115,7 +99,6 @@ class Shooter extends Enemy {
             callbackContext: scene,
             loop: true,
         });
-
     }
 
     update() {
@@ -154,16 +137,6 @@ class Shooter extends Enemy {
             this.targetX = player.x + player.body.velocity.x * this.enemyRange * shooterConfig.shotPredictMult
             this.targetY = player.y + player.body.velocity.y * this.enemyRange * shooterConfig.shotPredictMult;
 
-            // // If predition goes off screen, target player directly
-            // if(this.targetX < 0 || this.targetX > screenWidth) {
-            //     this.targetX = player.x;
-            //     this.targetY = player.y;
-            // }
-            // if(this.targetY < 0 || this.targetY > screenHeight) {
-            //     this.targetY = player.x;
-            //     this.targetY = player.y;
-            // }
-
             // If predition is in opposite direction from player, target player directly
             if(this.targetX < this.x && player.x > this.x) { 
                 this.targetX = player.x;
@@ -186,7 +159,7 @@ class Shooter extends Enemy {
 
 
         if(this.health > 0) {
-            this.targetVector = scaleVectorMagnitude(shooterConfig.targetLaserLength, this.x, this.y, this.targetX, this.targetY)
+            this.targetVector = scaleVectorMagnitude(shooterConfig.targetLaserLength, this.x, this.y, this.targetX, this.targetY);
             this.targetLaser.setTo(this.x, this.y, this.x + this.targetVector.x, this.y + this.targetVector.y);
             if(this.state == 0) {
                 this.targetLaser.strokeColor = playerRed;

@@ -8,7 +8,7 @@ class Endpoint extends Phaser.Physics.Arcade.Sprite {
 
         this.scene = scene;
         this.sceneDestination = sceneDestination;
-            
+        
         scene.add.existing(this);
         scene.physics.add.existing(this);
 

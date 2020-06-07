@@ -7,7 +7,6 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         }
         this.setAlpha(0);
         
-        let knife = this;
         this.group = group;
         this.scene = scene;
         this.state = state;
@@ -36,10 +35,10 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.setAngle(player.weaponAngle);
-
         this.body.setCircle(25);
         this.setDepth(999);
 
+        // Fade away knife after being stuck to enemy
         this.fadeAway = this.scene.tweens.add({
             targets: this,
             paused: true,
@@ -52,6 +51,7 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             },
             onCompleteScope: this
         });
+        // Quick reload "animation"
         this.fadeIn = this.scene.tweens.add({
             targets: this,
             alpha: { from: 0, to: 1 },
@@ -59,6 +59,7 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             ease: 'Quart.easeIn',
             duration: 200,
         });
+        // For weapon mine
         this.disapate = this.scene.tweens.add({
             targets: this,
             paused: true,
@@ -101,7 +102,6 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
             this.shooting = true;
             if(this.corrupted) {
                 player.corruptContainerFade.play();
-                // this.scene.corruptCircle.setActive(true);
                 player.corruptCircleBloom.play();
                 this.particlesActive = true;
                 this.particleTrail.active = true;
@@ -114,7 +114,6 @@ class Knife extends Phaser.Physics.Arcade.Sprite {
                     player.corruptionExpireTimer.destroy();
                 }
                 this.scene.cameras.main.shake(500, corruptionScreenShake);
-                // this.scene.sound.play('corruptionExpire');
             }
             this.knifeAngle = Phaser.Math.Angle.Between(this.x, this.y, this.targetX, this.targetY);
 

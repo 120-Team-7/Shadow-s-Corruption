@@ -277,8 +277,6 @@ var globalVolume = 1;
 var normalSoundRate = 1;
 var volumeChange = 0.1;
 
-// Audio
-
 // Given co-ordinates of two points, start and end, and a chosen magnitude, returns a Vector2
 // that has the same direction as the vector from the start point to end point, but has the chosen magnitude
 function scaleVectorMagnitude(targetMagnitude, startX, startY, endX, endY) {
@@ -306,6 +304,7 @@ function increaseCorruption(amount) {
     }
 }
 
+// Displays shfrinking box cooldown
 function displayCooldown(cooldownText, cooldownBox, cooldownTimer, cooldownTime, cooldownImage) {
     let timeLeft = Phaser.Math.RoundTo((cooldownTime - cooldownTimer.getElapsed())/1000, -1);
     let cooldownBoxDecrease = cooldownBoxWidth * cooldownTimer.getElapsed()/cooldownTime;

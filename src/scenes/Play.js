@@ -500,9 +500,9 @@ class Play extends Phaser.Scene {
             if (object.name === 'Slime7_1') {
                 this.redEnemyGroup.addShooter(object.x,object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
             }
-            if (object.name === 'Slime7_2') {
-                this.blueEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
-            }
+            // if (object.name === 'Slime7_2') {
+            //     this.blueEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+            // }
             if (object.name === 'Slime7_3') {
                 this.redEnemyGroup.addShooter(object.x,object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
             }
@@ -528,9 +528,9 @@ class Play extends Phaser.Scene {
             if (object.name === 'Slime8_3') {
                 this.blueEnemyGroup.addShooter(object.x,object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup, this.redEnemyBulletGroup, this.blueEnemyBulletGroup);
             }
-            if (object.name === 'Slime8_4') {
-                this.redEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
-            }
+            // if (object.name === 'Slime8_4') {
+            //     this.redEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
+            // }
             if (object.name === 'Slime8_5') {
                 this.blueEnemyGroup.addChaser(object.x, object.y, 'mirror', this.redEnemyGroup, this.blueEnemyGroup);
             }
@@ -556,9 +556,9 @@ class Play extends Phaser.Scene {
             if (object.name === 'Slime9_5') {
                 this.redEnemyGroup.addChaser(object.x, object.y, 'timed', this.redEnemyGroup, this.blueEnemyGroup);
             }
-            if (object.name === 'Slime9_6') {
-                this.redEnemyGroup.addChaser(object.x, object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
-            }
+            // if (object.name === 'Slime9_6') {
+            //     this.redEnemyGroup.addChaser(object.x, object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
+            // }
             if (object.name === 'Slime9_7') {
                 this.redEnemyGroup.addChaser(object.x, object.y, 'damaged', this.redEnemyGroup, this.blueEnemyGroup);
             }

@@ -46,7 +46,6 @@ class Arena extends Phaser.Scene {
         
         this.floorLayer = this.map.createStaticLayer("Background", this.tileset);
         this.sceneryBottomLayer = this.map.createStaticLayer("SceneryBottom", this.tileset);
-        // this.sceneryTopLayer = this.map.createStaticLayer("SceneryTop", this.tileset);
         this.wallsLayer = this.map.createStaticLayer("Walls", this.tileset);
         this.redWallsLayer = this.map.createStaticLayer("RedWalls", this.tileset)
         this.blueWallsLayer = this.map.createStaticLayer("BlueWalls", this.tileset)

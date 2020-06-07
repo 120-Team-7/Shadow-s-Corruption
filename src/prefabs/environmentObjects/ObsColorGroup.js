@@ -14,7 +14,7 @@ class ObsColorGroup extends Phaser.Physics.Arcade.Group {
         this.state = state;
 
         this.collider = scene.physics.add.collider(this, player, null, function() {
-            if(group.state == playerState && !isGodmode){
+            if(group.state == playerState && !isGodmode) {
                 return true;
             } else {
                 return false;
@@ -23,14 +23,8 @@ class ObsColorGroup extends Phaser.Physics.Arcade.Group {
 
     }
 
-    update() {
-        
-        // Somehow needed to update children
-        // this.preUpdate();
-    }
-
-    addObstacle(spawnX, spawnY){
+    addObstacle(spawnX, spawnY) {
         // Obstacle(scene, group, oSpawnX, oSpawnY, state)
-        this.add(new Obstacle(this.scene, this, spawnX, spawnY, this.state))
+        this.add(new Obstacle(this.scene, this, spawnX, spawnY, this.state));
     }
 }

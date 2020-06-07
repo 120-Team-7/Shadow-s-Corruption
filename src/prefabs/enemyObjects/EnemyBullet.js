@@ -5,7 +5,6 @@ class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
         } else {
             super(scene, spawnX, spawnY, 'blueSlimeball').setOrigin(0.5, 0.5);
         }
-        let bullet = this;
         this.group = group;
         this.spawnX = spawnX;
         this.spawnY = spawnY;
@@ -22,10 +21,8 @@ class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
         this.setDepth(2000);
         scene.add.existing(this);
         scene.physics.add.existing(this);
-
         this.body.setCircle(12);
 
-        this.setRotation(Phaser.Math.Angle.Between(this.spawnX, this.spawnY, this.targetX, this.targetY));
         this.scene.physics.moveTo(this, this.targetX, this.targetY, shooterConfig.bulletSpeed);
 
         this.corruptionBleed = corruptionParticles.createEmitter({

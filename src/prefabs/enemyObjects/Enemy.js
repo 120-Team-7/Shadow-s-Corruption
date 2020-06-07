@@ -19,10 +19,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.maxHealth = maxHealth;
         this.damage = damage;
 
-        this.health = this.maxHealth;
-        this.isDummy = false;
+        
 
         // Enemy variables
+        this.health = this.maxHealth;
+        this.isDummy = false;
         this.firstMoved = false;
         this.moving = false;
         this.exists = true;
@@ -38,7 +39,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
-
         this.body.setDrag(enemyDrag, enemyDrag);
 
         if(changeCondition == 'timed') {
@@ -183,21 +183,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // If alive show got hit
         if(this.health > 0){
             this.damaged = true;
-            // this.setAlpha(0.2)
-
             this.emitCircle.setPosition(this.x, this.y);
             this.corruptionBleed.explode(2 + 2*damage);
-
-            // this.damagedTimer = this.scene.time.delayedCall(500, function () {
-            //     if(this.exists){
-            //         this.damaged = false;
-            //         if(this.state == 0) {
-            //             this.setAlpha(1);
-            //         } else {
-            //             this.setAlpha(0.4);
-            //         }
-            //     }
-            // }, null, this);
         // If dead show got hit, stop everything, destroy, show death
         } else {
             pStats.enemiesKilled++;
@@ -209,9 +196,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 this.moveTimer.remove();
                 this.startMoving.remove();
             }
-            // if(this.damaged) {
-            //     this.damagedTimer.remove();
-            // }
             if(this.switching) {
                 this.switchPause.destroy();
             }

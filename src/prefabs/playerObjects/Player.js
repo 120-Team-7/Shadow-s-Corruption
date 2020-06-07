@@ -379,17 +379,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     player.idleWeapon.setAngle(this.weaponAngle);
                 }
                 player.idleWeapon.setPosition(idleWeaponX, idleWeaponY);
-                // if(player.idleWeapon.x < player.x){
-                //     player.idleWeapon.body.setOffset(player.idleWeapon.width/2 - 15, player.idleWeapon.height/2 - 5);
-                // }
-                // if(player.idleWeapon.x > player.x){
-                //     player.idleWeapon.body.setOffset(player.idleWeapon.width/2 + 10, player.idleWeapon.height/2 - 5);
-                // }
-                // player.idleWeapon.body.setOffset(player.idleWeapon.width/2, player.idleWeapon.height/2);
             }
-
-            // this.corruptionSiphon.x = this.x;
-            // this.corruptionSiphon.y = this.y;
 
             this.damageText.x = this.body.x + 15;
             this.damageText.y = this.body.y - 40;
