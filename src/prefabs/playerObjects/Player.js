@@ -38,7 +38,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.keyStart = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         this.keyPause = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-
         
         this.corruptionExpiring = false;
 
@@ -179,7 +178,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             ease: 'Quart.easeOut',
             duration: 1000,
             onComplete: function() {
-                // this.corruptCircle.setActive(false);
                 this.corruptCircle.setAlpha(0);
             },
             onCompleteScope: scene
@@ -358,6 +356,27 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.body.setMaxVelocity(maxMoveVelocity, maxMoveVelocity);
                 this.playerAccel = this.playerAccel;
                 this.particleTrail.stop();
+                if(!this.shiftCircleBurst.isPlaying()) {
+                    this.scene.shiftCircle.setAlpha(0);
+                }
+                if(!this.corruptContainerFade.isPlaying()) {
+                    this.corrupt1.setAlpha(0);
+                    this.corrupt2.setAlpha(0);
+                    this.corrupt3.setAlpha(0);
+                    this.corrupt4.setAlpha(0);
+                    this.corrupt5.setAlpha(0);
+                    this.corrupt6.setAlpha(0);
+                    this.corrupt7.setAlpha(0);
+                    this.corrupt8.setAlpha(0);
+                    this.corrupt9.setAlpha(0);
+                    this.corrupt10.setAlpha(0);
+                    this.corrupt11.setAlpha(0);
+                    this.corrupt12.setAlpha(0);
+                    this.corrupt13.setAlpha(0);
+                    this.corrupt14.setAlpha(0);
+                    this.corrupt15.setAlpha(0);
+                    this.corrupt16.setAlpha(0);
+                }
             }
 
             this.emitCircle.setPosition(this.x, this.y);

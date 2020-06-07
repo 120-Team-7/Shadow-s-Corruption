@@ -67,7 +67,6 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     pStats.knifeStabbed++;
                     knife.damage = knifeMeleeDamage;
                     if(knife.corrupted) {
-                        player.corruptContainerFade.play();
                         player.corruptCircleBloom.play();
                         knife.damage += corruption;
                         pStats.knifeCorruptedDamage += knife.damage;
@@ -106,6 +105,7 @@ class KnifeGroup extends Phaser.GameObjects.Group {
                     // Start longer melee cooldown if didn't kill
                     } else {
                         if(usingCorruption) {
+                            player.corruptContainerFade.play();
                             corruption = 0;
                             usingCorruption = false;
                             enemy.scene.corruptionDecayTimer.paused = false;

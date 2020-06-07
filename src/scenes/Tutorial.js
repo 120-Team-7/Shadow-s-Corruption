@@ -221,17 +221,17 @@ class Tutorial extends Phaser.Scene {
                     game.scene.keys.hudScene.highlightHudElement(centerX - 220, screenHeight - 25, 440, 25, 5000);
                 }
                 if(tutorialNum == 15) {
+                    this.fadeOutInText("Dealing CORRUPTED damage fills my heart regeneration. Once fully filled, I regain a void life heart.");
+                    // Highlight corruption heal
+                    game.scene.keys.hudScene.highlightHudElement(screenWidth - 380, screenHeight - 30, 450, 30, 5000);
+                }
+                if(tutorialNum == 16) {
                     this.fadeOutInText("The power of CORRUPTION will transform these pathetic realm weapons into lethal tools of the void.");
                     this.canContinue = false;
                     pStats.knifeCorruptedDamage = 0;
                     pStats.orbCorruptedDamage = 0;
                     this.corruptionDamageObjective = true;
                     this.objectiveFadeIn.play();
-                }
-                if(tutorialNum == 16) {
-                    this.fadeOutInText("Dealing CORRUPTED damage fills my heart regeneration. Once fully filled, I regain a void life heart.");
-                    // Highlight corruption heal
-                    game.scene.keys.hudScene.highlightHudElement(screenWidth - 380, screenHeight - 30, 450, 30, 5000);
                 }
                 if(tutorialNum == 17) {
                     this.fadeOutInText("It seems these slimes haven't been fully corrupted, yet they each have their own method of phasing between realms.");
