@@ -444,14 +444,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
             }
 
-            if (Phaser.Input.Keyboard.JustDown(keyDebug)) {
-                buttonSound.play();
-                if(this.scene.physics.world.debugGraphic.alpha == 1){
-                    this.scene.physics.world.debugGraphic.setAlpha(0);
-                } else {
-                    this.scene.physics.world.debugGraphic.setAlpha(1);
-                }
-            }
+            // if (Phaser.Input.Keyboard.JustDown(keyDebug)) {
+            //     buttonSound.play();
+            //     if(this.scene.physics.world.debugGraphic.alpha == 1){
+            //         this.scene.physics.world.debugGraphic.setAlpha(0);
+            //     } else {
+            //         this.scene.physics.world.debugGraphic.setAlpha(1);
+            //     }
+            // }
 
             if(Phaser.Input.Keyboard.JustDown(keySuicide)) {
                 this.playerHit(pMaxHealth);
@@ -611,8 +611,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             let roomRight  = this.scene.rooms[room].x + this.scene.rooms[room].width;
             let roomTop    = this.scene.rooms[room].y;
             let roomBottom = this.scene.rooms[room].y + this.scene.rooms[room].height;
-
-            // console.log(roomLeft + " " + roomRight + " " + roomTop + " " + roomBottom);
 
             // Player is within the boundaries of this room.
             if (this.x > roomLeft && this.x < roomRight &&
